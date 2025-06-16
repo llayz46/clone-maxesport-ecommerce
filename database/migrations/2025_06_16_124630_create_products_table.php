@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('short_description', 255);
-            $table->foreignIdFor(Brand::class)->constrained()->onDelete('restrict');
-            $table->foreignIdFor(Category::class)->constrained()->onDelete('restrict');
+            $table->foreignIdFor(Brand::class)->constrained()->restrictOnDelete();
+            $table->foreignIdFor(Category::class)->constrained()->restrictOnDelete();
             $table->timestamps();
         });
     }

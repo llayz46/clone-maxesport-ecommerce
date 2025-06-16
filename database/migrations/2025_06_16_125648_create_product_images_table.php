@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
             $table->string('image_url');
             $table->string('alt_text')->nullable();
             $table->boolean('is_featured')->default(false);
