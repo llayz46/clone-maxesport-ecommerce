@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductImage extends Model
 {
@@ -16,4 +17,9 @@ class ProductImage extends Model
         'alt_text',
         'is_featured',
     ];
+
+    public function product(): belongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

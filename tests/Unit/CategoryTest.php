@@ -29,7 +29,7 @@ test('a children category can dissociate its parent', function () {
 
 test('a parent category can dissociate its children', function () {
     $parentCategory = Category::factory()->create();
-    $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
+    Category::factory()->create(['parent_id' => $parentCategory->id]);
 
     $parentCategory->children()->delete();
 
@@ -67,5 +67,13 @@ test('a category need a unique slug to be created', function () {
     Category::factory()->create(['slug' => 'unique-slug']);
 
     expect(fn() => Category::factory()->create(['slug' => 'unique-slug']))
+        ->toThrow(\Illuminate\Database\QueryException::class);
+});
+
+test('a category cannot be deleted if it has products', function () {
+    $category = Category::factory()->create();
+    \App\Models\Product::factory()->create(['category_id' => $category->id]);
+
+    expect(fn() => $category->delete())
         ->toThrow(\Illuminate\Database\QueryException::class);
 });
