@@ -1,18 +1,10 @@
-import { type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-import { NavigationCategories } from '@/components/navigation-categories';
-import { Header } from '@/components/header';
+import { Head } from '@inertiajs/react';
+import BaseLayout from '@/layouts/base-layout';
 
 export default function Home() {
-    const { auth } = usePage<SharedData>().props;
-
     return (
-        <>
+        <BaseLayout>
             <Head title="Home" />
-
-            <Header />
-
-            <NavigationCategories />
 
             {/*<header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">*/}
             {/*    <nav className="flex items-center justify-end gap-4">*/}
@@ -41,6 +33,6 @@ export default function Home() {
             {/*        )}*/}
             {/*    </nav>*/}
             {/*</header>*/}
-        </>
+        </BaseLayout>
     );
 }
