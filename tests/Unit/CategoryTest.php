@@ -2,13 +2,13 @@
 
 use App\Models\Category;
 
-test('a category can be created', function () {
+it('can be created', function () {
     $category = Category::factory()->create();
 
     expect($category)->toBeInstanceOf(Category::class);
 });
 
-test('a category can be retrieved by its slug', function () {
+it('can be retrieved by its slug', function () {
     $category = Category::factory()->create();
 
     $retrievedCategory = Category::where('slug', $category->slug)->first();
@@ -17,7 +17,7 @@ test('a category can be retrieved by its slug', function () {
         ->and($retrievedCategory->id)->toBe($category->id);
 });
 
-test('a category can be deleted', function () {
+it('can be deleted', function () {
     $category = Category::factory()->create();
 
     $category->delete();
@@ -25,17 +25,44 @@ test('a category can be deleted', function () {
     expect(Category::find($category->id))->toBeNull();
 });
 
-test('a category need a unique slug to be created', function () {
+it('need a unique slug to be created', function () {
     Category::factory()->create(['slug' => 'unique-slug']);
 
     expect(fn() => Category::factory()->create(['slug' => 'unique-slug']))
         ->toThrow(\Illuminate\Database\QueryException::class);
 });
 
-test('a category cannot be deleted if it has products', function () {
+it('cannot be deleted if it has products', function () {
     $category = Category::factory()->create();
     \App\Models\Product::factory()->create(['category_id' => $category->id]);
 
     expect(fn() => $category->delete())
         ->toThrow(\Illuminate\Database\QueryException::class);
+});
+
+it('can have a parent category', function () {
+    $parentCategory = Category::factory()->create();
+    $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
+
+    expect($childCategory->parent_id)->toBe($parentCategory->id);
+});
+
+it('can retrieve its parent category', function () {
+    $parentCategory = Category::factory()->create();
+    $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
+
+    expect($childCategory->parent)->toBeInstanceOf(Category::class)
+        ->and($childCategory->parent->id)->toBe($parentCategory->id);
+});
+
+it('can retrieve its child categories', function () {
+    $parentCategory = Category::factory()->create();
+    $childCategory1 = Category::factory()->create(['parent_id' => $parentCategory->id]);
+    $childCategory2 = Category::factory()->create(['parent_id' => $parentCategory->id]);
+
+    $children = $parentCategory->children;
+
+    expect($children)->toHaveCount(2)
+        ->and($children->contains($childCategory1))->toBeTrue()
+        ->and($children->contains($childCategory2))->toBeTrue();
 });

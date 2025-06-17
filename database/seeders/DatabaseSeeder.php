@@ -60,11 +60,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         foreach ($menus as $menu => $menuItems) {
+            $menu = Category::factory()->create([
+                'name' => $menu,
+                'slug' => Str::slug($menu),
+            ]);
+
             foreach ($menuItems as $menuItem) {
                 Category::factory()->create([
                     'name' => $menuItem,
                     'slug' => Str::slug($menuItem),
-                    'menu' => $menu,
+                    'parent_id' => $menu->id,
                 ]);
             }
         }
