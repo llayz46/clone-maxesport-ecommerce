@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Product;
 
 it('can be created', function () {
     $category = Category::factory()->create();
@@ -34,7 +35,7 @@ it('need a unique slug to be created', function () {
 
 it('cannot be deleted if it has products', function () {
     $category = Category::factory()->create();
-    \App\Models\Product::factory()->create(['category_id' => $category->id]);
+    Product::factory()->create()->categories()->attach($category);
 
     expect(fn() => $category->delete())
         ->toThrow(\Illuminate\Database\QueryException::class);

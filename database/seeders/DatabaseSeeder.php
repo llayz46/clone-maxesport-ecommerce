@@ -82,8 +82,8 @@ class DatabaseSeeder extends Seeder
 
             $product = Product::factory()->create([
                 'brand_id' => $brand->id,
-                'category_id' => Category::inRandomOrder()->first()->id,
             ]);
+            $product->categories()->attach(Category::inRandomOrder()->take(rand(1, 3))->pluck('id'));
 
             ProductVariant::factory()
                 ->count(rand(1, 3))
@@ -116,8 +116,8 @@ class DatabaseSeeder extends Seeder
             'description' => 'Conçu pour un ressenti pûrement orienté contrôle, ce La Onda QCW correspondra à tes besoins si tu recherches un tapis avec un bon contrôle, une friction parfaite pour les flickshots et un confort parfait avec ses bords rembourrés et cousus sous la surface !',
             'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
             'brand_id' => $laOnda->id,
-            'category_id' => $categoryTapisDeSouris->id,
         ]);
+        $moldenEdge->categories()->attach($categoryTapisDeSouris->id);
 
         ProductVariant::create([
             'product_id' => $moldenEdge->id,
@@ -147,8 +147,8 @@ class DatabaseSeeder extends Seeder
             'description' => 'Lethal Gaming Gear renforce sa base solide avec le Saturn Pro, une amélioration du Saturn, tant sur la glisse que sur la matière antidérapante, pour une glisse lente et contrôlée avec la Base SlimFlex en PORON® japonais XSoft !',
             'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
             'brand_id' => $lethalGamingGear->id,
-            'category_id' => $categoryTapisDeSouris->id,
         ]);
+        $saturnPro->categories()->attach($categoryTapisDeSouris->id);
 
         ProductVariant::create([
             'product_id' => $saturnPro->id,
@@ -178,8 +178,8 @@ class DatabaseSeeder extends Seeder
             'description' => 'Le contrôle et le confort du tapis Jupiter de chez LGG, dans une version Pro, en XL Square, avec une base en Poron Slimflex Firm et une surface en tissu lisse et douce conçue pour un contrôle absolu, et avec des bords cousus sous la surface confortables !',
             'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
             'brand_id' => $lethalGamingGear->id,
-            'category_id' => $categoryTapisDeSouris->id,
         ]);
+        $jupiterPro->categories()->attach($categoryTapisDeSouris->id);
 
         ProductVariant::create([
             'product_id' => $jupiterPro->id,

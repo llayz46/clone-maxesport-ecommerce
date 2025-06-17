@@ -24,7 +24,6 @@ class ProductFactory extends Factory
             'slug' => Str::slug($name),
             'description' => $this->faker->paragraph(),
             'short_description' => $this->faker->sentence(),
-            'category_id' => Category::factory(),
             'brand_id' => Brand::factory(),
         ];
     }
