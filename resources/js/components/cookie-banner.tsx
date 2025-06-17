@@ -18,7 +18,7 @@ export function CookieBanner() {
     if (!visible) return null;
 
     return (
-        <div className="absolute bottom-4 right-4 z-50 max-w-[400px] rounded-md border bg-background p-4 shadow-lg">
+        <div className="fixed bottom-4 right-4 z-50 max-w-[400px] rounded-md border bg-background p-4 shadow-lg">
             <div className="flex gap-2">
                 <div className="flex grow flex-col gap-3">
                     <div className="space-y-1">

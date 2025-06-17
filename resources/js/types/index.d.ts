@@ -28,6 +28,7 @@ export interface SharedData {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     [key: string]: unknown;
+    categories: Category[];
 }
 
 export interface User {
@@ -39,4 +40,16 @@ export interface User {
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    parent_id: number;
+    parent?: Category | null;
+    children?: Category[] | null;
+    created_at: string;
+    updated_at: string;
 }
