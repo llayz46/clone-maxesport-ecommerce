@@ -1,42 +1,44 @@
 <?php
 
-use App\Models\ProductVariant;
 use App\Models\Product;
+use App\Models\ProductVariant;
 
-it('can create a product variant associate to a product', function () {
+it('can create a variant', function () {
     $product = Product::factory()->create();
-    $productVariant = ProductVariant::factory()->create([
+    $variant = ProductVariant::factory()->create([
         'product_id' => $product->id,
+        'name' => 'Variant 1',
+        'price_override' => 1000,
     ]);
 
-    expect($productVariant)->toBeInstanceOf(ProductVariant::class)
-        ->and($productVariant->product_id)->toBe($product->id);
+    expect($variant->product_id)->toBe($product->id)
+        ->and($variant->name)->toBe('Variant 1')
+        ->and($variant->price_override)->toBe(1000);
 });
 
-it('give the correct discounted price when discount_price is set', function () {
-    $productVariant = ProductVariant::factory()->create([
-        'price' => 100.00,
-        'discount_price' => 80.00,
-    ]);
-
-    expect($productVariant->getPrice)->toBe(80.00);
-});
-
-it('give the correct price when discount_price is not set', function () {
-    $productVariant = ProductVariant::factory()->create([
-        'price' => 100.00,
-        'discount_price' => null,
-    ]);
-
-    expect($productVariant->getPrice)->toBe(100.00);
-});
-
-it('can retrieve the associated product', function () {
+it('can retrieve a variant by its ID', function () {
     $product = Product::factory()->create();
-    $productVariant = ProductVariant::factory()->create([
-        'product_id' => $product->id,
-    ]);
+    $variant = ProductVariant::factory()->create(['product_id' => $product->id]);
 
-    expect($productVariant->product)->toBeInstanceOf(Product::class)
-        ->and($productVariant->product->id)->toBe($product->id);
+    $retrievedVariant = ProductVariant::find($variant->id);
+
+    expect($retrievedVariant)->toBeInstanceOf(ProductVariant::class)
+        ->and($retrievedVariant->id)->toBe($variant->id);
+});
+
+it('can be deleted', function () {
+    $product = Product::factory()->create();
+    $variant = ProductVariant::factory()->create(['product_id' => $product->id]);
+
+    $variant->delete();
+
+    expect(ProductVariant::find($variant->id))->toBeNull();
+});
+
+it('belongs to a product', function () {
+    $product = Product::factory()->create();
+    $variant = ProductVariant::factory()->create(['product_id' => $product->id]);
+
+    expect($variant->product)->toBeInstanceOf(Product::class)
+        ->and($variant->product->id)->toBe($product->id);
 });

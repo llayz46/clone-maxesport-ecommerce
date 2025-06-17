@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductGroup;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
 
@@ -82,16 +83,6 @@ it('can dissociate its brand', function () {
     expect($product->brand_id)->toBeNull();
 });
 
-it('can have multiple variants', function () {
-    $product = Product::factory()->create();
-    $variant1 = ProductVariant::factory()->create(['product_id' => $product->id]);
-    $variant2 = ProductVariant::factory()->create(['product_id' => $product->id]);
-
-    expect($product->variants)->toHaveCount(2)
-        ->and($product->variants->contains($variant1))->toBeTrue()
-        ->and($product->variants->contains($variant2))->toBeTrue();
-});
-
 it('can have multiple images', function () {
     $product = Product::factory()->create();
     $image1 = ProductImage::factory()->create(['product_id' => $product->id]);
@@ -102,15 +93,6 @@ it('can have multiple images', function () {
         ->and($product->images->contains($image2))->toBeTrue();
 });
 
-it('can dissociate its variants', function () {
-    $product = Product::factory()->create();
-    $variant = ProductVariant::factory()->create(['product_id' => $product->id]);
-
-    $variant->product()->dissociate();
-
-    expect($variant->product_id)->toBeNull();
-});
-
 it('can dissociate its images', function () {
     $product = Product::factory()->create();
     $image = ProductImage::factory()->create(['product_id' => $product->id]);
@@ -118,4 +100,36 @@ it('can dissociate its images', function () {
     $image->product()->dissociate();
 
     expect($image->product_id)->toBeNull();
+});
+
+it('can belong to a product group', function () {
+    $product = Product::factory()->create();
+    $productGroup = ProductGroup::factory()->create();
+
+    $product->group()->associate($productGroup);
+
+    expect($product)->toBeInstanceOf(Product::class)
+        ->and($product->product_group_id)->toBe($productGroup->id);
+});
+
+it('can retrieve its discount price', function () {
+    $product = Product::factory()->create(['price' => 100.00, 'discount_price' => 80.00]);
+
+    expect($product->getPrice)->toBe(80.00);
+});
+
+it('can retrieve its regular price if no discount is set', function () {
+    $product = Product::factory()->create(['price' => 100.00, 'discount_price' => null]);
+
+    expect($product->getPrice)->toBe(100.00);
+});
+
+it('can have multiple variants', function () {
+    $product = Product::factory()->create();
+    $variant1 = ProductVariant::factory()->create(['product_id' => $product->id]);
+    $variant2 = ProductVariant::factory()->create(['product_id' => $product->id]);
+
+    expect($product->variants)->toHaveCount(2)
+        ->and($product->variants->contains($variant1))->toBeTrue()
+        ->and($product->variants->contains($variant2))->toBeTrue();
 });
