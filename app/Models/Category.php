@@ -15,16 +15,6 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
-        'parent_id',
+        'menu'
     ];
-
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'parent_id');
-    }
-
-    public function children(): HasMany
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
 }

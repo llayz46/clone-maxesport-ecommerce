@@ -20,7 +20,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $name = $this->faker->unique()->word,
             'slug' => Str::slug($name),
-            'parent_id' => null
+            'menu' => $this->faker->unique()->word
         ];
     }
 }

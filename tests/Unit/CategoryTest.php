@@ -8,44 +8,6 @@ test('a category can be created', function () {
     expect($category)->toBeInstanceOf(Category::class);
 });
 
-test('a category can have a parent category', function () {
-    $parentCategory = Category::factory()->create();
-    $childCategory = Category::factory()->create();
-
-    $childCategory->parent()->associate($parentCategory);
-
-    expect($childCategory->parent)->toBeInstanceOf(Category::class)
-        ->and($childCategory->parent->id)->toBe($parentCategory->id);
-});
-
-test('a children category can dissociate its parent', function () {
-    $parentCategory = Category::factory()->create();
-    $childCategory = Category::factory()->create(['parent_id' => $parentCategory->id]);
-
-    $childCategory->parent()->dissociate();
-
-    expect($childCategory->parent_id)->toBeNull();
-});
-
-test('a parent category can dissociate its children', function () {
-    $parentCategory = Category::factory()->create();
-    Category::factory()->create(['parent_id' => $parentCategory->id]);
-
-    $parentCategory->children()->delete();
-
-    expect($parentCategory->children)->toBeEmpty();
-});
-
-test('a category can have multiple children', function () {
-    $parentCategory = Category::factory()->create();
-    $childCategory1 = Category::factory()->create(['parent_id' => $parentCategory->id]);
-    $childCategory2 = Category::factory()->create(['parent_id' => $parentCategory->id]);
-
-    expect($parentCategory->children)->toHaveCount(2)
-        ->and($parentCategory->children->contains($childCategory1))->toBeTrue()
-        ->and($parentCategory->children->contains($childCategory2))->toBeTrue();
-});
-
 test('a category can be retrieved by its slug', function () {
     $category = Category::factory()->create();
 

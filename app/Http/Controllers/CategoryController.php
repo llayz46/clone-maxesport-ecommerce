@@ -4,17 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -36,7 +29,12 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return Inertia::render('categories/show', [
+            'category' => $category,
+        ]);
+        //            'category' => $category->load(['products.variants', 'products.images']),
+        //            'products' => $category->products()->with(['variants', 'images'])->paginate(10),
+        //            'categories' => Category::all(),
     }
 
     /**
