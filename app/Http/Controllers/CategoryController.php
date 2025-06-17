@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -30,7 +31,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         return Inertia::render('categories/show', [
-            'category' => $category,
+            'category' => CategoryResource::make($category->load('parent')),
         ]);
         //            'category' => $category->load(['products.variants', 'products.images']),
         //            'products' => $category->products()->with(['variants', 'images'])->paginate(10),

@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductGroup;
 use App\Models\ProductImage;
-use App\Models\ProductVariant;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
                 Category::factory()->create([
                     'name' => $menuItem,
                     'slug' => Str::slug($menuItem),
-                    'parent_id' => $menu->id,
+                    'parent_id' => $menu,
                 ]);
             }
         }
@@ -85,12 +85,6 @@ class DatabaseSeeder extends Seeder
             ]);
             $product->categories()->attach(Category::inRandomOrder()->take(rand(1, 3))->pluck('id'));
 
-            ProductVariant::factory()
-                ->count(rand(1, 3))
-                ->create([
-                    'product_id' => $product->id,
-                ]);
-
             ProductImage::factory()
                 ->count(rand(1, 5))
                 ->create([
@@ -105,93 +99,91 @@ class DatabaseSeeder extends Seeder
             'slug' => 'la-onda',
         ]);
 
-        $lethalGamingGear = Brand::create([
-            'name' => 'Lethal Gaming Gear',
-            'slug' => 'lethal-gaming-gear',
+//        $lethalGamingGear = Brand::create([
+//            'name' => 'Lethal Gaming Gear',
+//            'slug' => 'lethal-gaming-gear',
+//        ]);
+
+        $moldenEdgeGroup = ProductGroup::factory()->create([
+            'name' => 'Molden Edge',
+            'slug' => 'molden-edge',
         ]);
 
-        $moldenEdge = Product::create([
-            'name' => 'Molden Edge Mousepad',
-            'slug' => 'molden-edge-mousepad',
-            'description' => 'Conçu pour un ressenti pûrement orienté contrôle, ce La Onda QCW correspondra à tes besoins si tu recherches un tapis avec un bon contrôle, une friction parfaite pour les flickshots et un confort parfait avec ses bords rembourrés et cousus sous la surface !',
+        $sr = Product::create([
+            'name' => 'SR SQ',
+            'slug' => 'sr-sq',
+            'description' => 'Conçu avec une surface en tissu texturée, offrant un maximum de contrôle, ce La Onda SR place dans la gamme des tapis de souris Control, pour un ressenti unique, laissant une bonne liberté de mouvement, et un bon contrôle avec une friction permettant tout de même de bons flickshots grâce à son pouvoir d’arrêt. Il est également équipé de la base en PU signature La Onda, et de leur nouvelle technique de couture pour les bords, permettant un meilleur confort grâce à des coutures sous le tapis, ainsi que des bords rembourrés !',
             'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
-            'brand_id' => $laOnda->id,
-        ]);
-        $moldenEdge->categories()->attach($categoryTapisDeSouris->id);
-
-        ProductVariant::create([
-            'product_id' => $moldenEdge->id,
-            'name' => 'SR',
-            'sku' => 'SR-5874514',
             'price' => 54.90,
             'discount_price' => null,
             'stock' => 100,
+            'brand_id' => $laOnda->id,
+            'product_group_id' => $moldenEdgeGroup->id,
         ]);
 
-        ProductVariant::create([
-            'product_id' => $moldenEdge->id,
-            'name' => 'QCW',
-            'sku' => 'QCW-6378714',
-            'price' => 54.90,
-            'discount_price' => null,
-            'stock' => 89,
-        ]);
+        $sr->categories()->attach($categoryTapisDeSouris->id);
 
         ProductImage::factory(4)->create([
-            'product_id' => $moldenEdge->id,
+            'product_id' => $sr->id,
         ]);
 
-        $saturnPro = Product::create([
-            'name' => 'Saturn Pro Soft',
-            'slug' => 'saturn-pro-soft',
-            'description' => 'Lethal Gaming Gear renforce sa base solide avec le Saturn Pro, une amélioration du Saturn, tant sur la glisse que sur la matière antidérapante, pour une glisse lente et contrôlée avec la Base SlimFlex en PORON® japonais XSoft !',
+        $qcw = Product::create([
+            'name' => 'QCW SQ',
+            'slug' => 'qcw-sq',
+            'description' => 'Conçu avec une surface en tissu micro tissée balanced, mais laissant tout de même du contrôle, ce La Onda QCW se place entre un tapis de souris Balanced et un tapis de souris Control, pour un ressenti unique, laissant une très bonne liberté de mouvement, et un bon contrôle. Il est également équipé de la base en PU signature La Onda, et de leur nouvelle technique de couture pour les bords, permettant un meilleur confort grâce à des coutures sous le tapis, ainsi que des bords rembourrés !',
             'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
-            'brand_id' => $lethalGamingGear->id,
-        ]);
-        $saturnPro->categories()->attach($categoryTapisDeSouris->id);
-
-        ProductVariant::create([
-            'product_id' => $saturnPro->id,
-            'name' => 'XL Square',
-            'sku' => 'XL-Square-1234567',
             'price' => 54.90,
-            'discount_price' => null,
-            'stock' => 50,
+            'discount_price' => 52.00,
+            'stock' => 100,
+            'brand_id' => $laOnda->id,
+            'product_group_id' => $moldenEdgeGroup->id,
         ]);
 
-        ProductVariant::create([
-            'product_id' => $saturnPro->id,
-            'name' => 'L',
-            'sku' => 'L-7654321',
-            'price' => 44.90,
-            'discount_price' => null,
-            'stock' => 75,
-        ]);
+        $qcw->categories()->attach($categoryTapisDeSouris->id);
 
         ProductImage::factory(4)->create([
-            'product_id' => $saturnPro->id,
+            'product_id' => $qcw->id,
         ]);
 
-        $jupiterPro = Product::create([
-            'name' => 'Jupiter Pro Firm',
-            'slug' => 'jupiter-pro-firm',
-            'description' => 'Le contrôle et le confort du tapis Jupiter de chez LGG, dans une version Pro, en XL Square, avec une base en Poron Slimflex Firm et une surface en tissu lisse et douce conçue pour un contrôle absolu, et avec des bords cousus sous la surface confortables !',
-            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
-            'brand_id' => $lethalGamingGear->id,
-        ]);
-        $jupiterPro->categories()->attach($categoryTapisDeSouris->id);
-
-        ProductVariant::create([
-            'product_id' => $jupiterPro->id,
-            'name' => 'XL Square',
-            'sku' => 'XL-Square-7654321',
-            'price' => 54.90,
-            'discount_price' => null,
-            'stock' => 50,
-        ]);
-
-        ProductImage::factory(4)->create([
-            'product_id' => $jupiterPro->id,
-        ]);
+//        $saturnProGroup = ProductGroup::factory()->create([
+//            'name' => 'Molden Edge',
+//            'slug' => 'molden-edge',
+//        ]);
+//
+//        $saturnProSoftXLSquareNoir = Product::create([
+//            'name' => 'Saturn Pro Soft XL Square Noir',
+//            'slug' => 'saturn-pro-soft-xl-square-noir',
+//            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
+//            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
+//            'sku' => 'SPSXLN-1234567',
+//            'price' => 64.90,
+//            'discount_price' => null,
+//            'stock' => 100,
+//            'brand_id' => $lethalGamingGear->id,
+//            'product_group_id' => $saturnProGroup->id,
+//        ]);
+//        $saturnProSoftXLSquareNoir->categories()->attach($categoryTapisDeSouris->id);
+//
+//        ProductImage::factory(4)->create([
+//            'product_id' => $saturnProSoftXLSquareNoir->id,
+//        ]);
+//
+//        $saturnProSoftXLSquareRouge = Product::create([
+//            'name' => 'Saturn Pro Soft XL Square Rouge',
+//            'slug' => 'saturn-pro-soft-xl-square-rouge',
+//            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
+//            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
+//            'sku' => 'SPSXLN-1234567',
+//            'price' => 64.90,
+//            'discount_price' => null,
+//            'stock' => 100,
+//            'brand_id' => $lethalGamingGear->id,
+//            'product_group_id' => $saturnProGroup->id,
+//        ]);
+//        $saturnProSoftXLSquareRouge->categories()->attach($categoryTapisDeSouris->id);
+//
+//        ProductImage::factory(4)->create([
+//            'product_id' => $saturnProSoftXLSquareRouge->id,
+//        ]);
     }
 }

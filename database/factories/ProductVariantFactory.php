@@ -3,27 +3,25 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductVariant>
- */
 class ProductVariantFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = ProductVariant::class;
+
     public function definition(): array
     {
         return [
+            'name' => $this->faker->name(),
+            'attributes' => json_encode([
+                'color' => $this->faker->colorName(),
+                'size' => $this->faker->randomElement(['S', 'M', 'L', 'XL']),
+            ]),
+            'price_override' => $this->faker->randomFloat(),
+            'stock' => $this->faker->randomNumber(),
             'product_id' => Product::factory(),
-            'name' => $this->faker->word(),
-            'sku' => $this->faker->unique()->bothify('SKU-###??'),
-            'price' => $this->faker->randomFloat(2, 10, 1000),
-            'discount_price' => $this->faker->optional()->randomFloat(2, 5, 500),
-            'stock' => $this->faker->numberBetween(0, 100)
         ];
     }
 }

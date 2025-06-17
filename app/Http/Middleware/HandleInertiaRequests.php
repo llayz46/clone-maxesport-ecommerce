@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -47,6 +50,7 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'categories' => fn () => Cache::rememberForever('categories', fn () => CategoryResource::collection(Category::with('children')->whereNull('parent_id')->get())),
         ];
     }
 }
