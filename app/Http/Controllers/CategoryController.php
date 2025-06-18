@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -28,14 +29,30 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(Category $category, Request $request)
     {
+        $sort = $request->query('sort', 'news');
+
+        $query = $category->products()->with(['images', 'brand']);
+
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderByRaw('COALESCE(discount_price, price) ASC');
+                break;
+            case 'price_desc':
+                $query->orderByRaw('COALESCE(discount_price, price) DESC');
+                break;
+            case 'news':
+            default:
+                $query->latest(); // Tri par date de création décroissante
+                break;
+        }
+
         return Inertia::render('categories/show', [
             'category' => CategoryResource::make($category->load('parent')),
+            'data' => ProductResource::collection($query->paginate(12)),
+            'sort' => $sort,
         ]);
-        //            'category' => $category->load(['products.variants', 'products.images']),
-        //            'products' => $category->products()->with(['variants', 'images'])->paginate(10),
-        //            'categories' => Category::all(),
     }
 
     /**
@@ -62,3 +79,4 @@ class CategoryController extends Controller
         //
     }
 }
+

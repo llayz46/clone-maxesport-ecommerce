@@ -53,3 +53,37 @@ export interface Category {
     created_at: string;
     updated_at: string;
 }
+
+export interface Brand {
+    id: number;
+    name: string;
+    slug: string;
+    logo_url: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Product {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    short_description: string;
+    is_primary: boolean;
+    price: number;
+    discount_price: number | null;
+    stock: number;
+    isNew: boolean;
+    brand: Brand;
+    category: Category | null;
+    // group: string | null;
+    images?: string[] | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export type MetaLink = {
+    url: string;
+    label: string;
+    active: boolean;
+}

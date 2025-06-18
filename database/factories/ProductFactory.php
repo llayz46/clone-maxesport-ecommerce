@@ -20,17 +20,17 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $name = $this->faker->word(),
+            'name' => $name = $this->faker->words(3, true),
             'slug' => Str::slug($name),
             'description' => $this->faker->paragraph(),
             'short_description' => $this->faker->sentence(),
-            'has_variant' => false,
             'is_primary' => $this->faker->boolean(),
             'price' => $this->faker->randomFloat(2, 10, 1000),
             'discount_price' => $this->faker->optional()->randomFloat(2, 5, 500),
             'stock' => $this->faker->numberBetween(0, 100),
             'brand_id' => Brand::factory(),
             'product_group_id' => null,
+            'created_at' => now()->subDays(rand(1, 30)),
         ];
     }
 }

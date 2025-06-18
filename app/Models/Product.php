@@ -19,13 +19,12 @@ class Product extends Model
         'slug',
         'description',
         'short_description',
-        'has_variant',
         'is_primary',
         'price',
         'discount_price',
         'stock',
-        'brand_id',
-        'product_group_id',
+        'brand',
+        'product_group',
     ];
 
     public function categories(): BelongsToMany
@@ -35,17 +34,12 @@ class Product extends Model
 
     public function brand(): BelongsTo
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class);
-    }
-
-    public function variants(): HasMany
-    {
-        return $this->hasMany(ProductVariant::class);
     }
 
     public function group(): BelongsTo

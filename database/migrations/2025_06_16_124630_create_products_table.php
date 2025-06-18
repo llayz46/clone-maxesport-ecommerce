@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('short_description', 255);
-            $table->boolean('has_variant')->default(false);
             $table->boolean('is_primary')->default(false);
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();

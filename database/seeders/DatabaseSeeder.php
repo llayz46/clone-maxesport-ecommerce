@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use App\Models\ProductImage;
+use App\Models\ProductVariant;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -81,7 +82,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $product = Product::factory()->create([
-                'brand_id' => $brand->id,
+                'brand_id' => $brand->id
             ]);
             $product->categories()->attach(Category::inRandomOrder()->take(rand(1, 3))->pluck('id'));
 
@@ -99,10 +100,10 @@ class DatabaseSeeder extends Seeder
             'slug' => 'la-onda',
         ]);
 
-//        $lethalGamingGear = Brand::create([
-//            'name' => 'Lethal Gaming Gear',
-//            'slug' => 'lethal-gaming-gear',
-//        ]);
+        $lethalGamingGear = Brand::create([
+            'name' => 'Lethal Gaming Gear',
+            'slug' => 'lethal-gaming-gear',
+        ]);
 
         $moldenEdgeGroup = ProductGroup::factory()->create([
             'name' => 'Molden Edge',
@@ -145,45 +146,37 @@ class DatabaseSeeder extends Seeder
             'product_id' => $qcw->id,
         ]);
 
-//        $saturnProGroup = ProductGroup::factory()->create([
-//            'name' => 'Molden Edge',
-//            'slug' => 'molden-edge',
-//        ]);
-//
-//        $saturnProSoftXLSquareNoir = Product::create([
-//            'name' => 'Saturn Pro Soft XL Square Noir',
-//            'slug' => 'saturn-pro-soft-xl-square-noir',
-//            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
-//            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
-//            'sku' => 'SPSXLN-1234567',
-//            'price' => 64.90,
-//            'discount_price' => null,
-//            'stock' => 100,
-//            'brand_id' => $lethalGamingGear->id,
-//            'product_group_id' => $saturnProGroup->id,
-//        ]);
-//        $saturnProSoftXLSquareNoir->categories()->attach($categoryTapisDeSouris->id);
-//
-//        ProductImage::factory(4)->create([
-//            'product_id' => $saturnProSoftXLSquareNoir->id,
-//        ]);
-//
-//        $saturnProSoftXLSquareRouge = Product::create([
-//            'name' => 'Saturn Pro Soft XL Square Rouge',
-//            'slug' => 'saturn-pro-soft-xl-square-rouge',
-//            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
-//            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
-//            'sku' => 'SPSXLN-1234567',
-//            'price' => 64.90,
-//            'discount_price' => null,
-//            'stock' => 100,
-//            'brand_id' => $lethalGamingGear->id,
-//            'product_group_id' => $saturnProGroup->id,
-//        ]);
-//        $saturnProSoftXLSquareRouge->categories()->attach($categoryTapisDeSouris->id);
-//
-//        ProductImage::factory(4)->create([
-//            'product_id' => $saturnProSoftXLSquareRouge->id,
-//        ]);
+        $saturnProGroup = ProductGroup::factory()->create([
+            'name' => 'Saturn Pro',
+            'slug' => 'saturn-pro',
+        ]);
+
+        $saturnProSoftXlSquareRouge = Product::create([
+            'name' => 'Saturn Pro Soft XL Square Rouge',
+            'slug' => 'saturn-pro-soft-xl-square-rouge',
+            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
+            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
+            'price' => 64.90,
+            'discount_price' => null,
+            'stock' => 100,
+            'brand_id' => $lethalGamingGear->id,
+            'product_group_id' => $saturnProGroup->id,
+        ]);
+        $saturnProSoftXlSquareRouge->categories()->attach($categoryTapisDeSouris->id);
+
+        $saturnProSoftXlSquareNoir = Product::create([
+            'name' => 'Saturn Pro Soft XL Square Noir',
+            'slug' => 'saturn-pro-soft-xl-square-noir',
+            'description' => 'Le Saturn Pro est une amélioration du Saturn classique de chez Lethal Gaming Gear, tu y retrouveras une base Soft nouvelle génération te conférant un meilleur pouvoir d’arrêt sur ta souris lorsque que tu l’appuies sur le tapis, sans pour autant détériorer la glisse ! Tu y retrouveras bien sur la Base SlimFlex en PORON® japonais en caoutchouc qui empêchera ton tapis de bouger pendant tes sessions de jeu, et les bords extra fins qui ne te gèneront plus !',
+            'short_description' => 'Un tapis de souris haut de gamme pour les gamers exigeants.',
+            'price' => 64.90,
+            'discount_price' => null,
+            'stock' => 100,
+            'brand_id' => $lethalGamingGear->id,
+            'product_group_id' => $saturnProGroup->id,
+        ]);
+        $saturnProSoftXlSquareNoir->categories()->attach($categoryTapisDeSouris->id);
+
+        $categoryTapisDeSouris->products()->attach(Product::factory(37)->create());
     }
 }
