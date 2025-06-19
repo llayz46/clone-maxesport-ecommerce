@@ -44,7 +44,7 @@ class CategoryController extends Controller
                 break;
             case 'news':
             default:
-                $query->latest(); // Tri par date de création décroissante
+                $query->latest();
                 break;
         }
 

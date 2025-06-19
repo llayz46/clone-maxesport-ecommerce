@@ -77,7 +77,15 @@ export interface Product {
     brand: Brand;
     category: Category | null;
     // group: string | null;
-    images?: string[] | null;
+    images?: {
+        id: number;
+        image_url: string;
+        alt_text: string;
+        is_featured: boolean;
+        product_id: number;
+        created_at: string;
+        updated_at: string;
+    }[] | null;
     created_at: string;
     updated_at: string;
 }

@@ -124,8 +124,12 @@ class DatabaseSeeder extends Seeder
 
         $sr->categories()->attach($categoryTapisDeSouris->id);
 
-        ProductImage::factory(4)->create([
+        ProductImage::factory(3)->create([
             'product_id' => $sr->id,
+        ]);
+        ProductImage::factory()->create([
+            'product_id' => $sr->id,
+            'is_featured' => true,
         ]);
 
         $qcw = Product::create([
@@ -142,8 +146,12 @@ class DatabaseSeeder extends Seeder
 
         $qcw->categories()->attach($categoryTapisDeSouris->id);
 
-        ProductImage::factory(4)->create([
+        ProductImage::factory(3)->create([
             'product_id' => $qcw->id,
+        ]);
+        ProductImage::factory()->create([
+            'product_id' => $qcw->id,
+            'is_featured' => true,
         ]);
 
         $saturnProGroup = ProductGroup::factory()->create([
@@ -164,6 +172,14 @@ class DatabaseSeeder extends Seeder
         ]);
         $saturnProSoftXlSquareRouge->categories()->attach($categoryTapisDeSouris->id);
 
+        ProductImage::factory(3)->create([
+            'product_id' => $saturnProSoftXlSquareRouge->id,
+        ]);
+        ProductImage::factory()->create([
+            'product_id' => $saturnProSoftXlSquareRouge->id,
+            'is_featured' => true,
+        ]);
+
         $saturnProSoftXlSquareNoir = Product::create([
             'name' => 'Saturn Pro Soft XL Square Noir',
             'slug' => 'saturn-pro-soft-xl-square-noir',
@@ -176,6 +192,14 @@ class DatabaseSeeder extends Seeder
             'product_group_id' => $saturnProGroup->id,
         ]);
         $saturnProSoftXlSquareNoir->categories()->attach($categoryTapisDeSouris->id);
+
+        ProductImage::factory(3)->create([
+            'product_id' => $saturnProSoftXlSquareNoir->id,
+        ]);
+        ProductImage::factory()->create([
+            'product_id' => $saturnProSoftXlSquareNoir->id,
+            'is_featured' => true,
+        ]);
 
         $categoryTapisDeSouris->products()->attach(Product::factory(37)->create());
     }

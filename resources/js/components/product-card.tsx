@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import type { Product } from '@/types';
+import { cn } from '@/lib/utils';
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, onQuickView }: { product: Product, onQuickView?: () => void }) {
     const [isHovered, setIsHovered] = useState(false)
-    console.log('product', product);
 
     return (
         <Card className="group gap-0 overflow-hidden h-full rounded-md p-0 transition-all duration-300 hover:shadow-md">
@@ -51,6 +51,7 @@ export function ProductCard({ product }: { product: Product }) {
                         size="sm"
                         variant="secondary"
                         className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
+                        onClick={onQuickView}
                     >
                         <Eye className="size-4 text-background" />
                         <span className="sr-only">Voir les détails</span>
@@ -77,8 +78,8 @@ export function ProductCard({ product }: { product: Product }) {
                 </div>
 
                 <div className="mt-auto flex items-center gap-2">
-                    <span className="block size-2 rounded-full bg-green-500/90" />
-                    <span className="text-xs font-medium text-muted-foreground">En stock</span>
+                    <span className={cn("block size-2 rounded-full", product.stock === 0 ? "bg-red-500/90" : product.stock < 11 ? "bg-orange-500/90" : "bg-green-500/90")} />
+                    <span className="text-xs font-medium text-muted-foreground">{product.stock ? 'En stock' : 'Pas disponible'}</span>
                 </div>
             </CardContent>
         </Card>

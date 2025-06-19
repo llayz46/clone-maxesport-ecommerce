@@ -9,6 +9,7 @@ import {
     SheetTrigger
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Brand } from '@/types';
 
 export function FilterSheet() {
     return (

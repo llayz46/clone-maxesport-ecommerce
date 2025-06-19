@@ -18,7 +18,7 @@ class BrandResource extends JsonResource
             'logo_url' => $this->logo_url,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'products_count' => $this->products_count,
+//            'products_count' => $this->products_count,
 
             'products' => ProductResource::collection($this->whenLoaded('products')),
         ];

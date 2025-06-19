@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'name' => $name = $this->faker->words(3, true),
             'slug' => Str::slug($name),
             'description' => $this->faker->paragraph(),
-            'short_description' => $this->faker->sentence(),
+            'short_description' => $this->faker->sentences(4, true),
             'is_primary' => $this->faker->boolean(),
             'price' => $this->faker->randomFloat(2, 10, 1000),
             'discount_price' => $this->faker->optional()->randomFloat(2, 5, 500),

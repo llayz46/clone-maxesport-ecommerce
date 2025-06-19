@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ProductCard } from '@/components/product-card';
 import { PaginationComponent } from '@/components/pagination-component';
 import { useEffect, useState } from 'react';
+import { ProductQuickViewModal } from '@/components/product-quick-view-modal';
 
 interface ShowProductProps {
     category: Category;
@@ -35,6 +36,7 @@ type SortType = 'news' | 'price_asc' | 'price_desc';
 
 export default function Show({ category, data, sort = 'news' }: ShowProductProps) {
     const [selectedSort, setSelectedSort] = useState<SortType>(sort);
+    const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
     useEffect(() => {
         setSelectedSort(sort);
@@ -58,7 +60,7 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
 
             <main className="layout-container">
                 <div className="flex items-center justify-between">
-                    <FilterSheet />
+                    <FilterSheet/>
 
                     <Select
                         onValueChange={handleSortChange}
@@ -80,7 +82,10 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
                     <ul className="mt-4 grid grid-cols-4 gap-4">
                         {data.data.map(product => (
                             <li key={product.id}>
-                                <ProductCard product={product} />
+                                <ProductCard
+                                    product={product}
+                                    onQuickView={() => setQuickViewProduct(product)}
+                                />
                             </li>
                         ))}
                     </ul>
@@ -90,6 +95,12 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
                         preserveQuery={['sort']}
                     />
                 </section>
+
+                <ProductQuickViewModal
+                    product={quickViewProduct}
+                    open={!!quickViewProduct}
+                    onClose={() => setQuickViewProduct(null)}
+                />
             </main>
         </BaseLayout>
     )
