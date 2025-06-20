@@ -29,6 +29,7 @@ export interface SharedData {
     sidebarOpen: boolean;
     [key: string]: unknown;
     categories: Category[];
+    cart: Cart;
 }
 
 export interface User {
@@ -54,6 +55,26 @@ export interface Category {
     updated_at: string;
 }
 
+export interface CartItem {
+    id: number;
+    cart_id: number;
+    product_id: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+    product: Product;
+}
+
+export interface Cart {
+    id: number;
+    user_id?: User | null;
+    session_id?: string | null;
+    created_at: string;
+    updated_at: string;
+    items: CartItem[];
+    total: number;
+}
+
 export interface Brand {
     id: number;
     name: string;
@@ -77,15 +98,8 @@ export interface Product {
     brand: Brand;
     category: Category | null;
     // group: string | null;
-    images?: {
-        id: number;
-        image_url: string;
-        alt_text: string;
-        is_featured: boolean;
-        product_id: number;
-        created_at: string;
-        updated_at: string;
-    }[] | null;
+    images?: ProductImage[] | null;
+    image: ProductImage | null;
     created_at: string;
     updated_at: string;
 }
@@ -94,4 +108,14 @@ export type MetaLink = {
     url: string;
     label: string;
     active: boolean;
+}
+
+export interface ProductImage {
+    id: number;
+    image_url: string;
+    alt_text: string;
+    is_featured: boolean;
+    product_id: number;
+    created_at: string;
+    updated_at: string;
 }

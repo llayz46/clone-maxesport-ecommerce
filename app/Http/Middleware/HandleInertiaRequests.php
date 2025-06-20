@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Factories\CartFactory;
+use App\Http\Resources\CartResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -51,6 +53,9 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'categories' => fn () => Cache::rememberForever('categories', fn () => CategoryResource::collection(Category::with('children')->whereNull('parent_id')->get())),
+            'cart' => fn () => Cache::remember("cart-" . (auth()->check() ? 'user-' . auth()->id() : 'session-' . session()->getId()), 30, function () {
+                return CartResource::make(CartFactory::make()->load('items.product.images', 'items.product.brand'));
+            }),
         ];
     }
 }

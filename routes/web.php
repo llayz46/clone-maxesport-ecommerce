@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +17,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::prefix('categories')->group(function () {
     Route::get('/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
+});
+
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'addItem'])->name('cart.add');
+    Route::post('/remove', [CartController::class, 'removeItem'])->name('cart.remove');
+    Route::post('/{cart}/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
 require __DIR__.'/settings.php';

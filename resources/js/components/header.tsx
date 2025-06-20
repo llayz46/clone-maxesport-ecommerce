@@ -1,5 +1,5 @@
 import { Input } from '@/components/ui/input';
-import { Heart, SearchIcon, ShoppingBag, User } from 'lucide-react';
+import { Heart, SearchIcon, User } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { buttonVariants } from '@/components/ui/button';
 import Logo from '@/components/logo';
@@ -44,13 +44,7 @@ export function Header() {
                             <User size={20} />
                         </Link>
                     )}
-                    {auth.user ? (
-                        <CartSheet />
-                    ) : (
-                        <Link prefetch href="/login" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                            <ShoppingBag size={20} />
-                        </Link>
-                    )}
+                    <CartSheet />
                     <Link href="/" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <Heart size={20} />
                     </Link>
