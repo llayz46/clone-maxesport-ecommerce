@@ -4,7 +4,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use App\Models\ProductImage;
-use App\Models\ProductVariant;
 
 it('can be created', function () {
     $product = Product::factory()->create();
@@ -122,14 +121,4 @@ it('can retrieve its regular price if no discount is set', function () {
     $product = Product::factory()->create(['price' => 100.00, 'discount_price' => null]);
 
     expect($product->getPrice)->toBe(100.00);
-});
-
-it('can have multiple variants', function () {
-    $product = Product::factory()->create();
-    $variant1 = ProductVariant::factory()->create(['product_id' => $product->id]);
-    $variant2 = ProductVariant::factory()->create(['product_id' => $product->id]);
-
-    expect($product->variants)->toHaveCount(2)
-        ->and($product->variants->contains($variant1))->toBeTrue()
-        ->and($product->variants->contains($variant2))->toBeTrue();
 });

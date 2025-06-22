@@ -23,7 +23,8 @@ Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add', [CartController::class, 'addItem'])->name('cart.add');
     Route::post('/remove', [CartController::class, 'removeItem'])->name('cart.remove');
-    Route::post('/{cart}/destroy', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/clear/{cart}', [CartController::class, 'clear'])->name('cart.clear');
+    Route::put('/update', [CartController::class, 'handleItemQuantity'])->name('cart.update');
 });
 
 require __DIR__.'/settings.php';

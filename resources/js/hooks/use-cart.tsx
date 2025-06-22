@@ -46,7 +46,7 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                 id: Date.now(),
                 cart_id: optimisticCart.id,
                 product_id: product.id,
-                product: product,
+                product,
                 quantity,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
@@ -77,8 +77,9 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
         const cart = optimisticCart;
 
         const updatedItems = optimisticCart.items?.filter(item => item.product.id !== productId)
+        const total = updatedItems?.reduce((sum, item) => sum + (item.product.price * item.quantity), 0) || 0;
 
-        setOptimisticCart(prev => ({ ...prev!, items: updatedItems }));
+        setOptimisticCart(prev => ({ ...prev!, items: updatedItems, total }));
 
         router.post(
             route('cart.remove'),
@@ -95,10 +96,100 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
         )
     };
 
+    const clearCart = () => {
+        if (!optimisticCart) return;
+
+        const cart = optimisticCart;
+
+        setOptimisticCart({ ...cart, items: [], total: 0 });
+
+        router.post(
+            route('cart.clear', optimisticCart.id),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: (page: { props: { cart: Cart } }) => {
+                    setOptimisticCart(page.props.cart);
+                },
+                onError: () => {
+                    setOptimisticCart(cart);
+                },
+            }
+        );
+    };
+
+    const handleQuantity = (type: "inc" | "dec", productId: number) => {
+        if (!optimisticCart) return;
+
+        const cart = optimisticCart;
+
+        const existingItem = optimisticCart.items?.find(item => item.product.id === productId);
+
+        if (!existingItem) return;
+
+        if(type === "inc") {
+            const updatedItems = optimisticCart.items?.map(item =>
+                item.product.id === productId
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+
+            setOptimisticCart(prev => ({ ...prev!, items: updatedItems }));
+
+            router.put(
+                route('cart.update'),
+                {
+                    product_id: productId,
+                    action: "increase",
+                },
+                {
+                    preserveScroll: true,
+                    onSuccess: (page: { props: { cart: Cart } }) => {
+                        setOptimisticCart(page.props.cart);
+                    },
+                    onError: () => {
+                        setOptimisticCart(cart);
+                    },
+                }
+            );
+        } else if(type === "dec") {
+            if (existingItem.quantity > 1) {
+                const updatedItems = optimisticCart.items?.map(item =>
+                    item.product.id === productId
+                        ? { ...item, quantity: item.quantity - 1 }
+                        : item
+                );
+
+                setOptimisticCart(prev => ({ ...prev!, items: updatedItems }));
+
+                router.put(
+                    route('cart.update'),
+                    {
+                        product_id: productId,
+                        action: "decrease",
+                    },
+                    {
+                        preserveScroll: true,
+                        onSuccess: (page: { props: { cart: Cart } }) => {
+                            setOptimisticCart(page.props.cart);
+                        },
+                        onError: () => {
+                            setOptimisticCart(cart);
+                        },
+                    }
+                );
+            } else {
+                removeItemOfCart(existingItem.product.id);
+            }
+        }
+    }
+
     return {
         optimisticCart,
         loading,
         addToCart,
-        removeItemOfCart
+        removeItemOfCart,
+        clearCart,
+        handleQuantity
     };
 }

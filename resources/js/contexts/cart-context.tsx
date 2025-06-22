@@ -4,10 +4,11 @@ import { Cart, Product } from '@/types';
 
 type CartContextType = {
     optimisticCart: Cart | null;
-    setOptimisticCart: (cart: Cart | null) => void;
     loading: boolean;
     addToCart: (product: Product, quantity?: number) => void;
     removeItemOfCart: (productId: number) => void;
+    clearCart: () => void;
+    handleQuantity : (type: "inc" | "dec", productId: number) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -20,19 +21,21 @@ type CartProviderProps = {
 export function CartProvider({ children, initialCart }: CartProviderProps) {
     const {
         optimisticCart,
-        setOptimisticCart,
         loading,
         addToCart,
-        removeItemOfCart
+        removeItemOfCart,
+        clearCart,
+        handleQuantity
     } = useCart({ initialCart });
 
     return (
         <CartContext.Provider value={{
             optimisticCart,
-            setOptimisticCart,
             loading,
             addToCart,
             removeItemOfCart,
+            clearCart,
+            handleQuantity
         }}>
             {children}
         </CartContext.Provider>

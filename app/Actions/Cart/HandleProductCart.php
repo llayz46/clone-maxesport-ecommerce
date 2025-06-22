@@ -29,4 +29,37 @@ class HandleProductCart
 
         CartCache::forget();
     }
+
+    public function clear($cart = null)
+    {
+        ($cart ?: CartFactory::make())->items()->delete();
+
+        CartCache::forget();
+    }
+
+    public function increase($productId, $cart = null)
+    {
+        $item = ($cart ?: CartFactory::make())->items->first(function ($cartItem) use ($productId) {
+            return $cartItem->product_id === $productId;
+        });
+
+        $item?->increment('quantity');
+
+        CartCache::forget();
+    }
+
+    public function decrease($productId, $cart = null)
+    {
+        $item = ($cart ?: CartFactory::make())->items->first(function ($cartItem) use ($productId) {
+            return $cartItem->product_id === $productId;
+        });
+
+        if ($item && $item->quantity > 1) {
+            $item->decrement('quantity');
+        } else {
+            $item?->delete();
+        }
+
+        CartCache::forget();
+    }
 }

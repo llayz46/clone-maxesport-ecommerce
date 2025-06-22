@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@test.fr',
-            'password' => bcrypt('test'),
+            'password' => bcrypt('testtest'),
         ]);
 
         foreach ($menus as $menu => $menuItems) {

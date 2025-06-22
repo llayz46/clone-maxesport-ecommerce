@@ -10,6 +10,26 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    /**
+     * @var HandleProductCart
+     */
+    protected HandleProductCart $handleProductCart;
+
+    /**
+     * CartController constructor.
+     *
+     * @param HandleProductCart $handleProductCart
+     */
+    public function __construct(HandleProductCart $handleProductCart)
+    {
+        $this->handleProductCart = $handleProductCart;
+    }
+
+    /**
+     * Display the cart.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         return response()->json([
@@ -17,14 +37,21 @@ class CartController extends Controller
         ]);
     }
 
-    public function addItem(Request $request, HandleProductCart $handleProductCart)
+    /**
+     * Add item to the cart.
+     *
+     * @param Request $request
+     * @param HandleProductCart $handleProductCart
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addItem(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'integer|min:1',
         ]);
 
-        $handleProductCart->add(
+        $this->handleProductCart->add(
             $request->product_id,
             $request->quantity ?? 1,
             $request->user()?->cart
@@ -33,13 +60,20 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function removeItem(Request $request, HandleProductCart $handleProductCart)
+    /**
+     * Remove an item from the cart.
+     *
+     * @param Request $request
+     * @param HandleProductCart $handleProductCart
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeItem(Request $request)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
         ]);
 
-        $handleProductCart->remove(
+        $this->handleProductCart->remove(
             $request->product_id,
             $request->user()?->cart
         );
@@ -47,12 +81,41 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Cart $cart)
+    /**
+     * Clear the cart.
+     *
+     * @param Cart $cart
+     * @param HandleProductCart $handleProductCart
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function clear(Request $request)
     {
-        $cart->items()->delete();
+        $this->handleProductCart->clear($request->user()?->cart);
 
-        return response()->json([
-            'success' => true,
+        return redirect()->back();
+    }
+
+    /**
+     * Handle item quantity increase or decrease.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function handleItemQuantity(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'action' => 'required|in:increase,decrease',
         ]);
+
+        $cart = $request->user()?->cart;
+
+        if ($request->action === 'increase') {
+            $this->handleProductCart->increase($request->product_id, $cart);
+        } elseif ($request->action === 'decrease') {
+            $this->handleProductCart->decrease($request->product_id, $cart);
+        }
+
+        return redirect()->back();
     }
 }

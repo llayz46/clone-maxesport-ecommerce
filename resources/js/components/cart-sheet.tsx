@@ -12,9 +12,12 @@ import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCartContext } from '@/contexts/cart-context';
 import { Card, CardContent } from '@/components/ui/card';
 import { CartItem } from '@/types';
+import { CartClearConfirmationDialog } from '@/components/cart-clear-confirmation-dialog';
+import { useState } from 'react';
 
 export function CartSheet() {
-    const { optimisticCart, removeItemOfCart } = useCartContext();
+    const { handleQuantity, clearCart, optimisticCart, removeItemOfCart } = useCartContext();
+    const [clearConfirmationModal, setClearConfirmationModal] = useState<boolean>(false);
 
     return (
         <Sheet>
@@ -30,7 +33,11 @@ export function CartSheet() {
                 </SheetHeader>
 
                 <div className="grid flex-1 auto-rows-min gap-4 px-4">
-                    {optimisticCart?.items.map(item => <CardItem key={item.id} item={item} removeItemOfCart={removeItemOfCart} />)}
+                    <Button variant="destructive" className="cursor-pointer" onClick={() => setClearConfirmationModal(true)}>
+                        Vider le panier
+                    </Button>
+
+                    {optimisticCart?.items.map(item => <CardItem key={item.id} item={item} removeItemOfCart={removeItemOfCart} handleQuantity={handleQuantity} />)}
                 </div>
 
                 <div className="px-4 flex justify-between font-medium">
@@ -45,11 +52,17 @@ export function CartSheet() {
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>
+
+            <CartClearConfirmationDialog
+                open={clearConfirmationModal}
+                onClose={() => setClearConfirmationModal(false)}
+                clearCart={clearCart}
+            />
         </Sheet>
     );
 }
 
-function CardItem ({ item, removeItemOfCart }: { item: CartItem, removeItemOfCart: (productId: number) => void  }) {
+function CardItem ({ item, removeItemOfCart, handleQuantity }: { item: CartItem, removeItemOfCart: (productId: number) => void, handleQuantity: (type: "inc" | "dec", productId: number) => void }) {
     return (
         <Card className="relative overflow-hidden py-0">
             <CardContent className="p-3">
@@ -75,11 +88,11 @@ function CardItem ({ item, removeItemOfCart }: { item: CartItem, removeItemOfCar
                     </div>
 
                     <div className="absolute right-0 bottom-0 flex items-center gap-1">
-                        <Button variant="outline" size="icon" className="h-6 w-6">
+                        <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => handleQuantity("dec", item.product.id)}>
                             <Minus className="h-3 w-3" />
                         </Button>
                         <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
-                        <Button variant="outline" size="icon" className="h-6 w-6">
+                        <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => handleQuantity("inc", item.product.id)}>
                             <Plus className="h-3 w-3" />
                         </Button>
                     </div>

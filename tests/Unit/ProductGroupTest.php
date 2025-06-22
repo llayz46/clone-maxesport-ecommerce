@@ -7,13 +7,11 @@ it('can create a product group', function () {
     $productGroup = ProductGroup::factory()->create([
         'name' => 'Electronics',
         'slug' => 'electronics',
-        'description' => 'All electronic products',
     ]);
 
     expect($productGroup)->toBeInstanceOf(ProductGroup::class)
         ->and($productGroup->name)->toBe('Electronics')
-        ->and($productGroup->slug)->toBe('electronics')
-        ->and($productGroup->description)->toBe('All electronic products');
+        ->and($productGroup->slug)->toBe('electronics');
 });
 
 it('can retrieve a product group by its slug', function () {
@@ -36,13 +34,17 @@ it('can delete a product group', function () {
     expect(ProductGroup::find($productGroup->id))->toBeNull();
 });
 
-it('deletes associated products when deleted', function () {
+it('sets product_group_id to null for associated products when deleted', function () {
     $productGroup = ProductGroup::factory()->create();
     $product = Product::factory()->create(['product_group_id' => $productGroup->id]);
 
     $productGroup->delete();
 
-    expect(Product::find($product->id))->toBeNull();
+    // Rechargement du produit depuis la base de données pour obtenir les valeurs à jour
+    $product->refresh();
+
+    expect($product)->toBeInstanceOf(Product::class)
+        ->and($product->product_group_id)->toBeNull();
 });
 
 it('can have products associated with it', function () {

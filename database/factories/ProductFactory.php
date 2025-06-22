@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             'discount_price' => $this->faker->optional()->randomFloat(2, 5, 500),
             'stock' => $this->faker->numberBetween(0, 100),
             'brand_id' => Brand::factory(),
-            'product_group_id' => null,
+            'product_group_id' => ProductGroup::factory(),
             'created_at' => now()->subDays(rand(1, 30)),
         ];
     }
