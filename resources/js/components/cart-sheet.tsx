@@ -33,11 +33,24 @@ export function CartSheet() {
                 </SheetHeader>
 
                 <div className="grid flex-1 auto-rows-min gap-4 px-4">
-                    <Button variant="destructive" className="cursor-pointer" onClick={() => setClearConfirmationModal(true)}>
-                        Vider le panier
-                    </Button>
+                    {(optimisticCart && optimisticCart.items?.length > 0) && (
+                        <Button variant="destructive" className="cursor-pointer" onClick={() => setClearConfirmationModal(true)}>
+                            Vider le panier
+                        </Button>
+                    )}
 
-                    {optimisticCart?.items.map(item => <CardItem key={item.id} item={item} removeItemOfCart={removeItemOfCart} handleQuantity={handleQuantity} />)}
+                    {!optimisticCart?.items.length ? (
+                        <div className="text-center text-muted-foreground">Votre panier est vide.</div>
+                    ) : (
+                        optimisticCart.items.map(item => (
+                            <CardItem
+                                key={item.id}
+                                item={item}
+                                removeItemOfCart={removeItemOfCart}
+                                handleQuantity={handleQuantity}
+                            />
+                        ))
+                    )}
                 </div>
 
                 <div className="px-4 flex justify-between font-medium">
