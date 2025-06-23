@@ -13,9 +13,9 @@ class HandleProductWishlist
     {
         $wishlist->products()->detach($productId);
     }
-//
-//    public function clear($wishlist = null)
-//    {
-//        ($wishlist ?: WishlistFactory::make())->products()->detach();
-//    }
+
+    public function clear($wishlist)
+    {
+        $wishlist->products()->detach();
+    }
 }

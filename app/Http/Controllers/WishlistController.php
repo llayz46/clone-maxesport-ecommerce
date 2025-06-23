@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\Wishlist\HandleProductWishlist;
 use App\Factories\WishlistFactory;
 use App\Http\Resources\ProductResource;
-use App\Models\Wishlist;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -34,8 +33,11 @@ class WishlistController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('wishlist', [
-            'items' => fn () => ProductResource::collection(auth()->user()->wishlist?->products->load('brand', 'featuredImage')),
+            'items' => fn () => auth()->user()->wishlist?->products
+                ? ProductResource::collection(auth()->user()->wishlist->products->load('brand', 'featuredImage'))
+                : [],
         ]);
     }
 
@@ -58,7 +60,7 @@ class WishlistController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Request $request)
+    public function update(Request $request)
     {
         $wishlist = WishlistFactory::make();
 
@@ -71,6 +73,15 @@ class WishlistController extends Controller
         ]);
 
         $this->handleProductWishlist->remove($request->product_id, $wishlist);
+
+        return redirect()->back();
+    }
+
+    public function destroy()
+    {
+        $wishlist = WishlistFactory::make();
+
+        $this->handleProductWishlist->clear($wishlist);
 
         return redirect()->back();
     }

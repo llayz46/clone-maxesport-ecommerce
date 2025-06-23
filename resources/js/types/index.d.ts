@@ -99,7 +99,7 @@ export interface Product {
     category: Category | null;
     // group: string | null;
     images?: ProductImage[] | null;
-    image: ProductImage | null;
+    image?: ProductImage | null;
     featured_image?: ProductImage;
     created_at: string;
     updated_at: string;

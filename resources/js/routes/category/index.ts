@@ -1,0 +1,79 @@
+import { queryParams, type QueryParams } from './../../wayfinder'
+/**
+* @see \App\Http\Controllers\CategoryController::show
+ * @see app/Http/Controllers/CategoryController.php:32
+ * @route '/categories/{category}'
+ */
+export const show = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'get',
+} => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+
+show.definition = {
+    methods: ['get','head'],
+    url: '/categories/{category}',
+}
+
+/**
+* @see \App\Http\Controllers\CategoryController::show
+ * @see app/Http/Controllers/CategoryController.php:32
+ * @route '/categories/{category}'
+ */
+show.url = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { category: args }
+    }
+
+            if (typeof args === 'object' && !Array.isArray(args) && 'slug' in args) {
+            args = { category: args.slug }
+        }
+    
+    if (Array.isArray(args)) {
+        args = {
+                    category: args[0],
+                }
+    }
+
+    const parsedArgs = {
+                        category: typeof args.category === 'object'
+                ? args.category.slug
+                : args.category,
+                }
+
+    return show.definition.url
+            .replace('{category}', parsedArgs.category.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\CategoryController::show
+ * @see app/Http/Controllers/CategoryController.php:32
+ * @route '/categories/{category}'
+ */
+show.get = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'get',
+} => ({
+    url: show.url(args, options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\CategoryController::show
+ * @see app/Http/Controllers/CategoryController.php:32
+ * @route '/categories/{category}'
+ */
+show.head = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'head',
+} => ({
+    url: show.url(args, options),
+    method: 'head',
+})
+const category = {
+    show,
+}
+
+export default category

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -36,7 +39,21 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $cacheKey = "product:{$product->id}:details";
+
+        $productResource = Cache::remember($cacheKey, now()->addHour(), function () use ($product) {
+            return ProductResource::make(
+                $product->load([
+                    'brand',
+                    'group.products',
+                    'images'
+                ])
+            );
+        });
+
+        return Inertia::render('products/show', [
+            'product' => fn () => $productResource
+        ]);
     }
 
     /**

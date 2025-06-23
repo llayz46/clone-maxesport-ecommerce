@@ -45,6 +45,29 @@ export default function Wishlist({ items }: { items: Product[] }) {
         );
     }
 
+    const removeAllItemsOfWishlist = () => {
+        const wishlist = optimisticWishlist
+
+        setOptimisticWishlist([]);
+
+        router.post(
+            route('wishlist.clear'),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Wishlist entièrement supprimé', {
+                        description: 'Tous les produits de votre wishlist ont été retirés.',
+                        icon: <Heart className="size-4" />,
+                    })
+                },
+                onError: () => {
+                    setOptimisticWishlist(wishlist);
+                },
+            }
+        );
+    }
+
     const addAllItemsToCart = async () => {
         if (!optimisticWishlist || optimisticWishlist.length === 0) {
             toast.error('Votre wishlist est vide', {
@@ -73,10 +96,16 @@ export default function Wishlist({ items }: { items: Product[] }) {
                     <div className="mb-4 flex items-center justify-between">
                         <h1 className="text-2xl font-bold">Ma liste de souhaits</h1>
                         {(optimisticWishlist && optimisticWishlist.length > 0) && (
-                            <Button variant="outline" onClick={addAllItemsToCart}>
-                                <ShoppingCart className="mr-2 h-4 w-4" />
-                                Tout ajouter au panier
-                            </Button>
+                            <div className="flex justify-center items-center gap-2">
+                                <Button variant="outline" onClick={addAllItemsToCart}>
+                                    <ShoppingCart className="mr-2 h-4 w-4" />
+                                    Tout ajouter au panier
+                                </Button>
+
+                                <Button variant="destructive" size="icon" onClick={removeAllItemsOfWishlist}>
+                                    <Trash2 size={16} />
+                                </Button>
+                            </div>
                         )}
                     </div>
 
@@ -169,10 +198,16 @@ function WishlistFallback() {
             <div className="mb-4 flex items-center justify-between">
                 <h1 className="text-2xl font-bold">Ma liste de souhaits</h1>
 
-                <Button variant="outline">
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Tout ajouter au panier
-                </Button>
+                <div className="flex justify-center items-center gap-2">
+                    <Button variant="outline">
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        Tout ajouter au panier
+                    </Button>
+
+                    <Button variant="destructive" size="icon">
+                        <Trash2 size={16} />
+                    </Button>
+                </div>
             </div>
 
             <LoaderCircle className="mx-auto animate-spin" size={48} />

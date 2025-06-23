@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,7 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('wishlist')->group(function () {
         Route::get('/', [WishlistController::class, 'index'])->name('wishlist.index');
         Route::post('/add', [WishlistController::class, 'store'])->name('wishlist.add');
-        Route::post('/remove', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+        Route::post('/remove', [WishlistController::class, 'update'])->name('wishlist.remove');
+        Route::post('/clear', [WishlistController::class, 'destroy'])->name('wishlist.clear');
     });
 });
 
@@ -36,6 +38,8 @@ Route::prefix('cart')->group(function () {
 });
 
 Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+
+Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('product.show');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
