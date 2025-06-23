@@ -73,11 +73,11 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                         icon: <ShoppingCart className="size-4" />,
                     });
                 },
-                onError: () => {
+                onError: (errors) => {
                     setOptimisticCart(cart);
 
                     toast.error('Erreur lors de l\'ajout au panier', {
-                        description: 'Impossible d\'ajouter ' + product.brand.name + product.name + ' à votre panier.',
+                        description: errors.product_id,
                         icon: <ShoppingCart className="size-4" />,
                     });
                 },

@@ -51,11 +51,17 @@ class CartController extends Controller
             'quantity' => 'integer|min:1',
         ]);
 
-        $this->handleProductCart->add(
-            $request->product_id,
-            $request->quantity ?? 1,
-            $request->user()?->cart
-        );
+        try {
+            $this->handleProductCart->add(
+                $request->product_id,
+                $request->quantity ?? 1,
+                $request->user()?->cart
+            );
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'product_id' => $e->getMessage()
+            ]);
+        }
 
         return redirect()->back();
     }

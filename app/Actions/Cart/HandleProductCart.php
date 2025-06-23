@@ -3,11 +3,18 @@
 namespace App\Actions\Cart;
 
 use App\Factories\CartFactory;
+use App\Models\Product;
 
 class HandleProductCart
 {
     public function add($productId, $quantity = 1, $cart = null)
     {
+        $product = Product::findOrFail($productId);
+
+        if ($product->isOutOfStock()) {
+            throw new \Exception('Produit en rupture de stock.');
+        }
+
         ($cart ?: CartFactory::make())->items()->firstOrCreate([
             'product_id' => $productId,
         ], [

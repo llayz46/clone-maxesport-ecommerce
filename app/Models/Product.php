@@ -63,4 +63,9 @@ class Product extends Model
             get: fn () => $this->discount_price ?? $this->price
         );
     }
+
+    public function isOutOfStock(): bool
+    {
+        return $this->stock <= 0;
+    }
 }

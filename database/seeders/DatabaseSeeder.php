@@ -201,6 +201,8 @@ class DatabaseSeeder extends Seeder
             'is_featured' => true,
         ]);
 
-        $categoryTapisDeSouris->products()->attach(Product::factory(37)->create());
+        $categoryTapisDeSouris->products()->attach(Product::factory(37)->create([
+            'brand_id' => fn() => Brand::inRandomOrder()->first()->id,
+        ]));
     }
 }
