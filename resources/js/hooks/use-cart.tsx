@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Page } from '@inertiajs/core'
 import { Cart, CartItem, Product } from '@/types';
 import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
+import { ShoppingCart } from 'lucide-react';
 
 export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
     const [optimisticCart, setOptimisticCart] = useState<Cart | null>(initialCart || null);
@@ -61,11 +64,22 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
             { product_id: product.id, quantity },
             {
                 preserveScroll: true,
-                onSuccess: (page: { props: { cart: Cart } }) => {
-                    setOptimisticCart(page.props.cart);
+                onSuccess: (page) => {
+                    const cart = (page as Page<{ cart: Cart }>).props.cart;
+                    setOptimisticCart(cart);
+
+                    toast.success('Produit ajouté au panier', {
+                        description: product.brand.name + product.name + ' a été ajouté à votre panier.',
+                        icon: <ShoppingCart className="size-4" />,
+                    });
                 },
                 onError: () => {
                     setOptimisticCart(cart);
+
+                    toast.error('Erreur lors de l\'ajout au panier', {
+                        description: 'Impossible d\'ajouter ' + product.brand.name + product.name + ' à votre panier.',
+                        icon: <ShoppingCart className="size-4" />,
+                    });
                 },
             }
         );
@@ -86,8 +100,9 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
             { product_id: productId },
             {
                 preserveScroll: true,
-                onSuccess: (page: { props: { cart: Cart } }) => {
-                    setOptimisticCart(page.props.cart);
+                onSuccess: (page) => {
+                    const cart = (page as Page<{ cart: Cart }>).props.cart;
+                    setOptimisticCart(cart);
                 },
                 onError: () => {
                     setOptimisticCart(cart);
@@ -108,8 +123,9 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
             {},
             {
                 preserveScroll: true,
-                onSuccess: (page: { props: { cart: Cart } }) => {
-                    setOptimisticCart(page.props.cart);
+                onSuccess: (page) => {
+                    const cart = (page as Page<{ cart: Cart }>).props.cart;
+                    setOptimisticCart(cart);
                 },
                 onError: () => {
                     setOptimisticCart(cart);
@@ -144,8 +160,9 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                 },
                 {
                     preserveScroll: true,
-                    onSuccess: (page: { props: { cart: Cart } }) => {
-                        setOptimisticCart(page.props.cart);
+                    onSuccess: (page) => {
+                        const cart = (page as Page<{ cart: Cart }>).props.cart;
+                        setOptimisticCart(cart);
                     },
                     onError: () => {
                         setOptimisticCart(cart);
@@ -170,8 +187,9 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                     },
                     {
                         preserveScroll: true,
-                        onSuccess: (page: { props: { cart: Cart } }) => {
-                            setOptimisticCart(page.props.cart);
+                        onSuccess: (page) => {
+                            const cart = (page as Page<{ cart: Cart }>).props.cart;
+                            setOptimisticCart(cart);
                         },
                         onError: () => {
                             setOptimisticCart(cart);
