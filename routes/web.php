@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::prefix('cart')->group(function () {
     Route::post('/clear/{cart}', [CartController::class, 'clear'])->name('cart.clear');
     Route::put('/update', [CartController::class, 'handleItemQuantity'])->name('cart.update');
 });
+
+Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

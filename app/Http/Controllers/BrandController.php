@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Inertia\Inertia;
 
 class BrandController extends Controller
 {
@@ -12,7 +15,11 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $brands = BrandResource::collection(Brand::paginate(12));
+
+        return Inertia::render('brands/index', [
+            'brands' => $brands,
+        ]);
     }
 
     /**

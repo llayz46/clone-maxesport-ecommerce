@@ -33,7 +33,7 @@ export function Header() {
                 <nav>
                     <Link href="/" className={buttonVariants({ variant: 'link' })}>Promotions</Link>
                     <Link href="/" className={buttonVariants({ variant: 'link' })}>Nouveautés</Link>
-                    <Link href="/" className={buttonVariants({ variant: 'link' })}>Marques</Link>
+                    <Link href="/brands" prefetch="click" className={buttonVariants({ variant: 'link' })}>Marques</Link>
                 </nav>
 
                 <div className="flex items-center gap-2">
