@@ -33,7 +33,7 @@ class CategoryController extends Controller
     {
         $sort = $request->query('sort', 'news');
 
-        $query = $category->products()->with(['images', 'brand']);
+        $query = $category->products()->with(['featuredImage', 'brand']);
 
         switch ($sort) {
             case 'price_asc':
@@ -49,8 +49,8 @@ class CategoryController extends Controller
         }
 
         return Inertia::render('categories/show', [
-            'category' => CategoryResource::make($category->load('parent')),
-            'data' => ProductResource::collection($query->paginate(12)),
+            'category' => fn () => CategoryResource::make($category->load('parent')),
+            'data' => fn () => ProductResource::collection($query->paginate(12)),
             'sort' => $sort,
         ]);
     }

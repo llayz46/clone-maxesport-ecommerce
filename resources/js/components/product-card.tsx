@@ -3,12 +3,35 @@ import { Button } from '@/components/ui/button';
 import { Eye, Heart, Blend, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
-import type { Product } from '@/types';
+import { Link, router } from '@inertiajs/react';
+import { Product } from '@/types';
 import { cn } from '@/lib/utils';
+import { toast } from "sonner"
 
 export function ProductCard({ product, onQuickView }: { product: Product, onQuickView?: () => void }) {
     const [isHovered, setIsHovered] = useState(false)
+
+    const addToWishlist = (product: Product) => {
+        router.post(
+            route('wishlist.add'),
+            { product_id: product.id },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('Produit ajouté à la wishlist', {
+                        description: `${product.brand.name} ${product.name} a été ajouté à votre liste de souhaits.`,
+                        icon: <Heart className="size-4" />,
+                    })
+                },
+                onError: () => {
+                    toast.error('Erreur lors de l\'ajout à la wishlist', {
+                        description: `Impossible d'ajouter ${product.brand.name} ${product.name} à votre liste de souhaits.`,
+                        icon: <Heart className="size-4" />,
+                    });
+                },
+            }
+        );
+    }
 
     return (
         <Card className="group gap-0 overflow-hidden h-full rounded-md p-0 transition-all duration-300 hover:shadow-md">
@@ -33,6 +56,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                         size="sm"
                         variant="secondary"
                         className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
+                        onClick={() => addToWishlist(product)}
                     >
                         <Heart className="size-4 text-background" />
                         <span className="sr-only">Ajouter à la wishlist</span>
@@ -79,7 +103,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
 
                 <div className="mt-auto flex items-center gap-2">
                     <span className={cn("block size-2 rounded-full", product.stock === 0 ? "bg-red-500/90" : product.stock < 11 ? "bg-orange-500/90" : "bg-green-500/90")} />
-                    <span className="text-xs font-medium text-muted-foreground">{product.stock ? 'En stock' : 'Pas disponible'}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{product.stock === 0 ? 'Indisponible' : product.stock < 11 ? `Reste ${product.stock}` : 'En stock'}</span>
                 </div>
             </CardContent>
         </Card>

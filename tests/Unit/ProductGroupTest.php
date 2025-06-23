@@ -72,18 +72,3 @@ it('can retrieve products associated with it', function () {
         ->and($products->contains($product1))->toBeTrue()
         ->and($products->contains($product2))->toBeTrue();
 });
-
-it('can retrieve the primary product', function () {
-    $productGroup = ProductGroup::factory()->create();
-    $primaryProduct = Product::factory()->create([
-        'product_group_id' => $productGroup->id,
-        'is_primary' => true,
-    ]);
-    Product::factory()->create([
-        'product_group_id' => $productGroup->id,
-        'is_primary' => false,
-    ]);
-
-    expect($productGroup->primaryProduct)->toBeInstanceOf(Product::class)
-        ->and($productGroup->primaryProduct->id)->toBe($primaryProduct->id);
-});

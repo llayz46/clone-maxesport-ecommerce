@@ -36,8 +36,10 @@ export function UserDropdown({ user }: { user: User }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-                        <span>Option 1</span>
+                        <Link href="/wishlist" className="flex items-center gap-2">
+                            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
+                            <span>Option 1</span>
+                        </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />

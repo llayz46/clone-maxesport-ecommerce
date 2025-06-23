@@ -21,9 +21,4 @@ class ProductGroup extends Model
     {
         return $this->hasMany(Product::class);
     }
-
-    public function primaryProduct(): HasOne
-    {
-        return $this->hasOne(Product::class)->where('is_primary', true);
-    }
 }

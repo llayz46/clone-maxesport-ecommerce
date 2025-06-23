@@ -17,7 +17,6 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'short_description' => $this->short_description,
-            'is_primary' => $this->is_primary, // delete
             'price' => $this->getPrice,
             'discount_price' => $this->discount_price,
             'stock' => $this->stock,
@@ -25,7 +24,8 @@ class ProductResource extends JsonResource
             'brand' => BrandResource::make($this->whenLoaded('brand')),
             'category' => CategoryResource::make($this->whenLoaded('category')),
             'group' => ProductGroupResource::make($this->whenLoaded('group')),
-            'images' => $this->whenLoaded('images'),
+            'featured_image' => ProductImageResource::make($this->whenLoaded('featuredImage')),
+            'images' => ProductImageResource::collection($this->whenLoaded('images'))
         ];
     }
 }

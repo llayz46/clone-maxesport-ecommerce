@@ -12,7 +12,7 @@ export function Header() {
 
     return (
         <header className="layout-container py-6 border-b flex items-center justify-between gap-12">
-            <Link href="/" className="w-full inline-flex items-center gap-8">
+            <Link prefetch href="/" className="w-full inline-flex items-center gap-8">
                 <Logo />
 
                 <div className="w-full *:not-first:mt-2">
@@ -40,12 +40,15 @@ export function Header() {
                     {auth.user ? (
                         <UserDropdown user={auth.user} />
                     ) : (
-                        <Link prefetch href="/login" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                        <Link prefetch="mount" href="/login" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                             <User size={20} />
                         </Link>
                     )}
+
                     <CartSheet />
-                    <Link href="/" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+
+
+                    <Link href="/wishlist" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <Heart size={20} />
                     </Link>
                 </div>

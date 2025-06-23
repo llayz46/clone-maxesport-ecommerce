@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -19,7 +20,6 @@ class Product extends Model
         'slug',
         'description',
         'short_description',
-        'is_primary',
         'price',
         'discount_price',
         'stock',
@@ -42,9 +42,19 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function featuredImage(): HasOne
+    {
+        return $this->hasOne(ProductImage::class)->where('is_featured', true);
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(ProductGroup::class, 'product_group_id');
+    }
+
+    public function wishlists(): BelongsToMany
+    {
+        return $this->belongsToMany(Wishlist::class, 'wishlist_items');
     }
 
     public function getPrice(): Attribute
