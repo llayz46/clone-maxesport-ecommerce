@@ -4,35 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Eye, Heart, Blend, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Product } from '@/types';
 import { cn } from '@/lib/utils';
-import { toast } from "sonner"
+import { useWishlist } from '@/hooks/use-wishlist';
 
 export function ProductCard({ product, onQuickView }: { product: Product, onQuickView?: () => void }) {
     const [isHovered, setIsHovered] = useState(false)
-
-    const addToWishlist = (product: Product) => {
-        router.post(
-            route('wishlist.add'),
-            { product_id: product.id },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    toast.success('Produit ajouté à la wishlist', {
-                        description: `${product.brand.name} ${product.name} a été ajouté à votre liste de souhaits.`,
-                        icon: <Heart className="size-4" />,
-                    })
-                },
-                onError: () => {
-                    toast.error('Erreur lors de l\'ajout à la wishlist', {
-                        description: `Impossible d'ajouter ${product.brand.name} ${product.name} à votre liste de souhaits.`,
-                        icon: <Heart className="size-4" />,
-                    });
-                },
-            }
-        );
-    }
+    const { addItem } = useWishlist();
 
     const { url } = show(product.slug);
 
@@ -59,7 +38,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                         size="sm"
                         variant="secondary"
                         className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
-                        onClick={() => addToWishlist(product)}
+                        onClick={() => addItem(product)}
                     >
                         <Heart className="size-4 text-background" />
                         <span className="sr-only">Ajouter à la wishlist</span>

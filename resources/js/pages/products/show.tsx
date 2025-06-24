@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Head } from '@inertiajs/react';
 import BaseLayout from '@/layouts/base-layout';
 import { useState } from 'react';
+import { useWishlist } from '@/hooks/use-wishlist';
 
 interface ShowProductProps {
     product: Product;
@@ -14,6 +15,7 @@ interface ShowProductProps {
 export default function Show({ product }: ShowProductProps) {
     const featuredImage: ProductImage | undefined = product.images?.find(image => image.is_featured)
     const [imageToShow, setImageToShow] = useState<ProductImage | undefined>(featuredImage || product.images?.[0]);
+    const { addItem } = useWishlist();
 
     return (
         <BaseLayout>
@@ -98,7 +100,7 @@ export default function Show({ product }: ShowProductProps) {
                                     <ShoppingCart className="w-4 h-4 mr-2" />
                                     Ajouter au panier
                                 </Button>
-                                <Button size="lg" variant="outline" className="bg-background text-foreground border">
+                                <Button size="lg" variant="outline" className="bg-background text-foreground border" onClick={() => addItem(product)}>
                                     <Heart className="w-4 h-4" />
                                 </Button>
                             </div>

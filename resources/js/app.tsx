@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
 import { CartProvider } from '@/contexts/cart-context';
 import { Cart } from '@/types';
+import { WishlistProvider } from '@/contexts/wishlist-context';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -17,9 +18,11 @@ createInertiaApp({
         const cart = (props.initialPage.props as unknown as { cart: Cart | null }).cart;
 
         root.render(
-            <CartProvider initialCart={cart}>
-                <App {...props} />
-            </CartProvider>
+            <WishlistProvider>
+                <CartProvider initialCart={cart}>
+                    <App {...props} />
+                </CartProvider>
+            </WishlistProvider>
         );
     },
     progress: {

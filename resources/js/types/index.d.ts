@@ -1,5 +1,6 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface Auth {
     user: User;
@@ -120,3 +121,5 @@ export interface ProductImage {
     created_at: string;
     updated_at: string;
 }
+
+export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>]

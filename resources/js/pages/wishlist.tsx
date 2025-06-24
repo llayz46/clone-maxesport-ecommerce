@@ -3,11 +3,12 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Product } from '@/types';
-import { Head, Link, router, WhenVisible } from '@inertiajs/react';
-import { Heart, LoaderCircle, Plus, ShoppingCart, Trash2 } from 'lucide-react';
+import { Head, Link, WhenVisible } from '@inertiajs/react';
+import { LoaderCircle, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { useCartContext } from '@/contexts/cart-context';
+import { show } from "@/actions/App/Http/Controllers/ProductController";
+import { useWishlistContext } from '@/contexts/wishlist-context';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,74 +19,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Wishlist({ items }: { items: Product[] }) {
     const { addToCart } = useCartContext();
+    const { removeItem, removeItems, addItems } = useWishlistContext();
     const [optimisticWishlist, setOptimisticWishlist] = useState<Product[]>(items);
-
-    const removeItemOfWishlist = (product: Product) => {
-        const wishlist = optimisticWishlist
-
-        setOptimisticWishlist((prev) => prev.filter((item) => item.id !== product.id));
-
-        router.post(
-            route('wishlist.remove'),
-            {
-                product_id: product.id,
-            },
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    toast.success('Produit retiré de la wishlist', {
-                        description: `${product.brand.name} ${product.name} a été retiré de votre liste de souhaits.`,
-                        icon: <Heart className="size-4" />,
-                    })
-                },
-                onError: () => {
-                    setOptimisticWishlist(wishlist);
-                },
-            }
-        );
-    }
-
-    const removeAllItemsOfWishlist = () => {
-        const wishlist = optimisticWishlist
-
-        setOptimisticWishlist([]);
-
-        router.post(
-            route('wishlist.clear'),
-            {},
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    toast.success('Wishlist entièrement supprimé', {
-                        description: 'Tous les produits de votre wishlist ont été retirés.',
-                        icon: <Heart className="size-4" />,
-                    })
-                },
-                onError: () => {
-                    setOptimisticWishlist(wishlist);
-                },
-            }
-        );
-    }
-
-    const addAllItemsToCart = async () => {
-        if (!optimisticWishlist || optimisticWishlist.length === 0) {
-            toast.error('Votre wishlist est vide', {
-                description: 'Ajoutez des produits à votre wishlist avant de les ajouter au panier.',
-                icon: <ShoppingCart className="size-4" />,
-            });
-            return;
-        }
-
-        for (const product of optimisticWishlist) {
-            await addToCart(product);
-        }
-
-        toast.success('Tous les produits ont été ajoutés au panier', {
-            description: 'Tous les produits de votre wishlist ont été ajoutés au panier.',
-            icon: <ShoppingCart className="size-4" />,
-        });
-    }
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -97,12 +32,12 @@ export default function Wishlist({ items }: { items: Product[] }) {
                         <h1 className="text-2xl font-bold">Ma liste de souhaits</h1>
                         {(optimisticWishlist && optimisticWishlist.length > 0) && (
                             <div className="flex justify-center items-center gap-2">
-                                <Button variant="outline" onClick={addAllItemsToCart}>
+                                <Button variant="outline" onClick={() => addItems(addToCart, optimisticWishlist)}>
                                     <ShoppingCart className="mr-2 h-4 w-4" />
                                     Tout ajouter au panier
                                 </Button>
 
-                                <Button variant="destructive" size="icon" onClick={removeAllItemsOfWishlist}>
+                                <Button variant="destructive" size="icon" onClick={() => removeItems([optimisticWishlist, setOptimisticWishlist])}>
                                     <Trash2 size={16} />
                                 </Button>
                             </div>
@@ -112,7 +47,7 @@ export default function Wishlist({ items }: { items: Product[] }) {
                     {(optimisticWishlist && optimisticWishlist.length > 0) ? (
                         <div className="space-y-4">
                             {optimisticWishlist.map((product) => (
-                                <WishlistItem key={product.id} product={product} onRemove={() => removeItemOfWishlist(product)} onAddToCart={() => addToCart(product)} />
+                                <WishlistItem key={product.id} product={product} onRemove={() => removeItem(product, [optimisticWishlist, setOptimisticWishlist])} onAddToCart={() => addToCart(product)} />
                             ))}
                         </div>
                     ) : (
@@ -132,6 +67,8 @@ export default function Wishlist({ items }: { items: Product[] }) {
 }
 
 function WishlistItem({ product, onRemove, onAddToCart }: { product: Product, onRemove: () => void, onAddToCart: () => void }) {
+    const { url } = show(product.slug);
+
     return (
         <div className="flex items-center gap-4 rounded-md border p-3">
             <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm bg-neutral-700">
@@ -141,9 +78,9 @@ function WishlistItem({ product, onRemove, onAddToCart }: { product: Product, on
             <div className="flex-grow">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h3 className="font-medium">
+                        <Link href={url} className="font-medium hover:underline">
                             {product.brand.name} {product.name}
-                        </h3>
+                        </Link>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{product.short_description}</p>
                     </div>
                     <div className="flex flex-col items-end">

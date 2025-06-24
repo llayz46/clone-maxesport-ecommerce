@@ -55,7 +55,7 @@ class HandleInertiaRequests extends Middleware
             'categories' => fn () => Cache::rememberForever('categories', fn () => CategoryResource::collection(Category::with('children')->whereNull('parent_id')->get())),
             'cart' => fn () => Cache::remember("cart-" . (auth()->check() ? 'user-' . auth()->id() : 'session-' . session()->getId()), 30, function () {
                 return CartResource::make(CartFactory::make()->load('items.product.images', 'items.product.brand'));
-            }),
+            })
         ];
     }
 }
