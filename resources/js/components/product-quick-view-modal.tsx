@@ -26,7 +26,7 @@ export function ProductQuickViewModal({ product, open, onClose }: { product: Pro
                 )}
 
                 <DialogHeader className="gap-4">
-                    <DialogTitle>{product.brand.name} {product.name}</DialogTitle>
+                    <DialogTitle className="mr-4">{product.brand.name} {product.name}</DialogTitle>
 
                     <span className="text-2xl font-bold text-primary">{product.price.toFixed(2)} €</span>
 

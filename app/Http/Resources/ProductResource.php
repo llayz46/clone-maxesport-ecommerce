@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'stock' => $this->stock,
             'isNew' => $this->created_at->diffInDays(now()) <= 7,
             'brand' => BrandResource::make($this->whenLoaded('brand')),
-            'category' => CategoryResource::make($this->whenLoaded('category')),
+            'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'group' => ProductGroupResource::make($this->whenLoaded('group')),
             'featured_image' => ProductImageResource::make($this->whenLoaded('featuredImage')),
             'images' => ProductImageResource::collection($this->whenLoaded('images'))

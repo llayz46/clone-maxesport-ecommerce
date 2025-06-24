@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:40
+ * @see app/Http/Controllers/ProductController.php:41
  * @route '/products/{product}'
  */
 export const show = (args: { product: string | { slug: string } } | [product: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:40
+ * @see app/Http/Controllers/ProductController.php:41
  * @route '/products/{product}'
  */
 show.url = (args: { product: string | { slug: string } } | [product: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -50,7 +50,7 @@ show.url = (args: { product: string | { slug: string } } | [product: string | { 
 
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:40
+ * @see app/Http/Controllers/ProductController.php:41
  * @route '/products/{product}'
  */
 show.get = (args: { product: string | { slug: string } } | [product: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -62,7 +62,7 @@ show.get = (args: { product: string | { slug: string } } | [product: string | { 
 })
 /**
 * @see \App\Http\Controllers\ProductController::show
- * @see app/Http/Controllers/ProductController.php:40
+ * @see app/Http/Controllers/ProductController.php:41
  * @route '/products/{product}'
  */
 show.head = (args: { product: string | { slug: string } } | [product: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

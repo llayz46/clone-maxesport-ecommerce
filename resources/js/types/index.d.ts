@@ -97,7 +97,7 @@ export interface Product {
     stock: number;
     isNew: boolean;
     brand: Brand;
-    category: Category | null;
+    categories?: Category[] | null;
     group?: ProductGroup | null;
     images?: ProductImage[] | null;
     image?: ProductImage | null;

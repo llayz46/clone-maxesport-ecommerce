@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -46,13 +47,28 @@ class ProductController extends Controller
                 $product->load([
                     'brand',
                     'group.products',
-                    'images'
+                    'images',
+                    'categories',
                 ])
             );
         });
 
+        $similarProducts = Cache::remember("product:{$product->id}:similar", now()->addHour(), function () use ($product) {
+            return ProductResource::collection(
+                Category::find($product->categories->pluck('id'))
+                    ->load(['products' => function ($query) use ($product) {
+                        $query->where('id', '!=', $product->id)
+                            ->orderBy('created_at', 'desc')
+                            ->with('brand')
+                            ->take(4);
+                    }])
+                    ->flatten()
+            );
+        });
+
         return Inertia::render('products/show', [
-            'product' => fn () => $productResource
+            'product' => fn () => $productResource,
+            'similarProducts' => fn () => $similarProducts[0]->products,
         ]);
     }
 
