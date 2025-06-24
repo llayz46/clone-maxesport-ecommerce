@@ -98,7 +98,7 @@ export interface Product {
     isNew: boolean;
     brand: Brand;
     category: Category | null;
-    // group: string | null;
+    group?: ProductGroup | null;
     images?: ProductImage[] | null;
     image?: ProductImage | null;
     featured_image?: ProductImage;
@@ -118,6 +118,15 @@ export interface ProductImage {
     alt_text: string;
     is_featured: boolean;
     product_id: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ProductGroup {
+    id: number;
+    name: string;
+    slug: string;
+    products: Product[];
     created_at: string;
     updated_at: string;
 }

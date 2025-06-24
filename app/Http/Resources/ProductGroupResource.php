@@ -17,9 +17,6 @@ class ProductGroupResource extends JsonResource
             'slug' => $this->slug,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'products_count' => $this->products_count,
-
-            'primaryProduct' => ProductResource::make($this->whenLoaded('primaryProduct')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }

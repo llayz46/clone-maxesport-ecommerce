@@ -3,10 +3,12 @@ import { Badge } from '@/components/ui/badge';
 import { Heart, RotateCcw, Shield, ShoppingCart, Star, Truck } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import BaseLayout from '@/layouts/base-layout';
 import { useState } from 'react';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { show } from "@/actions/App/Http/Controllers/ProductController";
+import { cn } from '@/lib/utils';
 
 interface ShowProductProps {
     product: Product;
@@ -16,6 +18,8 @@ export default function Show({ product }: ShowProductProps) {
     const featuredImage: ProductImage | undefined = product.images?.find(image => image.is_featured)
     const [imageToShow, setImageToShow] = useState<ProductImage | undefined>(featuredImage || product.images?.[0]);
     const { addItem } = useWishlist();
+
+    const { url: baseUrl } = show(product.slug);
 
     return (
         <BaseLayout>
@@ -70,18 +74,18 @@ export default function Show({ product }: ShowProductProps) {
                             <div className="flex items-baseline gap-2">
                                 {product.discount_price ? (
                                     <>
-                                        <span className="text-3xl font-bold text-foreground">€{product.discount_price.toFixed(2)}</span>
-                                        <span className="text-lg text-muted-foreground line-through">€{product.price.toFixed(2)}</span>
+                                        <span className="text-3xl font-bold text-foreground">{product.discount_price.toFixed(2)} €</span>
+                                        <span className="text-lg text-muted-foreground line-through">{product.price.toFixed(2)} €</span>
                                     </>
                                 ) : (
-                                    <span className="text-3xl font-bold text-foreground">€{product.price.toFixed(2)}</span>
+                                    <span className="text-3xl font-bold text-foreground">{product.price.toFixed(2)} €</span>
                                 )}
                             </div>
                             <p className="text-sm text-muted-foreground">TVA incluse, frais de port calculés à la caisse</p>
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <div className={cn("w-2 h-2 rounded-full", product.stock === 0 ? 'bg-red-500' : product.stock < 11 ? 'bg-orange-500' : 'bg-green-500')}></div>
                             <span className="text-sm text-foreground">
                                 {product.stock === 0 ? 'Indisponible' : product.stock < 11 ? `Reste ${product.stock}` : 'En stock'}
                             </span>
@@ -91,6 +95,17 @@ export default function Show({ product }: ShowProductProps) {
                             <h3 className="font-semibold text-foreground">Description</h3>
                             <p className="text-muted-foreground leading-relaxed">{product.description}</p>
                         </div>
+
+                        {product.group && (
+                            <div className="space-y-4">
+                                <h3 className="font-semibold text-foreground">Produits associés</h3>
+                                <div className="grid gap-3">
+                                    {product.group.products.map(relatedProduct => (
+                                        <RelatedProduct key={relatedProduct.id} product={relatedProduct} current={baseUrl} />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <Separator />
 
@@ -201,5 +216,40 @@ export default function Show({ product }: ShowProductProps) {
                 {/*</div>*/}
             </div>
         </BaseLayout>
+    )
+}
+
+function RelatedProduct({ product, current }: { product: Product, current: string }) {
+    const { url } = show(product.slug);
+
+    return (
+        <article className={cn("px-4 py-2 border bg-card rounded-md", url !== current && 'hover:bg-secondary/10 transition-colors')}>
+            <div className="flex items-center gap-4">
+                <div className="relative w-16 h-16 rounded-sm overflow-hidden">
+                    <img src="/lgg-saturn-pro-rouge-placeholder.webp" alt="SR SQ" className="object-cover" />
+                </div>
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                        {url === current ? (
+                            <h4 className="font-medium text-foreground">{product.name}</h4>
+                        ) : (
+                            <Link prefetch href={show(product.slug).url} className="hover:underline font-medium text-foreground">{product.name}</Link>
+                        )}
+                        {url === current && (
+                            <Badge variant="secondary" className="rounded-sm text-xs">
+                                Actuel
+                            </Badge>
+                        )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">{product.short_description}</p>
+                    <div className="flex items-center justify-between">
+                        <span className="font-semibold text-foreground">{product.discount_price?.toFixed(2) ?? product.price.toFixed(2)} €</span>
+                        <Badge className={cn('rounded-sm', product.stock === 0 ? 'bg-red-500' : product.stock < 11 ? 'bg-orange-500' : 'bg-green-500')}>
+                            {product.stock === 0 ? 'Indisponible' : product.stock < 11 ? `Reste ${product.stock}` : 'En stock'}
+                        </Badge>
+                    </div>
+                </div>
+            </div>
+        </article>
     )
 }

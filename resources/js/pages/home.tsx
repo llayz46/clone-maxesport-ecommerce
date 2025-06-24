@@ -4,7 +4,7 @@ import BaseLayout from '@/layouts/base-layout';
 export default function Home() {
     return (
         <BaseLayout>
-            <Head title="Home" />
+            <Head title="Accueil" />
         </BaseLayout>
     );
 }
