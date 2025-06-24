@@ -21,6 +21,9 @@ class ProductResource extends JsonResource
             'discount_price' => $this->discount_price,
             'stock' => $this->stock,
             'isNew' => $this->created_at->diffInDays(now()) <= 7,
+            'isWishlisted' => $this->whenLoaded('wishlists', function () {
+                return $this->wishlists->isNotEmpty();
+            }),
             'brand' => BrandResource::make($this->whenLoaded('brand')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'group' => ProductGroupResource::make($this->whenLoaded('group')),

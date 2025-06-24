@@ -119,7 +119,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                                         Ajouter au panier
                                     </Button>
                                     <Button size="lg" variant="outline" className="bg-background text-foreground border" onClick={() => addItem(product)}>
-                                        <Heart className="w-4 h-4" />
+                                        <Heart className="size-4" />
                                     </Button>
                                 </div>
 

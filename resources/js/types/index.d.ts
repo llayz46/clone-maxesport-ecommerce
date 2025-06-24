@@ -96,6 +96,7 @@ export interface Product {
     discount_price: number | null;
     stock: number;
     isNew: boolean;
+    isWishlisted: boolean;
     brand: Brand;
     categories?: Category[] | null;
     group?: ProductGroup | null;
@@ -131,4 +132,4 @@ export interface ProductGroup {
     updated_at: string;
 }
 
-export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>]
+export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>];

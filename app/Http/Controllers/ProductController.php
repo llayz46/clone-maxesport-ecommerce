@@ -48,7 +48,7 @@ class ProductController extends Controller
                     'brand',
                     'group.products',
                     'images',
-                    'categories',
+                    'categories'
                 ])
             );
         });
