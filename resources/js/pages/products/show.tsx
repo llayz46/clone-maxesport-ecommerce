@@ -40,7 +40,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                     </nav>
                 )}
 
-                <WhenVisible data="product" fallback={<ProductFallback />}>
+                <WhenVisible data="product" always fallback={<ProductFallback />}>
                     <div className="grid lg:grid-cols-2 gap-6 max-w-7xl mx-auto">
                         <div className="space-y-4">
                             <div className="border bg-card rounded-md overflow-hidden relative aspect-square">
@@ -102,7 +102,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                             {(product.group && product.group.products.length > 1) && (
                                 <div className="space-y-4">
                                     <h3 className="font-semibold text-foreground">Produits associés</h3>
-                                    <div className="grid gap-3">
+                                    <div className="grid gap-3 max-h-120 overflow-y-auto pr-2">
                                         {product.group.products.map(relatedProduct => (
                                             <RelatedProduct key={relatedProduct.id} product={relatedProduct} current={baseUrl} />
                                         ))}
