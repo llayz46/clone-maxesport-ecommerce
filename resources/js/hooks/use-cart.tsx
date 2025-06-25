@@ -150,7 +150,7 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                     : item
             );
 
-            setOptimisticCart(prev => ({ ...prev!, items: updatedItems }));
+            setOptimisticCart(prev => ({ ...prev!, items: updatedItems, total: (updatedItems || []).reduce((sum, item) => sum + (item.product.price * item.quantity), 0) }));
 
             router.put(
                 route('cart.update'),
@@ -177,7 +177,7 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                         : item
                 );
 
-                setOptimisticCart(prev => ({ ...prev!, items: updatedItems }));
+                setOptimisticCart(prev => ({ ...prev!, items: updatedItems, total: (updatedItems || []).reduce((sum, item) => sum + (item.product.price * item.quantity), 0) }));
 
                 router.put(
                     route('cart.update'),
