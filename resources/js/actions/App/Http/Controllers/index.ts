@@ -1,14 +1,14 @@
 import WishlistController from './WishlistController'
-import CategoryController from './CategoryController'
 import CartController from './CartController'
+import CategoryController from './CategoryController'
 import BrandController from './BrandController'
 import ProductController from './ProductController'
 import Settings from './Settings'
 import Auth from './Auth'
 const Controllers = {
     WishlistController,
-CategoryController,
 CartController,
+CategoryController,
 BrandController,
 ProductController,
 Settings,

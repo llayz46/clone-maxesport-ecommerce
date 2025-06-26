@@ -202,12 +202,23 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
         }
     }
 
+    const checkout = () => {
+        router.get(
+            route('cart.checkout'),
+            {},
+            {
+                preserveScroll: true,
+            }
+        )
+    }
+
     return {
         optimisticCart,
         loading,
         addToCart,
         removeItemOfCart,
         clearCart,
-        handleQuantity
+        handleQuantity,
+        checkout
     };
 }

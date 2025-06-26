@@ -17,7 +17,7 @@ class CartItemResource extends JsonResource
             'product' => [
                 'id' => $this->product->id,
                 'name' => $this->product->name,
-                'price' => $this->product->price,
+                'price' => $this->product->getPrice,
                 'image' => new ProductImageResource(
                     $this->product->images->firstWhere('is_featured', true)
                 ),

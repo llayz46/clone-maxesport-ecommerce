@@ -133,3 +133,46 @@ export interface ProductGroup {
 }
 
 export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>];
+
+export interface Order {
+    order_number: string;
+    stripe_checkout_session_id: string;
+    amount_shipping: number;
+    amount_discount: number;
+    amount_subtotal: number;
+    amount_total: number;
+    billing_address: {
+        name: string;
+        email: string;
+        city: string;
+        country: string;
+        line_1: string;
+        line_2?: string | null;
+        state?: string | null;
+        postal_code: string;
+    };
+    shipping_address: {
+        name: string;
+        city: string;
+        country: string;
+        line_1: string;
+        line_2?: string | null;
+        postal_code: string;
+        state?: string | null;
+    };
+    items: OrderItems[];
+}
+
+export interface OrderItems {
+    id: number;
+    order_id: number;
+    product_id: number;
+    name: string;
+    description: string;
+    price: number;
+    amount_discount: number;
+    amount_total: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+}

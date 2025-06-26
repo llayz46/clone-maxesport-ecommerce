@@ -16,13 +16,13 @@ import { CartClearConfirmationDialog } from '@/components/cart-clear-confirmatio
 import { useState } from 'react';
 
 export function CartSheet() {
-    const { handleQuantity, clearCart, optimisticCart, removeItemOfCart } = useCartContext();
+    const { handleQuantity, clearCart, optimisticCart, removeItemOfCart, checkout } = useCartContext();
     const [clearConfirmationModal, setClearConfirmationModal] = useState<boolean>(false);
 
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="cursor-pointer">
+                <Button variant="ghost" size="icon">
                     <ShoppingBag size={20} />
                 </Button>
             </SheetTrigger>
@@ -59,7 +59,7 @@ export function CartSheet() {
                 </div>
 
                 <SheetFooter className="flex-row-reverse justify-between">
-                    <Button type="submit">Passer à la caisse</Button>
+                    <Button type="submit" onClick={checkout}>Passer à la caisse</Button>
                     <SheetClose asChild>
                         <Button variant="outline">Fermer</Button>
                     </SheetClose>

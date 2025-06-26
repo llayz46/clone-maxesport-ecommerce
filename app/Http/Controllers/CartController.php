@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Cart\HandleProductCart;
+use App\Actions\Stripe\CreateStripeCheckoutSession;
 use App\Factories\CartFactory;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
@@ -123,5 +126,25 @@ class CartController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function checkout(CreateStripeCheckoutSession $createStripeCheckoutSession)
+    {
+        $session = $createStripeCheckoutSession->createSessionFromCart(CartFactory::make());
+
+        return Inertia::location($session->url);
+    }
+
+    public function success(Request $request)
+    {
+        $sessionId = $request->get('session_id');
+
+        if (!$sessionId) {
+            return redirect()->route('home')->withErrors(['session_id' => 'Session ID is required.']);
+        }
+
+        return Inertia::render('checkout/success', [
+            'order' => auth()->user()->orders()->where('stripe_checkout_session_id', $sessionId)->with('items')->firstOrFail(),
+        ]);
     }
 }

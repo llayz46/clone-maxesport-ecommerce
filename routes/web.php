@@ -23,6 +23,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/remove', [WishlistController::class, 'update'])->name('wishlist.remove');
         Route::post('/clear', [WishlistController::class, 'destroy'])->name('wishlist.clear');
     });
+
+    Route::prefix('checkout')->group(function () {
+        Route::get('/', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::get('/success', [CartController::class, 'success'])->name('checkout.success');
+    });
 });
 
 Route::prefix('categories')->group(function () {
