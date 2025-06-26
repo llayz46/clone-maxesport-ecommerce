@@ -10,6 +10,7 @@ type CartContextType = {
     clearCart: () => void;
     handleQuantity : (type: "inc" | "dec", productId: number) => void;
     checkout: () => void;
+    buyNow: (product: Product) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -27,7 +28,8 @@ export function CartProvider({ children, initialCart }: CartProviderProps) {
         removeItemOfCart,
         clearCart,
         handleQuantity,
-        checkout
+        checkout,
+        buyNow
     } = useCart({ initialCart });
 
     return (
@@ -38,7 +40,8 @@ export function CartProvider({ children, initialCart }: CartProviderProps) {
             removeItemOfCart,
             clearCart,
             handleQuantity,
-            checkout
+            checkout,
+            buyNow
         }}>
             {children}
         </CartContext.Provider>

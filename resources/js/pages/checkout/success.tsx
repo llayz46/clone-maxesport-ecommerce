@@ -118,7 +118,7 @@ export default function Success({ order }: { order: Order }) {
 
                     <div className="space-y-3">
                         <Button asChild size="lg" className="w-full">
-                            <Link href="/">
+                            <Link href="/orders">
                                 Voir mes commandes
                                 <ArrowRight className="w-4 h-4 ml-2" />
                             </Link>

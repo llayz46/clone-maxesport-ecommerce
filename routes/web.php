@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('checkout')->group(function () {
         Route::get('/', [CartController::class, 'checkout'])->name('cart.checkout');
         Route::get('/success', [CartController::class, 'success'])->name('checkout.success');
+        Route::get('/{product}', [CartController::class, 'buy'])->name('cart.buy');
     });
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

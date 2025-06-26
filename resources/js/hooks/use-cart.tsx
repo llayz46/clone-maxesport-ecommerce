@@ -212,6 +212,16 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
         )
     }
 
+    const buyNow = (product: Product) => {
+        router.get(
+            route('cart.buy', product.id),
+            {},
+            {
+                preserveScroll: true,
+            }
+        )
+    }
+
     return {
         optimisticCart,
         loading,
@@ -219,6 +229,7 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
         removeItemOfCart,
         clearCart,
         handleQuantity,
-        checkout
+        checkout,
+        buyNow
     };
 }

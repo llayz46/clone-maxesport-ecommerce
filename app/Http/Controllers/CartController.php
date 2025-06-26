@@ -7,6 +7,7 @@ use App\Actions\Stripe\CreateStripeCheckoutSession;
 use App\Factories\CartFactory;
 use App\Http\Resources\CartResource;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -137,6 +138,20 @@ class CartController extends Controller
     public function checkout(CreateStripeCheckoutSession $createStripeCheckoutSession)
     {
         $session = $createStripeCheckoutSession->createSessionFromCart(CartFactory::make());
+
+        return Inertia::location($session->url);
+    }
+
+    /**
+     * Redirect to Stripe checkout session for a single product.
+     *
+     * @param Product $product
+     * @param CreateStripeCheckoutSession $createStripeCheckoutSession
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function buy(Product $product, CreateStripeCheckoutSession $createStripeCheckoutSession)
+    {
+        $session = $createStripeCheckoutSession->createSessionFromSingleItem($product);
 
         return Inertia::location($session->url);
     }

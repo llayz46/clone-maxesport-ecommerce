@@ -25,7 +25,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
     const [imageToShow, setImageToShow] = useState<ProductImage | undefined>(featuredImage || product.images?.[0]);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
     const { addItem } = useWishlist();
-    const { addToCart } = useCartContext();
+    const { addToCart, buyNow } = useCartContext();
 
     const { url: baseUrl } = show(product.slug);
 
@@ -123,7 +123,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                                     </Button>
                                 </div>
 
-                                <Button variant="outline" size="lg" className="w-full bg-background text-foreground border" disabled>
+                                <Button variant="outline" size="lg" className="w-full bg-background text-foreground border" onClick={() => buyNow(product)}>
                                     Acheter maintenant
                                 </Button>
                             </div>
@@ -272,17 +272,6 @@ function ProductFallback() {
                     </div>
                 </div>
 
-                {/*{(product.group && product.group.products.length > 1) && (*/}
-                {/*    <div className="space-y-4">*/}
-                {/*        <h3 className="font-semibold text-foreground">Produits associés</h3>*/}
-                {/*        <div className="grid gap-3">*/}
-                {/*            {product.group.products.map(relatedProduct => (*/}
-                {/*                <RelatedProduct key={relatedProduct.id} product={relatedProduct} current={baseUrl} />*/}
-                {/*            ))}*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
-
                 <Separator />
 
                 <div className="space-y-4">
@@ -296,7 +285,7 @@ function ProductFallback() {
                         </Button>
                     </div>
 
-                    <Button variant="outline" size="lg" className="w-full bg-background text-foreground border" disabled>
+                    <Button variant="outline" size="lg" className="w-full bg-background text-foreground border">
                         Acheter maintenant
                     </Button>
                 </div>

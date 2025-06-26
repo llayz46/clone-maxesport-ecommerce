@@ -1,7 +1,7 @@
 import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Eye, Heart, Blend, Star } from 'lucide-react';
+import { Eye, Heart, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
@@ -42,15 +42,6 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                     >
                         <Heart className="size-4 text-background" />
                         <span className="sr-only">Ajouter à la wishlist</span>
-                    </Button>
-
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
-                    >
-                        <Blend className="size-4 text-background" />
-                        <span className="sr-only">Comparer</span>
                     </Button>
 
                     <Button
