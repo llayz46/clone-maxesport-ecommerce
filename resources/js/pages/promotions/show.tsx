@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MetaLink, Product } from '@/types';
+import type { PaginatedResponse, Product } from '@/types';
 import { PaginationComponent } from '@/components/pagination-component';
 import BaseLayout from '@/layouts/base-layout';
 import { Head, router } from '@inertiajs/react';
@@ -8,32 +8,14 @@ import { ProductQuickViewModal } from '@/components/product-quick-view-modal';
 import { ProductCard } from '@/components/product-card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface ShowPromotionsProps {
-    products: {
-        data: Product[];
-        links: {
-            first: string | undefined;
-            last: string | undefined;
-            prev: string | undefined;
-            next: string | undefined;
-        };
-        meta: {
-            current_page: number;
-            from: number;
-            last_page: number;
-            links: MetaLink[];
-            path: string;
-            per_page: number;
-            to: number;
-            total: number;
-        };
-    };
+interface PromotionsProps {
+    products: PaginatedResponse<Product>;
     sort: SortType;
 }
 
 type SortType = 'news' | 'price_asc' | 'price_desc';
 
-export default function Show({ products, sort = 'news' }: ShowPromotionsProps) {
+export default function Show({ products, sort = 'news' }: PromotionsProps) {
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
     const [selectedSort, setSelectedSort] = useState<SortType>(sort);
 

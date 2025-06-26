@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BrandResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class BrandController extends Controller
@@ -18,7 +18,7 @@ class BrandController extends Controller
         $brands = BrandResource::collection(Brand::paginate(12));
 
         return Inertia::render('brands/index', [
-            'brands' => $brands,
+            'brands' => fn () => $brands,
         ]);
     }
 
@@ -41,9 +41,29 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Brand $brand)
+    public function show(Brand $brand, Request $request)
     {
-        //
+        $sort = $request->query('sort', 'news');
+
+        $query = $brand->products()->with(['featuredImage', 'brand']);
+
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderByRaw('COALESCE(discount_price, price) ASC');
+                break;
+            case 'price_desc':
+                $query->orderByRaw('COALESCE(discount_price, price) DESC');
+                break;
+            case 'news':
+            default:
+                $query->latest();
+                break;
+        }
+
+        return Inertia::render('brands/show', [
+            'brand' => fn () => BrandResource::make($brand),
+            'products' => fn () => ProductResource::collection($query->paginate(12)),
+        ]);
     }
 
     /**

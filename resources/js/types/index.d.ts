@@ -180,3 +180,27 @@ export interface OrderItems {
     created_at: string;
     updated_at: string;
 }
+
+export interface PaginatedLinks {
+    first: string | undefined;
+    last: string | undefined;
+    prev: string | undefined;
+    next: string | undefined;
+}
+
+export interface PaginatedMeta {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: MetaLink[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+}
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    links: PaginatedLinks;
+    meta: PaginatedMeta;
+}

@@ -1,22 +1,22 @@
 import { Head, router } from '@inertiajs/react';
 import BaseLayout from '@/layouts/base-layout';
-import type { Category, PaginatedResponse, Product } from '@/types';
+import type { PaginatedResponse, Brand, Product } from '@/types';
 import { FilterSheet } from '@/components/filter-sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductCard } from '@/components/product-card';
 import { PaginationComponent } from '@/components/pagination-component';
-import { useEffect, useState } from 'react';
 import { ProductQuickViewModal } from '@/components/product-quick-view-modal';
+import { useEffect, useState } from 'react';
 
-interface ShowProductProps {
-    category: Category;
-    data: PaginatedResponse<Product>;
+interface BrandProps {
+    brand: Brand;
+    products: PaginatedResponse<Product>
     sort: SortType;
 }
 
 type SortType = 'news' | 'price_asc' | 'price_desc';
 
-export default function Show({ category, data, sort = 'news' }: ShowProductProps) {
+export default function Show({ brand, products, sort = 'news' }: BrandProps) {
     const [selectedSort, setSelectedSort] = useState<SortType>(sort);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
@@ -28,7 +28,7 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
         setSelectedSort(value);
         router.get(window.location.pathname, {
             sort: value,
-            page: data.meta.current_page
+            page: products.meta.current_page
         }, {
             preserveState: true,
             preserveScroll: true,
@@ -38,7 +38,7 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
 
     return (
         <BaseLayout>
-            <Head title={`${category.parent?.name} - ${category.name}`} />
+            <Head title={brand.name} />
 
             <main className="layout-container">
                 <div className="flex items-center justify-between">
@@ -62,7 +62,7 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
 
                 <section className="space-y-6 mb-8">
                     <ul className="mt-4 grid grid-cols-4 gap-4">
-                        {data.data.map(product => (
+                        {products.data.map(product => (
                             <li key={product.id}>
                                 <ProductCard
                                     product={product}
@@ -73,7 +73,7 @@ export default function Show({ category, data, sort = 'news' }: ShowProductProps
                     </ul>
 
                     <PaginationComponent
-                        pagination={{ links: data.links, meta: data.meta }}
+                        pagination={{ links: products.links, meta: products.meta }}
                         preserveQuery={['sort']}
                     />
                 </section>

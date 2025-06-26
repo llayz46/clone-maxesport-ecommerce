@@ -1,7 +1,8 @@
 import BaseLayout from '@/layouts/base-layout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Brand, MetaLink } from '@/types';
 import { PaginationComponent } from '@/components/pagination-component';
+import { show } from "@/actions/App/Http/Controllers/BrandController";
 
 interface IndexProps {
     brands: {
@@ -44,7 +45,7 @@ export default function Index({ brands }: IndexProps) {
                                         className="max-w-full max-h-full object-contain"
                                     />
                                 </div>
-                                <h2 className="text-lg font-semibold text-center">{brand.name}</h2>
+                                <Link href={show(brand.slug).url} className="text-lg font-semibold text-center hover:underline">{brand.name}</Link>
                             </div>
                         </div>
                     ))}

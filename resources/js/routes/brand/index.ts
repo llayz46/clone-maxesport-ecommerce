@@ -1,4 +1,4 @@
-import { queryParams, type QueryParams } from './../../../../wayfinder'
+import { queryParams, type QueryParams } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\BrandController::index
  * @see app/Http/Controllers/BrandController.php:16
@@ -124,6 +124,9 @@ show.head = (args: { brand: string | { slug: string } } | [brand: string | { slu
     url: show.url(args, options),
     method: 'head',
 })
-const BrandController = { index, show }
+const brand = {
+    index,
+show,
+}
 
-export default BrandController
+export default brand
