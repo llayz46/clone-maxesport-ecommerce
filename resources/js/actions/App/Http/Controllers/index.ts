@@ -3,6 +3,7 @@ import CartController from './CartController'
 import OrderController from './OrderController'
 import CategoryController from './CategoryController'
 import BrandController from './BrandController'
+import PromotionController from './PromotionController'
 import ProductController from './ProductController'
 import Settings from './Settings'
 import Auth from './Auth'
@@ -12,6 +13,7 @@ CartController,
 OrderController,
 CategoryController,
 BrandController,
+PromotionController,
 ProductController,
 Settings,
 Auth,

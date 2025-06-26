@@ -1,6 +1,6 @@
 import { queryParams, type QueryParams } from './../wayfinder'
 /**
- * @see routes/web.php:12
+ * @see routes/web.php:13
  * @route '/'
  */
 export const home = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -17,7 +17,7 @@ home.definition = {
 }
 
 /**
- * @see routes/web.php:12
+ * @see routes/web.php:13
  * @route '/'
  */
 home.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -25,7 +25,7 @@ home.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 }
 
 /**
- * @see routes/web.php:12
+ * @see routes/web.php:13
  * @route '/'
  */
 home.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -36,7 +36,7 @@ home.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
     method: 'get',
 })
 /**
- * @see routes/web.php:12
+ * @see routes/web.php:13
  * @route '/'
  */
 home.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -48,7 +48,7 @@ home.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 })
 
 /**
- * @see routes/web.php:17
+ * @see routes/web.php:18
  * @route '/dashboard'
  */
 export const dashboard = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -65,7 +65,7 @@ dashboard.definition = {
 }
 
 /**
- * @see routes/web.php:17
+ * @see routes/web.php:18
  * @route '/dashboard'
  */
 dashboard.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -73,7 +73,7 @@ dashboard.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) =>
 }
 
 /**
- * @see routes/web.php:17
+ * @see routes/web.php:18
  * @route '/dashboard'
  */
 dashboard.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -84,7 +84,7 @@ dashboard.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
     method: 'get',
 })
 /**
- * @see routes/web.php:17
+ * @see routes/web.php:18
  * @route '/dashboard'
  */
 dashboard.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -92,6 +92,58 @@ dashboard.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): 
     method: 'head',
 } => ({
     url: dashboard.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\PromotionController::promotions
+ * @see app/Http/Controllers/PromotionController.php:12
+ * @route '/promotions'
+ */
+export const promotions = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'get',
+} => ({
+    url: promotions.url(options),
+    method: 'get',
+})
+
+promotions.definition = {
+    methods: ['get','head'],
+    url: '/promotions',
+}
+
+/**
+* @see \App\Http\Controllers\PromotionController::promotions
+ * @see app/Http/Controllers/PromotionController.php:12
+ * @route '/promotions'
+ */
+promotions.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
+    return promotions.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PromotionController::promotions
+ * @see app/Http/Controllers/PromotionController.php:12
+ * @route '/promotions'
+ */
+promotions.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'get',
+} => ({
+    url: promotions.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\PromotionController::promotions
+ * @see app/Http/Controllers/PromotionController.php:12
+ * @route '/promotions'
+ */
+promotions.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'head',
+} => ({
+    url: promotions.url(options),
     method: 'head',
 })
 

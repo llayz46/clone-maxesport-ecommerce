@@ -8,7 +8,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { HeartIcon, BookOpenIcon, LayoutGridIcon, LogOutIcon, PinIcon, UserIcon, UserPenIcon } from 'lucide-react';
+import {
+    HeartIcon,
+    LayoutGridIcon,
+    LogOutIcon,
+    PinIcon,
+    UserIcon,
+    UserPenIcon,
+    CalendarIcon
+} from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
@@ -47,9 +55,11 @@ export function UserDropdown({ user }: { user: User }) {
                             <span>Wishlist</span>
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-                        <span>Option 3</span>
+                    <DropdownMenuItem asChild>
+                        <Link href="/orders" className="flex items-center gap-2">
+                            <CalendarIcon size={16} className="opacity-60" aria-hidden="true" />
+                            <span>Commandes</span>
+                        </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

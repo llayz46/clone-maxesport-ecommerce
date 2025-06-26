@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +32,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::post('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 });
 
 Route::prefix('categories')->group(function () {
@@ -46,7 +46,10 @@ Route::prefix('cart')->group(function () {
     Route::put('/update', [CartController::class, 'handleItemQuantity'])->name('cart.update');
 });
 
-Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+Route::get('/brands', [BrandController::class, 'index'])->name('brand.index');
+Route::get('/brands/{brand:slug}', [BrandController::class, 'show'])->name('brand.show');
+
+Route::get('/promotions', PromotionController::class)->name('promotions');
 
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('product.show');
 

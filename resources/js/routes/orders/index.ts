@@ -50,66 +50,8 @@ index.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
     url: index.url(options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\OrderController::invoice
- * @see app/Http/Controllers/OrderController.php:0
- * @route '/orders/{order}/invoice'
- */
-export const invoice = (args: { order: string | number } | [order: string | number ] | string | number, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
-    url: string,
-    method: 'post',
-} => ({
-    url: invoice.url(args, options),
-    method: 'post',
-})
-
-invoice.definition = {
-    methods: ['post'],
-    url: '/orders/{order}/invoice',
-}
-
-/**
-* @see \App\Http\Controllers\OrderController::invoice
- * @see app/Http/Controllers/OrderController.php:0
- * @route '/orders/{order}/invoice'
- */
-invoice.url = (args: { order: string | number } | [order: string | number ] | string | number, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
-    if (typeof args === 'string' || typeof args === 'number') {
-        args = { order: args }
-    }
-
-    
-    if (Array.isArray(args)) {
-        args = {
-                    order: args[0],
-                }
-    }
-
-    const parsedArgs = {
-                        order: args.order,
-                }
-
-    return invoice.definition.url
-            .replace('{order}', parsedArgs.order.toString())
-            .replace(/\/+$/, '') + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\OrderController::invoice
- * @see app/Http/Controllers/OrderController.php:0
- * @route '/orders/{order}/invoice'
- */
-invoice.post = (args: { order: string | number } | [order: string | number ] | string | number, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
-    url: string,
-    method: 'post',
-} => ({
-    url: invoice.url(args, options),
-    method: 'post',
-})
 const orders = {
     index,
-invoice,
 }
 
 export default orders
