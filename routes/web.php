@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromotionController;
@@ -50,6 +51,7 @@ Route::get('/brands', [BrandController::class, 'index'])->name('brand.index');
 Route::get('/brands/{brand:slug}', [BrandController::class, 'show'])->name('brand.show');
 
 Route::get('/promotions', PromotionController::class)->name('promotions');
+Route::get('/news', NewsController::class)->name('news');
 
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('product.show');
 

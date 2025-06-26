@@ -31,8 +31,8 @@ export function Header() {
 
             <div className="inline-flex shrink-0 gap-4">
                 <nav>
-                    <Link href="/" className={buttonVariants({ variant: 'link' })}>Promotions</Link>
-                    <Link href="/" className={buttonVariants({ variant: 'link' })}>Nouveautés</Link>
+                    <Link href="/promotions" className={buttonVariants({ variant: 'link' })}>Promotions</Link>
+                    <Link href="/news" className={buttonVariants({ variant: 'link' })}>Nouveautés</Link>
                     <Link href="/brands" className={buttonVariants({ variant: 'link' })}>Marques</Link>
                 </nav>
 
