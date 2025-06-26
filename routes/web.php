@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return Inertia::render('dashboard/dashboard');
     })->name('dashboard');
 
     Route::prefix('wishlist')->group(function () {
@@ -28,6 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [CartController::class, 'checkout'])->name('cart.checkout');
         Route::get('/success', [CartController::class, 'success'])->name('checkout.success');
     });
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 });
 
 Route::prefix('categories')->group(function () {

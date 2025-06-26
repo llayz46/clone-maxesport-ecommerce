@@ -13,9 +13,7 @@ class Order extends Model
     protected $fillable = [
         'order_number',
         'stripe_checkout_session_id',
-        'amount_shipping',
         'amount_discount',
-        'amount_subtotal',
         'amount_total',
         'billing_address',
         'shipping_address',

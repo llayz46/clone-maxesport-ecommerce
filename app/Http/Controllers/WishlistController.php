@@ -34,7 +34,7 @@ class WishlistController extends Controller
     public function index()
     {
 
-        return Inertia::render('wishlist', [
+        return Inertia::render('dashboard/wishlist', [
             'items' => fn () => auth()->user()->wishlist?->products
                 ? ProductResource::collection(auth()->user()->wishlist->products->load('brand', 'featuredImage'))
                 : [],

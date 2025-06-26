@@ -128,6 +128,12 @@ class CartController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Redirect to Stripe checkout session.
+     *
+     * @param CreateStripeCheckoutSession $createStripeCheckoutSession
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function checkout(CreateStripeCheckoutSession $createStripeCheckoutSession)
     {
         $session = $createStripeCheckoutSession->createSessionFromCart(CartFactory::make());
@@ -135,6 +141,12 @@ class CartController extends Controller
         return Inertia::location($session->url);
     }
 
+    /**
+     * Handle successful checkout.
+     *
+     * @param Request $request
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+     */
     public function success(Request $request)
     {
         $sessionId = $request->get('session_id');

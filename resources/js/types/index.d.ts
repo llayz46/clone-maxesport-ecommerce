@@ -135,6 +135,7 @@ export interface ProductGroup {
 export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>];
 
 export interface Order {
+    id: number;
     order_number: string;
     stripe_checkout_session_id: string;
     amount_shipping: number;
@@ -161,6 +162,8 @@ export interface Order {
         state?: string | null;
     };
     items: OrderItems[];
+    created_at: string;
+    updated_at: string;
 }
 
 export interface OrderItems {
@@ -173,6 +176,7 @@ export interface OrderItems {
     amount_discount: number;
     amount_total: number;
     quantity: number;
+    product?: Product | null;
     created_at: string;
     updated_at: string;
 }

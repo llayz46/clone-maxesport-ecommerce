@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\CartController::success
- * @see app/Http/Controllers/CartController.php:138
+ * @see app/Http/Controllers/CartController.php:150
  * @route '/checkout/success'
  */
 export const success = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ success.definition = {
 
 /**
 * @see \App\Http\Controllers\CartController::success
- * @see app/Http/Controllers/CartController.php:138
+ * @see app/Http/Controllers/CartController.php:150
  * @route '/checkout/success'
  */
 success.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -28,7 +28,7 @@ success.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\CartController::success
- * @see app/Http/Controllers/CartController.php:138
+ * @see app/Http/Controllers/CartController.php:150
  * @route '/checkout/success'
  */
 success.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -40,7 +40,7 @@ success.get = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 })
 /**
 * @see \App\Http\Controllers\CartController::success
- * @see app/Http/Controllers/CartController.php:138
+ * @see app/Http/Controllers/CartController.php:150
  * @route '/checkout/success'
  */
 success.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
