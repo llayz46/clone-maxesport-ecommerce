@@ -49,7 +49,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Information du profile" description="Modifier votre nom et adresse email" />
+                    <HeadingSmall title="Information du profile" description="Modifier votre avatar, nom et adresse email" />
 
                     <form onSubmit={submit} className="space-y-6">
                         <AvatarProfileInput onFileChange={(file) => setData('avatar', file)} value={auth.user.avatar ?? null} />
