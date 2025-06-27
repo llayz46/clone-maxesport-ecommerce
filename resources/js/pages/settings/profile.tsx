@@ -41,10 +41,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             preserveScroll: true,
             forceFormData: true
         });
-
-        // patch(route('profile.update'), {
-        //     preserveScroll: true
-        // });
     };
 
     return (

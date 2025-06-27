@@ -23,7 +23,7 @@ export default function AvatarProfileInput({ onFileChange, value }: { onFileChan
         },
     })
 
-    const previewUrl = files[0]?.preview || value || null
+    const previewUrl = files[0]?.preview || null
 
     return (
         <div className="w-fit">
@@ -39,10 +39,10 @@ export default function AvatarProfileInput({ onFileChange, value }: { onFileChan
                     data-dragging={isDragging || undefined}
                     aria-label={previewUrl ? "Change image" : "Upload image"}
                 >
-                    {previewUrl ? (
+                    {previewUrl || value ? (
                         <img
                             className="size-full object-cover"
-                            src={`../storage/${previewUrl}`}
+                            src={previewUrl ? previewUrl : `../storage/${value}`}
                             alt={files[0]?.file?.name || "Uploaded image"}
                             width={64}
                             height={64}
