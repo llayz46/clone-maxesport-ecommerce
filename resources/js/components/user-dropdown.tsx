@@ -20,8 +20,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
+import { useInitials } from '@/hooks/use-initials';
 
 export function UserDropdown({ user }: { user: User }) {
+    const getInitials = useInitials();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -33,8 +36,10 @@ export function UserDropdown({ user }: { user: User }) {
             <DropdownMenuContent className="max-w-64" align="end">
                 <DropdownMenuLabel className="flex items-start gap-3">
                     <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={`../storage/${user.avatar}`} alt={user.name} />
+                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                            {getInitials(user.name)}
+                        </AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-col">
                         <span className="truncate text-sm font-medium text-foreground">{user.name}</span>

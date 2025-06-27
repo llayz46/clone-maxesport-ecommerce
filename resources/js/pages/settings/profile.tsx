@@ -2,7 +2,6 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -11,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import AvatarProfileInput from '@/components/avatar-profile-input';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,12 +22,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = {
     name: string;
     email: string;
+    avatar: File | string | null;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+    const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+        avatar: auth.user.avatar || null,
         name: auth.user.name,
         email: auth.user.email,
     });
@@ -35,9 +37,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'), {
+        post(route('profile.update'), {
             preserveScroll: true,
+            forceFormData: true
         });
+
+        // patch(route('profile.update'), {
+        //     preserveScroll: true
+        // });
     };
 
     return (
@@ -49,6 +56,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     <HeadingSmall title="Information du profile" description="Modifier votre nom et adresse email" />
 
                     <form onSubmit={submit} className="space-y-6">
+                        <AvatarProfileInput onFileChange={(file) => setData('avatar', file)} value={auth.user.avatar ?? null} />
+
                         <div className="grid gap-2">
                             <Label htmlFor="name">Nom</Label>
 
@@ -85,7 +94,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="-mt-4 text-sm text-muted-foreground">
-                                    Your email address is unverified.{' '}
                                     Votre adresse email n'est pas vérifiée.{' '}
                                     <Link
                                         href={route('verification.send')}

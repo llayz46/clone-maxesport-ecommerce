@@ -10,7 +10,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'order_number' => 'ORD-' . date('Y') . '-' . $this->faker->unique()->lexify('??????????'),
+            'order_number' => 'LE-' . date('Y') . '-' . $this->faker->unique()->numerify('########'),
             'stripe_checkout_session_id' => $this->faker->uuid,
             'amount_discount' => $this->faker->numberBetween(0, 1000),
             'amount_total' => $this->faker->numberBetween(10000, 50000),

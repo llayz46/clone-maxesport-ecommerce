@@ -58,14 +58,14 @@ edit.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
  */
 export const update = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
     url: string,
-    method: 'patch',
+    method: 'post',
 } => ({
     url: update.url(options),
-    method: 'patch',
+    method: 'post',
 })
 
 update.definition = {
-    methods: ['patch'],
+    methods: ['post'],
     url: '/settings/profile',
 }
 
@@ -83,17 +83,17 @@ update.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
  * @see app/Http/Controllers/Settings/ProfileController.php:30
  * @route '/settings/profile'
  */
-update.patch = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+update.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
     url: string,
-    method: 'patch',
+    method: 'post',
 } => ({
     url: update.url(options),
-    method: 'patch',
+    method: 'post',
 })
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:50
  * @route '/settings/profile'
  */
 export const destroy = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -111,7 +111,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:50
  * @route '/settings/profile'
  */
 destroy.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -120,7 +120,7 @@ destroy.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
+ * @see app/Http/Controllers/Settings/ProfileController.php:50
  * @route '/settings/profile'
  */
 destroy.delete = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

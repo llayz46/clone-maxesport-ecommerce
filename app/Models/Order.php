@@ -39,7 +39,7 @@ class Order extends Model
     {
         static::creating(function ($order) {
             $year = date('Y');
-            $order->order_number = 'ORD-' . $year . '-' . Str::random(10);
+            $order->order_number = 'LE-' . $year . '-' . Str::upper(Str::random(8));
         });
     }
 }
