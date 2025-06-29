@@ -19,7 +19,8 @@ class Category extends Model
         'slug',
         'description',
         'parent_id',
-        'status'
+        'status',
+        'is_visible_in_menu',
     ];
 
     protected $casts = [
