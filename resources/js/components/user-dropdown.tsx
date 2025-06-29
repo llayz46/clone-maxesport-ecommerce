@@ -12,7 +12,7 @@ import {
     HeartIcon,
     LayoutGridIcon,
     LogOutIcon,
-    PinIcon,
+    ShieldCheckIcon,
     UserIcon,
     UserPenIcon,
     CalendarIcon
@@ -24,6 +24,7 @@ import { useInitials } from '@/hooks/use-initials';
 
 export function UserDropdown({ user }: { user: User }) {
     const getInitials = useInitials();
+    const isAdmin = user.roles.some(role => role.name === 'admin');
 
     return (
         <DropdownMenu>
@@ -68,16 +69,16 @@ export function UserDropdown({ user }: { user: User }) {
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-                        <span>Option 4</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-                        <span>Option 5</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
+                {isAdmin && (
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem asChild>
+                            <Link href="/admin" className="flex items-center gap-2">
+                                <ShieldCheckIcon size={16} className="opacity-60" aria-hidden="true" />
+                                <span>Admin Dashboard</span>
+                            </Link>
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <Link className="flex items-center gap-2" method="post" href={route('logout')} as="button" onClick={() => router.flushAll()}>

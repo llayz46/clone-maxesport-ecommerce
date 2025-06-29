@@ -9,7 +9,7 @@ import { Product } from '@/types';
 import { Button } from '@/components/ui/button';
 import { useCartContext } from '@/contexts/cart-context';
 
-export function ProductQuickViewModal({ product, open, onClose }: { product: Product | null, open: boolean, onClose: () => void }) {
+export function ProductQuickViewDialog({ product, open, onClose }: { product: Product | null, open: boolean, onClose: () => void }) {
     const { addToCart } = useCartContext();
 
     if (!product) return null;

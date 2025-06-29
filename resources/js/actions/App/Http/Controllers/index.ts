@@ -8,6 +8,8 @@ import NewsController from './NewsController'
 import ProductController from './ProductController'
 import Settings from './Settings'
 import Auth from './Auth'
+import AdminController from './AdminController'
+import Admin from './Admin'
 const Controllers = {
     WishlistController,
 CartController,
@@ -19,6 +21,8 @@ NewsController,
 ProductController,
 Settings,
 Auth,
+AdminController,
+Admin,
 }
 
 export default Controllers

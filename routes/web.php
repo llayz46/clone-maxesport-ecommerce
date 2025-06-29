@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::prefix('categories')->group(function () {
-    Route::get('/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
+    Route::get('/{category:slug}', CategoryController::class)->name('category.show');
 });
 
 Route::prefix('cart')->group(function () {
@@ -58,3 +58,4 @@ Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';

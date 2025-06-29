@@ -1,7 +1,7 @@
 import { FilterSheet } from '@/components/filter-sheet';
 import { PaginationComponent } from '@/components/pagination-component';
 import { ProductCard } from '@/components/product-card';
-import { ProductQuickViewModal } from '@/components/product-quick-view-modal';
+import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import BaseLayout from '@/layouts/base-layout';
 import type { PaginatedResponse, Product } from '@/types';
@@ -72,7 +72,7 @@ export function ProductListPage({ title, products, sort = 'news' }: ProductListP
                     <PaginationComponent pagination={{ links: products.links, meta: products.meta }} preserveQuery={['sort']} />
                 </section>
 
-                <ProductQuickViewModal product={quickViewProduct} open={!!quickViewProduct} onClose={() => setQuickViewProduct(null)} />
+                <ProductQuickViewDialog product={quickViewProduct} open={!!quickViewProduct} onClose={() => setQuickViewProduct(null)} />
             </main>
         </BaseLayout>
     );

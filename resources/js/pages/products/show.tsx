@@ -11,7 +11,7 @@ import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { cn } from '@/lib/utils';
 import { useCartContext } from '@/contexts/cart-context';
 import { ProductCard } from '@/components/product-card';
-import { ProductQuickViewModal } from '@/components/product-quick-view-modal';
+import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { ProductBreadcrumb } from '@/components/product-breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -162,7 +162,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                     </div>
                 </WhenVisible>
 
-                <ProductQuickViewModal
+                <ProductQuickViewDialog
                     product={quickViewProduct}
                     open={!!quickViewProduct}
                     onClose={() => setQuickViewProduct(null)}

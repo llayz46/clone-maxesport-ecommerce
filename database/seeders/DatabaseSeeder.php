@@ -5,13 +5,12 @@ namespace Database\Seeders;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductGroup;
 use App\Models\ProductImage;
 use App\Models\User;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -53,11 +52,21 @@ class DatabaseSeeder extends Seeder
             'Pulsar'
         ];
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@test.fr',
             'password' => bcrypt('testtest'),
         ]);
+
+        Role::create(['name' => 'admin']);
+        $user->assignRole('admin');
+
+        foreach ($brands as $brand) {
+            $brand = Brand::factory()->create([
+                'name' => $brand,
+                'slug' => Str::slug($brand),
+            ]);
+        }
 
         foreach ($menus as $menu => $menuItems) {
             $menu = Category::factory()->create([
@@ -66,31 +75,30 @@ class DatabaseSeeder extends Seeder
             ]);
 
             foreach ($menuItems as $menuItem) {
-                Category::factory()->create([
+                $category = Category::factory()->create([
                     'name' => $menuItem,
                     'slug' => Str::slug($menuItem),
                     'parent_id' => $menu,
                 ]);
+
+                $product = Product::factory()->create([
+                    'brand_id' => $brand->id
+                ]);
+                $product->categories()->attach($category);
+
+                ProductImage::factory()
+                    ->count(rand(1, 5))
+                    ->create([
+                        'product_id' => $product->id,
+                    ]);
             }
         }
 
-        foreach ($brands as $brand) {
-            $brand = Brand::factory()->create([
-                'name' => $brand,
-                'slug' => Str::slug($brand),
-            ]);
-
-            $product = Product::factory()->create([
-                'brand_id' => $brand->id
-            ]);
-            $product->categories()->attach(Category::inRandomOrder()->take(rand(1, 3))->pluck('id'));
-
-            ProductImage::factory()
-                ->count(rand(1, 5))
-                ->create([
-                    'product_id' => $product->id,
-                ]);
-        }
+        Category::factory()->create([
+            'name' => $dfs = 'gdfsoinjfdgsnijdsgfj',
+            'slug' => Str::slug($dfs),
+            'status' => 'inactive',
+        ]);
 
         $this->call(ProductSeeder::class);
     }

@@ -18,7 +18,7 @@ class Category extends Model
         'name',
         'slug',
         'description',
-        'parent',
+        'parent_id',
         'status'
     ];
 
@@ -34,6 +34,11 @@ class Category extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
     }
 
     public function products(): BelongsToMany

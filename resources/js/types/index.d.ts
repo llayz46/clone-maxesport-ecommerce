@@ -38,6 +38,18 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    roles: {
+        id: number;
+        name: string;
+        guard_name: string;
+        created_at: string;
+        updated_at: string;
+        pivot: {
+            model_type: string;
+            model_id: number;
+            role_id: number;
+        };
+    }[];
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
@@ -52,6 +64,9 @@ export interface Category {
     parent_id: number;
     parent?: Category | null;
     children?: Category[] | null;
+    products_count?: number | null;
+    total_products_count?: number | null;
+    is_active: boolean;
     created_at: string;
     updated_at: string;
 }
