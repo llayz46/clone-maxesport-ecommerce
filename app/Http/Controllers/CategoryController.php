@@ -11,6 +11,13 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+    /**
+     * Handle the incoming request.
+     *
+     * @param Category $category
+     * @param Request $request
+     * @return \Inertia\Response
+     */
     public function __invoke(Category $category, Request $request)
     {
         if($category->status->value === CategoryStatus::Inactive->value) abort(404);
