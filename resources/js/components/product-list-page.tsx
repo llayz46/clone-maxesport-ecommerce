@@ -69,6 +69,12 @@ export function ProductListPage({ title, products, sort = 'news' }: ProductListP
                         ))}
                     </ul>
 
+                    {products.data.length === 0 && (
+                        <div className="text-center text-muted-foreground">
+                            Aucun produit trouvé.
+                        </div>
+                    )}
+
                     <PaginationComponent pagination={{ links: products.links, meta: products.meta }} preserveQuery={['sort']} />
                 </section>
 

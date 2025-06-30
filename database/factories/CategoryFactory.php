@@ -23,7 +23,6 @@ class CategoryFactory extends Factory
             'description' => $this->faker->sentence(),
             'parent_id' => null,
             'status' => 'active',
-            'is_visible_in_menu' => false,
         ];
     }
 }

@@ -20,7 +20,6 @@ class Category extends Model
         'description',
         'parent_id',
         'status',
-        'is_visible_in_menu',
     ];
 
     protected $casts = [

@@ -24,7 +24,6 @@ class CategoryResource extends JsonResource
             'is_active' => $this->status->value === 'active',
             'products_count' => $this->when($this->parent_id, $this->products_count ?? 0),
             'total_products_count' => $this->when(!$this->parent_id, $childrenProductCount),
-            'is_visible_in_menu' => $this->is_visible_in_menu,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

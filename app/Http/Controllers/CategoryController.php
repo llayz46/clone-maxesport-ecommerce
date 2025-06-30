@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CategoryStatus;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
@@ -12,7 +13,7 @@ class CategoryController extends Controller
 {
     public function __invoke(Category $category, Request $request)
     {
-        if (!$category->parent_id) return redirect()->route('home');
+        if($category->status->value === CategoryStatus::Inactive->value) abort(404);
 
         $sort = $request->query('sort', 'news');
 

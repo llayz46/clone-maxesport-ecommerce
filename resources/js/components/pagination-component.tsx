@@ -54,6 +54,8 @@ export function PaginationComponent({ pagination, preserveQuery = [] }: Paginati
         return urlObj.toString();
     };
 
+    if(!pagination.links.prev && !pagination.links.next) return
+
     return (
         <Pagination>
             <PaginationContent>
