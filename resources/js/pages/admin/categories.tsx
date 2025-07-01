@@ -2,7 +2,18 @@ import { Head, usePage } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import type { BreadcrumbItem, Category, SharedData } from '@/types';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { ChevronDown, ChevronRight, Plus, Search, Edit, Trash2, MoreHorizontal, FolderOpen, Folder } from "lucide-react"
+import {
+    ChevronDown,
+    ChevronRight,
+    Plus,
+    Search,
+    Edit,
+    Trash2,
+    MoreHorizontal,
+    FolderOpen,
+    Folder,
+    Folders
+} from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -16,7 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CategoryDialog } from '@/components/category-dialog';
-import { CategoryConfirmDialog } from '@/components/category-confirm-dialog';
+import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
 
 export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadcrumbs: BreadcrumbItem[] }) {
     const { categories } = usePage<SharedData>().props;
@@ -358,7 +369,17 @@ export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadc
                 </Card>
             </div>
 
-            <CategoryConfirmDialog category={deleteCategory} open={!!deleteCategory} onClose={() => setDeleteCategory(null)} />
+            <ConfirmDeleteDialog
+                item={deleteCategory}
+                open={!!deleteCategory}
+                onClose={() => setDeleteCategory(null)}
+                itemNameKey="name"
+                deleteRoute={(id) => route('admin.categories.destroy', id)}
+                itemLabel="catégorie"
+                icon={<Folders className="size-4" />}
+                prefix="La"
+            />
+
         </AdminLayout>
     )
 }

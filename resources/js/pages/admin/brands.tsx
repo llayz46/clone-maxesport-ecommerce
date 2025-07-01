@@ -15,8 +15,8 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { BrandDialog } from '@/components/brand-dialog';
-import { BrandConfirmDialog } from '@/components/brand-confirm-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
 
 export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { breadcrumbs: BreadcrumbItem[], brands: Brand[] }) {
     const [searchTerm, setSearchTerm] = useState("")
@@ -258,7 +258,16 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
                 </Card>
             </div>
 
-            <BrandConfirmDialog brand={deleteBrand} open={!!deleteBrand} onClose={() => setDeleteBrand(null)} />
+            <ConfirmDeleteDialog
+                item={deleteBrand}
+                open={!!deleteBrand}
+                onClose={() => setDeleteBrand(null)}
+                itemNameKey="name"
+                deleteRoute={(id) => route('admin.brands.destroy', id)}
+                itemLabel="marque"
+                icon={<Tags className="size-4" />}
+                prefix="La"
+            />
         </AdminLayout>
     )
 }
