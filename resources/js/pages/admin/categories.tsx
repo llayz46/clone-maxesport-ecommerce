@@ -18,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CategoryDialog } from '@/components/category-dialog';
 import { CategoryConfirmDialog } from '@/components/category-confirm-dialog';
 
-export default function Index({ breadcrumbs: initialBreadcrumbs }: { breadcrumbs: BreadcrumbItem[] }) {
+export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadcrumbs: BreadcrumbItem[] }) {
     const { categories } = usePage<SharedData>().props;
 
     const [searchTerm, setSearchTerm] = useState("")

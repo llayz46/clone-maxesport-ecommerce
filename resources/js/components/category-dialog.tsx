@@ -106,7 +106,7 @@ export function CategoryDialog({ open, setOpen, category, parentId }: CategoryDi
                     reset('name', 'description', 'status');
                     setOpen(false);
                     toast.success('Catégorie modifiée avec succès', {
-                        description: data.name + ' a bien été mdofiée.',
+                        description: data.name + ' a bien été modifiée.',
                         icon: <Folders className="size-4" />,
                     });
                 },

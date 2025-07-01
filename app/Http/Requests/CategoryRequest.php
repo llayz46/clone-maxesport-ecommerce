@@ -56,9 +56,4 @@ class CategoryRequest extends FormRequest
             'status.enum' => 'Le statut sélectionné est invalide.',
         ];
     }
-
-//    public function authorize(): bool
-//    {
-//        return true;
-//    }
 }

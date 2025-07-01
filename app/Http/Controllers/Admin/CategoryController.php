@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        return Inertia::render('admin/categories/index', [
+        return Inertia::render('admin/categories', [
             'breadcrumbs' => [
                 ['title' => 'Admin', 'href' => route('admin.dashboard')],
                 ['title' => 'Catégories', 'href' => route('admin.categories.index')],
@@ -36,19 +36,11 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create()
-    {
-    }
-
     public function store(CategoryRequest $request)
     {
         $this->handleCategory->create($request->validated());
 
         return redirect()->route('admin.categories.index');
-    }
-
-    public function show(Category $category)
-    {
     }
 
     public function update(CategoryRequest $request, Category $category)

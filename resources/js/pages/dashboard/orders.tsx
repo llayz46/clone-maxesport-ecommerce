@@ -16,41 +16,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Orders({ orders }: { orders: Order[] }) {
-    // const getStatusBadge = (status: string) => {
-    //     switch (status) {
-    //         case "delivered":
-    //             return (
-    //                 <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-    //                     <CheckCircle className="w-3 h-3 mr-1" />
-    //                     Livré
-    //                 </Badge>
-    //             )
-    //         case "shipped":
-    //             return (
-    //                 <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-    //                     <Truck className="w-3 h-3 mr-1" />
-    //                     Expédié
-    //                 </Badge>
-    //             )
-    //         case "processing":
-    //             return (
-    //                 <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-    //                     <Clock className="w-3 h-3 mr-1" />
-    //                     En cours
-    //                 </Badge>
-    //             )
-    //         case "cancelled":
-    //             return (
-    //                 <Badge variant="secondary" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-    //                     <AlertCircle className="w-3 h-3 mr-1" />
-    //                     Annulé
-    //                 </Badge>
-    //             )
-    //         default:
-    //             return <Badge variant="secondary">{status}</Badge>
-    //     }
-    // }
-
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("fr-FR", {
             year: "numeric",
