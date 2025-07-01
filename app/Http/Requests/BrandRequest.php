@@ -39,7 +39,9 @@ class BrandRequest extends FormRequest
             'slug.max' => 'Le slug de la marque ne peut pas dépasser 255 caractères.',
             'slug.unique' => 'Ce slug est déjà utilisé par une autre marque.',
 
-            'logo_url.string' => 'L\'URL du logo doit être une chaîne de caractères.',
+            'logo_url.image' => 'Le logo doit être une image.',
+            'logo_url.max' => 'Le logo ne peut pas dépasser 2 Mo.',
+            'logo_url.mimes' => 'Le logo doit être au format jpg, jpeg, png, svg, gif ou webp.',
         ];
     }
 }

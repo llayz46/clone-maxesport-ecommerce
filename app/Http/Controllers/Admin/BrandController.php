@@ -33,8 +33,27 @@ class BrandController extends Controller
         return redirect()->route('admin.brands.index');
     }
 
-    public function update(Request $request, Brand $brand)
+    public function update(BrandRequest $request, Brand $brand)
     {
+        $data = $request->validated();
+
+        if (!$request->hasFile('logo_url')) {
+            unset($data['logo_url']);
+        }
+
+        $brand->update($data);
+
+        if ($request->hasFile('logo_url')) {
+            if ($brand->logo_url) {
+                \Storage::disk('public')->delete($brand->logo_url);
+            }
+
+            $brand->update([
+                'logo_url' => $request->file('logo_url')->store('brands', 'public'),
+            ]);
+        }
+
+        return redirect()->route('admin.brands.index');
     }
 
     public function destroy(Request $request, Brand $brand)

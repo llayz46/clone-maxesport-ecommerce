@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Folders, LoaderCircle, Plus } from 'lucide-react';
+import { Tags, LoaderCircle, Plus } from 'lucide-react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useEffect } from 'react';
 import InputError from '@/components/input-error';
@@ -28,7 +28,7 @@ interface BrandDialogProps {
 }
 
 export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
-    const { data, setData, post, put, processing, errors, reset } = useForm<BrandForm>({
+    const { data, setData, post, processing, errors, reset } = useForm<BrandForm>({
         name: '',
         logo_url: null
     });
@@ -56,7 +56,7 @@ export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
                     setOpen(false);
                     toast.success('Marque créée avec succès', {
                         description: data.name + ' a bien été créée.',
-                        icon: <Folders className="size-4" />,
+                        icon: <Tags className="size-4" />,
                     });
                 },
                 onError: (errors) => {
@@ -64,19 +64,20 @@ export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
 
                     toast.error('Erreur lors de la création de la marque.', {
                         description: allErrors,
-                        icon: <Folders className="size-4" />,
+                        icon: <Tags className="size-4" />,
                     });
                 },
             })
         } else {
-            put(route('admin.brands.update', brand.id), {
+            post(route('admin.brands.update', brand.id), {
+                method: 'put',
                 preserveScroll: true,
                 onSuccess: () => {
                     reset('name', 'logo_url');
                     setOpen(false);
                     toast.success('Marque modifiée avec succès', {
                         description: data.name + ' a bien été modifiée.',
-                        icon: <Folders className="size-4" />,
+                        icon: <Tags className="size-4" />,
                     });
                 },
                 onError: (errors) => {
@@ -84,7 +85,7 @@ export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
 
                     toast.error('Erreur lors de la modification de la marque.', {
                         description: allErrors,
-                        icon: <Folders className="size-4" />,
+                        icon: <Tags className="size-4" />,
                     });
                 },
             })
@@ -127,7 +128,6 @@ export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
                                 <Input
                                     id="logo_url"
                                     type="file"
-                                    required
                                     tabIndex={2}
                                     onChange={(e) => setData('logo_url', e.target.files?.[0] ?? null)}
                                     disabled={processing}

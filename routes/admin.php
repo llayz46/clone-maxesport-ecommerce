@@ -9,19 +9,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/', AdminController::class)->name('dashboard');
 
     Route::resource('categories', CategoryController::class)
-        ->only(['index', 'store', 'update', 'destroy'])
-        ->names([
-            'index' => 'categories.index',
-            'store' => 'categories.store',
-            'update' => 'categories.update',
-            'destroy' => 'categories.destroy',
-        ]);
+        ->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('brands', BrandController::class)
         ->only(['index', 'store', 'destroy']);
-
-    //    Route::resource('products', 'ProductController');
-//    Route::resource('categories', 'CategoryController');
-//    Route::resource('orders', 'OrderController');
-//    Route::resource('users', 'UserController');
+    Route::post('brands/{brand}', [BrandController::class, 'update'])
+        ->name('brands.update');
 });
