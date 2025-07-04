@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
             'stock' => $this->stock,
             'status' => $this->status,
 
-            $this->mergeWhen($request->routeIs('admin.products.edit'), [
+            $this->mergeWhen($request->routeIs('admin.products.*'), [
                 'cost_price' => $this->cost_price,
                 'reorder_level' => $this->reorder_level,
             ]),

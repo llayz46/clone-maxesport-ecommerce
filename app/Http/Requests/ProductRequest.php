@@ -51,8 +51,11 @@ class ProductRequest extends FormRequest
             'images.*.alt_text' => ['nullable', 'string'],
             'images.*.is_featured' => ['required', 'boolean'],
 
-//            'brand_id' => ['required', 'exists:brands'],
-//            'product_group_id' => ['nullable', 'exists:product_groups'],
+            'brand_id' => ['required', 'exists:brands,id'],
+
+            'category_id' => ['required', 'exists:categories,id'],
+
+            'group_id' => ['nullable', 'exists:product_groups,id'],
         ];
     }
 
@@ -119,6 +122,14 @@ class ProductRequest extends FormRequest
             'images.*.alt_text.string' => 'Le texte alternatif de l\'image doit être une chaîne de caractères.',
             'images.*.is_featured.required' => 'L\'indication de l\'image vedette est obligatoire.',
             'images.*.is_featured.boolean' => 'L\'indication de l\'image vedette doit être vrai ou faux.',
+
+            'brand_id.required' => 'La marque du produit est obligatoire.',
+            'brand_id.exists' => 'La marque sélectionnée n\'existe pas.',
+
+            'category_id.required' => 'La catégorie du produit est obligatoire.',
+            'category_id.exists' => 'La catégorie sélectionnée n\'existe pas.',
+
+            'group_id.exists' => 'Le groupe de produits sélectionné n\'existe pas.',
         ];
     }
 }

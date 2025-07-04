@@ -30,8 +30,8 @@ class Product extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
-        'brand',
-        'product_group',
+        'brand_id',
+        'product_group_id',
     ];
 
     protected static function booted()

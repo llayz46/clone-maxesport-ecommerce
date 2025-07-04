@@ -13,7 +13,7 @@ import {
     Warehouse,
     ChevronDownIcon,
     ChevronUpIcon,
-    ExternalLink, Eye, Trash2, Upload, Star, ImageIcon, AlertCircleIcon, UploadIcon, CheckIcon
+    ExternalLink, Eye, Trash2, Upload, Star, ImageIcon, AlertCircleIcon, UploadIcon, CheckIcon, Loader2
 } from 'lucide-react';
 import { Button as AriaButton, Group, Input as AriaInput, Label as AriaLabel, NumberField } from "react-aria-components"
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -36,6 +36,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { BrandDialog } from '@/components/brand-dialog';
 import { CategoryTree } from '@/components/category-tree';
 import { ProductGroupDialog } from '@/components/product-group-dialog';
+import { calculateMargin, calculateProfit } from '@/utils/product-price-calculating';
 
 interface ProductType {
     breadcrumbs: BreadcrumbItem[];
@@ -74,10 +75,7 @@ type ProductForm = {
     meta_title?: string | null;
     meta_description?: string | null;
     meta_keywords?: string | null;
-    brand: {
-        id: number;
-        name: string;
-    }
+    brand_id: number;
     category_id: string;
     group_id: string;
 }
@@ -89,7 +87,7 @@ interface FormTabContentProps<T> {
         (values: T): void;
     };
     errors: Record<string, string>;
-    processing: boolean;
+    processing?: boolean;
     brands?: { id: number; name: string }[];
     groups?: { id: number; name: string, products: { id: number; name: string }[] }[];
 }
@@ -106,7 +104,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
         cost_price: product.cost_price ?? 0,
         stock: product.stock ?? 0,
         reorder_level: product.reorder_level ?? 0,
-        status: product.status ?? false,
+        status: Boolean(product.status),
         images: product.images?.map(img => ({
             id: img.id ?? null,
             image_url: img.image_url,
@@ -117,10 +115,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
         meta_title: product.meta_title ?? null,
         meta_description: product.meta_description ?? null,
         meta_keywords: product.meta_keywords ?? null,
-        brand: {
-            id: product.brand.id,
-            name: product.brand.name,
-        },
+        brand_id: product.brand.id,
         category_id: product.categories && product.categories.length > 0 ? String(product.categories[0].id) : '',
         group_id: product.group ? String(product.group.id) : '',
     });
@@ -132,13 +127,6 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
     }, [product]);
 
     const isDirty = JSON.stringify(data) !== JSON.stringify(initialData);
-
-    const calculateMargin = () => {
-        if (data.cost_price && data.price) {
-            return (((data.price - data.cost_price) / data.price) * 100).toFixed(1)
-        }
-        return "0"
-    }
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -163,7 +151,6 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
         })
     };
 
-    // TODO : Product Groups, Processing sur les inputs, ajouter un petit loading sur le submit button
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={`Modification : ${product.name}`} />
@@ -174,7 +161,12 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
                         <h1 className="text-3xl font-bold text-foreground">Modifier : {product.name}</h1>
                         <p className="text-muted-foreground">SKU: {product.sku}</p>
                     </div>
-                    <Button disabled={processing || !isDirty}>Enregistrer les modifications</Button>
+                    <Button disabled={processing || !isDirty}>
+                        {processing && (
+                            <Loader2 className="animate-spin" />
+                        )}
+                        Enregistrer les modifications
+                    </Button>
                 </div>
 
                 <Transition
@@ -223,9 +215,9 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
 
                             <ImagesTabContent data={data} setData={setData} errors={errors} processing={processing} />
 
-                            <PricingTabContent data={data} setData={setData} errors={errors} processing={processing} />
+                            <PricingTabContent data={data} setData={setData} errors={errors} />
 
-                            <InventoryTabContent data={data} setData={setData} errors={errors} processing={processing} />
+                            <InventoryTabContent data={data} setData={setData} errors={errors} />
 
                             <SeoTabContent data={data} setData={setData} errors={errors} processing={processing} />
                         </Tabs>
@@ -239,7 +231,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
                             <CardContent className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="status">Produit actif</Label>
-                                    <Switch id="status" checked={product.status} onCheckedChange={(checked) => setData('status', checked)} />
+                                    <Switch id="status" defaultChecked={product.status} onCheckedChange={(checked) => setData('status', checked)} />
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <Label>Date du produit</Label>
@@ -277,12 +269,12 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Marge:</span>
-                                    <span className="font-semibold text-green-600 dark:text-green-400">{calculateMargin()}%</span>
+                                    <span className="font-semibold text-green-600 dark:text-green-400">{calculateMargin(data.cost_price, data.discount_price ?? data.price)}%</span>
                                 </div>
                                 <Separator />
                                 <div className="space-y-2">
                                     <div className="flex flex-wrap gap-1">
-                                        {product.status && <Badge className="bg-green-900 text-green-200">Actif</Badge>}
+                                        {product.status ? <Badge className="bg-green-900 text-green-200">Actif</Badge> : <Badge className="bg-red-900 text-red-200">Inactif</Badge>}
                                         {product.isNew && <Badge className="bg-blue-900 text-blue-200">Nouveau</Badge>}
                                     </div>
                                 </div>
@@ -338,7 +330,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
     );
 }
 
-function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProps<ProductForm>) {
+function GeneralTabContent({ data, setData, brands, groups, processing }: FormTabContentProps<ProductForm>) {
     const [openBrand, setOpenBrand] = useState<boolean>(false)
     const [openGroups, setOpenGroups] = useState<boolean>(false)
     const [openBrandDialog, setOpenBrandDialog] = useState<boolean>(false);
@@ -359,6 +351,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                                 id="name"
                                 value={data.name}
                                 tabIndex={1}
+                                disabled={processing}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Nom du produit"
                             />
@@ -376,6 +369,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                             value={data.short_description}
                             onChange={(e) => setData('short_description', e.target.value)}
                             tabIndex={2}
+                            disabled={processing}
                             rows={5}
                             placeholder="Courte description du produit..."
                         />
@@ -387,6 +381,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
                             tabIndex={3}
+                            disabled={processing}
                             rows={5}
                             placeholder="Description détaillée du produit..."
                         />
@@ -404,7 +399,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                             <div className="*:not-first:mt-2">
                                 <Label htmlFor="brand">Marque du produit *</Label>
                                 <Popover open={openBrand} onOpenChange={setOpenBrand}>
-                                    <PopoverTrigger asChild>
+                                    <PopoverTrigger asChild tabIndex={4} disabled={processing}>
                                         <Button
                                             variant="outline"
                                             role="combobox"
@@ -412,9 +407,9 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                                             className="w-full justify-between border-input bg-background px-3 font-normal outline-offset-0
                                                 outline-none hover:bg-background focus-visible:outline-[3px]"
                                         >
-                                            <span className={cn('truncate', !data.brand && 'text-muted-foreground')}>
-                                                {data.brand
-                                                    ? brands?.find(brand => brand.id === data.brand.id)
+                                            <span className={cn('truncate', !data.brand_id && 'text-muted-foreground')}>
+                                                {data.brand_id
+                                                    ? brands?.find(brand => brand.id === data.brand_id)
                                                         ?.name
                                                     : "Sélectionner une marque"}
                                             </span>
@@ -441,15 +436,12 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                                                             key={brand.id}
                                                             value={brand.name}
                                                             onSelect={() => {
-                                                                setData('brand', {
-                                                                    id: brand.id,
-                                                                    name: brand.name,
-                                                                });
+                                                                setData('brand_id', brand.id);
                                                                 setOpenBrand(false);
                                                             }}
                                                         >
                                                             {brand.name}
-                                                            {data.brand.id === brand.id && <CheckIcon size={16} className="ml-auto" />}
+                                                            {data.brand_id === brand.id && <CheckIcon size={16} className="ml-auto" />}
                                                         </CommandItem>
                                                     ))}
                                                 </CommandGroup>
@@ -461,7 +453,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
                             <div className="*:not-first:mt-2">
                                 <Label htmlFor="group">Groupe de produits</Label>
                                 <Popover open={openGroups} onOpenChange={setOpenGroups}>
-                                    <PopoverTrigger asChild>
+                                    <PopoverTrigger asChild tabIndex={5} disabled={processing}>
                                         <Button
                                             variant="outline"
                                             role="combobox"
@@ -540,7 +532,7 @@ function GeneralTabContent({ data, setData, brands, groups }: FormTabContentProp
     );
 }
 
-function ImagesTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
+function ImagesTabContent({ data, setData, processing }: FormTabContentProps<ProductForm>) {
     const maxSizeMB = 2
     const maxSize = maxSizeMB * 1024 * 1024
     const maxFiles = 6
@@ -616,7 +608,7 @@ function ImagesTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
                 <CardHeader>
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-foreground">Images du produit</CardTitle>
-                        <Button variant="outline" onClick={openFileDialog} type="button">
+                        <Button variant="outline" onClick={openFileDialog} type="button" tabIndex={1} disabled={processing}>
                             <Upload />
                             Ajouter des images
                         </Button>
@@ -651,7 +643,7 @@ function ImagesTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
                                 <p className="text-muted-foreground text-xs">
                                     SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
                                 </p>
-                                <Button variant="outline" className="mt-4" onClick={openFileDialog} type="button">
+                                <Button variant="outline" className="mt-4" onClick={openFileDialog} type="button" tabIndex={2} disabled={processing}>
                                     <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
                                     Sélectionner des images
                                 </Button>
@@ -742,20 +734,6 @@ function ImagesTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
 }
 
 function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
-    const calculateMargin = () => {
-        if (data.cost_price && data.price) {
-            return (((data.price - data.cost_price) / data.price) * 100).toFixed(1)
-        }
-        return "0"
-    }
-
-    const calculateProfit = () => {
-        if (data.cost_price && data.price) {
-            return (data.price - data.cost_price).toFixed(2)
-        }
-        return "0.00"
-    }
-
     return (
         <TabsContent value="pricing" className="space-y-4">
             <Card className="border-border bg-card">
@@ -865,11 +843,11 @@ function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) 
                             <div className="p-3 bg-muted rounded-md">
                                 <div className="flex justify-between items-center">
                                     <span className="text-muted-foreground">Marge:</span>
-                                    <span className="font-semibold text-green-500">{calculateMargin()}%</span>
+                                    <span className="font-semibold text-green-500">{calculateMargin(data.cost_price, data.discount_price ?? data.price)}%</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="text-muted-foreground">Profit:</span>
-                                    <span className="font-semibold text-green-500">€{calculateProfit()}</span>
+                                    <span className="font-semibold text-green-500">€{calculateProfit(data.cost_price, data.discount_price ?? data.price)}</span>
                                 </div>
                             </div>
                         </div>
@@ -950,7 +928,7 @@ function InventoryTabContent({ data, setData }: FormTabContentProps<ProductForm>
     )
 }
 
-function SeoTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
+function SeoTabContent({ data, setData, processing }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="seo" className="space-y-4">
             <Card className="border-border bg-card">
@@ -963,6 +941,7 @@ function SeoTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
                         <Input
                             id="meta_title"
                             tabIndex={1}
+                            disabled={processing}
                             value={data.meta_title ?? ''}
                             onChange={(e) => setData('meta_title', e.target.value)}
                             type="text"
@@ -977,6 +956,7 @@ function SeoTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
                         <Textarea
                             id="meta_description"
                             tabIndex={2}
+                            disabled={processing}
                             value={data.meta_description ?? ''}
                             onChange={(e) => setData('meta_description', e.target.value)}
                             placeholder="Description pour les moteurs de recherche"
@@ -991,6 +971,7 @@ function SeoTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
                         <Input
                             id="meta_keywords"
                             tabIndex={3}
+                            disabled={processing}
                             value={data.meta_keywords ?? ''}
                             onChange={(e) => setData('meta_keywords', e.target.value)}
                             placeholder="mot-clé1, mot-clé2, mot-clé3"

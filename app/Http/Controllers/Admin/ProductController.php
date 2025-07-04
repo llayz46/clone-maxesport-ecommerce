@@ -80,7 +80,6 @@ class ProductController extends Controller
                 ['title' => 'Modifier', 'href' => route('admin.products.edit', $product)],
             ],
             'product' => fn () => ProductResource::make($product->load(['images', 'brand:id,name', 'categories:id,parent_id', 'group:id,name'])),
-//            'group.products:id,name,product_group_id,created_at,updated_at'
             'brands' => fn () => Brand::select('id', 'name')->orderBy('name')->get(),
             'groups' => fn () => ProductGroup::select('id', 'name')->orderBy('name')->get()->load('products:id,name,product_group_id'),
         ]);
@@ -115,6 +114,6 @@ class ProductController extends Controller
             return redirect()->back()->withErrors(['error' => 'Impossible de supprimer le produit.']);
         }
 
-        return redirect()->route('admin.products.index');
+        return redirect()->route('admin.products.index')->with('success', 'Produit supprimé avec succès.');
     }
 }

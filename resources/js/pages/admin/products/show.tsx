@@ -6,11 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminLayout from '@/layouts/admin-layout';
 import type { BreadcrumbItem, Product } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Boxes, Building2, Calendar, Edit, ExternalLink, FolderOpen, Trash2, TrendingUp } from 'lucide-react';
+import { Boxes, Building2, Calendar, Edit, ExternalLink, FolderOpen, Package, Trash2, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { edit } from "@/actions/App/Http/Controllers/Admin/ProductController";
 import { getStorageUrl } from '@/utils/format-storage-url';
+import { calculateMargin, calculateProfit } from '@/utils/product-price-calculating';
+import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
 
 interface ProductType {
     breadcrumbs: BreadcrumbItem[];
@@ -19,6 +21,7 @@ interface ProductType {
 
 export default function Show({ breadcrumbs, product }: ProductType) {
     const [selectedImage, setSelectedImage] = useState<number>(0);
+    const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
 
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
@@ -35,7 +38,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             <Edit className="size-4" />
                             Modifier
                         </Link>
-                        <Button variant="outline" className="border-border bg-background text-red-400 hover:border-red-900 hover:bg-red-950">
+                        <Button variant="outline" className="border-border bg-background text-red-400 hover:border-red-900 hover:bg-red-950" onClick={() => setDeleteProduct(product)}>
                             <Trash2 className="size-4" />
                             Supprimer
                         </Button>
@@ -43,6 +46,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                 </div>
 
                 <div className="flex gap-2">
+                    {product.status ? <Badge className="bg-green-900 text-green-200">Actif</Badge> : <Badge className="bg-red-900 text-red-200">Inactif</Badge>}
                     {product.isNew && <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Nouveau</Badge>}
                     <Badge variant="secondary" className="bg-green-900 text-green-200">
                         En stock
@@ -163,14 +167,35 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                         <CardTitle className="text-foreground">Tarification</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="flex gap-24">
+                                        <div className="grid md:grid-cols-4 gap-4">
+                                            {product.discount_price ? (
+                                                <div>
+                                                    <label className="text-sm font-medium text-muted-foreground">Prix de vente (discount)</label>
+                                                    <p className="text-lg font-semibold text-muted-foreground">€{product.discount_price.toFixed(2)}</p>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <label className="text-sm font-medium text-muted-foreground">Prix de vente</label>
+                                                    <p className="text-2xl font-bold text-foreground">€{product.price.toFixed(2)}</p>
+                                                </div>
+                                            )}
                                             <div>
-                                                <label className="text-sm font-medium text-muted-foreground">Prix de vente</label>
-                                                <p className="text-2xl font-bold text-foreground">€{product.price.toFixed(2)}</p>
+                                                <label className="text-sm font-medium text-muted-foreground">Prix coûtant</label>
+                                                <p className="text-lg font-semibold text-muted-foreground">
+                                                    €{product.cost_price.toFixed(2)}
+                                                </p>
                                             </div>
                                             <div>
-                                                <label className="text-sm font-medium text-muted-foreground">Prix discount</label>
-                                                <p className="text-lg font-semibold text-muted-foreground">€{product.discount_price?.toFixed(2)}</p>
+                                                <label className="text-sm font-medium text-muted-foreground">Marge</label>
+                                                <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+                                                    {calculateMargin(product.cost_price, product.discount_price ?? product.price)}%
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <label className="text-sm font-medium text-muted-foreground">Profit</label>
+                                                <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+                                                    €{calculateProfit(product.cost_price, product.discount_price ?? product.price)}
+                                                </p>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -190,15 +215,9 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                             </div>
                                         </div>
                                         <Separator className="my-4" />
-                                        <div className="grid gap-4 md:grid-cols-2">
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">Seuil de réapprovisionnement</label>
-                                                <p className="font-medium text-foreground">15 unités</p>
-                                            </div>
-                                            <div>
-                                                <label className="text-sm font-medium text-muted-foreground">Fournisseur</label>
-                                                <p className="font-medium text-foreground">{product.brand.name}</p>
-                                            </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-muted-foreground">Seuil de réapprovisionnement</label>
+                                            <p className="font-medium text-foreground">{product.reorder_level} unités</p>
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -212,15 +231,15 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                     <CardContent className="space-y-4">
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">Titre Meta</label>
-                                            <p className="mt-1 text-foreground">SR SQ - Tapis de souris gaming control | La Onda (product.seo.meta_title)</p>
+                                            <p className="mt-1 text-foreground">{product.meta_title ?? 'Pas de titre meta'}</p>
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">Description Meta</label>
-                                            <p className="mt-1 text-foreground">Découvrez le SR SQ, tapis de souris gaming avec surface texturée pour un contrôle maximum. Idéal pour les jeux compétitifs. (product.seo.meta_description)</p>
+                                            <p className="mt-1 text-foreground">{product.meta_description ?? 'Pas de description meta'}</p>
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">Mots-clés</label>
-                                            <p className="mt-1 text-foreground">tapis souris, gaming, control, la onda, sr sq (product.seo.keywords)</p>
+                                            <p className="mt-1 text-foreground">{product.meta_keywords ?? 'Pas de mot clés meta'}</p>
                                         </div>
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">URL du produit</label>
@@ -290,6 +309,17 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                     </div>
                 </div>
             </div>
+
+            <ConfirmDeleteDialog
+                item={deleteProduct}
+                open={!!deleteProduct}
+                onClose={() => setDeleteProduct(null)}
+                itemNameKey="name"
+                deleteRoute={(item) => route('admin.products.destroy', item.slug)}
+                itemLabel="produit"
+                icon={<Package className="size-4" />}
+                prefix="Le"
+            />
         </AdminLayout>
     );
 }

@@ -30,7 +30,13 @@ class HandleProduct
             'meta_title' => $data['meta_title'] ?? null,
             'meta_description' => $data['meta_description'] ?? null,
             'meta_keywords' => $data['meta_keywords'] ?? null,
+            'brand_id' => $data['brand_id'] ?? null,
+            'product_group_id' => $data['group_id'] ?? null,
         ]);
+
+        if (isset($data['category_id'])) {
+            $product->categories()->sync($data['category_id']);
+        }
 
         if (isset($data['images']) && is_array($data['images'])) {
             $this->handleImages($product, $data['images']);
