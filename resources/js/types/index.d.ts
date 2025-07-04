@@ -96,6 +96,8 @@ export interface Brand {
     name: string;
     slug: string;
     logo_url: string | null;
+    products?: Product[] | null;
+    products_count?: number | null;
     created_at: string;
     updated_at: string;
 }
@@ -103,13 +105,16 @@ export interface Brand {
 export interface Product {
     id: number;
     name: string;
+    sku: string;
     slug: string;
     description: string;
     short_description: string;
     is_primary: boolean;
     price: number;
     discount_price: number | null;
+    cost_price: number;
     stock: number;
+    reorder_level: number;
     isNew: boolean;
     isWishlisted: boolean;
     brand: Brand;
@@ -118,6 +123,10 @@ export interface Product {
     images?: ProductImage[] | null;
     image?: ProductImage | null;
     featured_image?: ProductImage;
+    status: boolean;
+    meta_title: string | null;
+    meta_description: string | null;
+    meta_keywords: string | null;
     created_at: string;
     updated_at: string;
 }

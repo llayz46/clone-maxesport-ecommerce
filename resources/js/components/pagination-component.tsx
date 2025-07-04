@@ -29,9 +29,10 @@ interface PaginationProps {
         };
     };
     preserveQuery?: string[];
+    only?: string[];
 }
 
-export function PaginationComponent({ pagination, preserveQuery = [] }: PaginationProps) {
+export function PaginationComponent({ pagination, preserveQuery = [], only }: PaginationProps) {
     const pageLinks = pagination.meta.links.filter(
         (link: MetaLink) =>
             !link.label.toLowerCase().includes("previous") &&
@@ -39,12 +40,16 @@ export function PaginationComponent({ pagination, preserveQuery = [] }: Paginati
     );
 
     const getUrlWithPreservedQuery = (url: string | undefined): string | undefined => {
-        if (!url || preserveQuery.length === 0) return url;
+        if (!url) return url;
+
+        const paramsToKeep = only && only.length > 0 ? only : preserveQuery;
+
+        if (!paramsToKeep || paramsToKeep.length === 0) return url;
 
         const urlObj = new URL(url);
         const currentUrl = new URL(window.location.href);
 
-        preserveQuery.forEach(param => {
+        paramsToKeep.forEach(param => {
             const value = currentUrl.searchParams.get(param);
             if (value) {
                 urlObj.searchParams.set(param, value);

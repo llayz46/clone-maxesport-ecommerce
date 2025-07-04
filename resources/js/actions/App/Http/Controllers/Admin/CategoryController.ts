@@ -53,7 +53,7 @@ index.head = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::store
- * @see app/Http/Controllers/Admin/CategoryController.php:43
+ * @see app/Http/Controllers/Admin/CategoryController.php:39
  * @route '/admin/categories'
  */
 export const store = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -71,7 +71,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::store
- * @see app/Http/Controllers/Admin/CategoryController.php:43
+ * @see app/Http/Controllers/Admin/CategoryController.php:39
  * @route '/admin/categories'
  */
 store.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -80,7 +80,7 @@ store.url = (options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::store
- * @see app/Http/Controllers/Admin/CategoryController.php:43
+ * @see app/Http/Controllers/Admin/CategoryController.php:39
  * @route '/admin/categories'
  */
 store.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -93,7 +93,7 @@ store.post = (options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::update
- * @see app/Http/Controllers/Admin/CategoryController.php:54
+ * @see app/Http/Controllers/Admin/CategoryController.php:46
  * @route '/admin/categories/{category}'
  */
 export const update = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -105,13 +105,13 @@ export const update = (args: { category: number | { id: number } } | [category: 
 })
 
 update.definition = {
-    methods: ['put'],
+    methods: ['put','patch'],
     url: '/admin/categories/{category}',
 }
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::update
- * @see app/Http/Controllers/Admin/CategoryController.php:54
+ * @see app/Http/Controllers/Admin/CategoryController.php:46
  * @route '/admin/categories/{category}'
  */
 update.url = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -142,7 +142,7 @@ update.url = (args: { category: number | { id: number } } | [category: number | 
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::update
- * @see app/Http/Controllers/Admin/CategoryController.php:54
+ * @see app/Http/Controllers/Admin/CategoryController.php:46
  * @route '/admin/categories/{category}'
  */
 update.put = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -152,10 +152,22 @@ update.put = (args: { category: number | { id: number } } | [category: number | 
     url: update.url(args, options),
     method: 'put',
 })
+/**
+* @see \App\Http\Controllers\Admin\CategoryController::update
+ * @see app/Http/Controllers/Admin/CategoryController.php:46
+ * @route '/admin/categories/{category}'
+ */
+update.patch = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
+    url: string,
+    method: 'patch',
+} => ({
+    url: update.url(args, options),
+    method: 'patch',
+})
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::destroy
- * @see app/Http/Controllers/Admin/CategoryController.php:61
+ * @see app/Http/Controllers/Admin/CategoryController.php:53
  * @route '/admin/categories/{category}'
  */
 export const destroy = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -173,7 +185,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::destroy
- * @see app/Http/Controllers/Admin/CategoryController.php:61
+ * @see app/Http/Controllers/Admin/CategoryController.php:53
  * @route '/admin/categories/{category}'
  */
 destroy.url = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -204,7 +216,7 @@ destroy.url = (args: { category: number | { id: number } } | [category: number |
 
 /**
 * @see \App\Http\Controllers\Admin\CategoryController::destroy
- * @see app/Http/Controllers/Admin/CategoryController.php:61
+ * @see app/Http/Controllers/Admin/CategoryController.php:53
  * @route '/admin/categories/{category}'
  */
 destroy.delete = (args: { category: number | { id: number } } | [category: number | { id: number } ] | number | { id: number }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

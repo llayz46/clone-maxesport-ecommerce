@@ -20,6 +20,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { useInitials } from '@/hooks/use-initials';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 export function UserDropdown({ user }: { user: User }) {
     const getInitials = useInitials();
@@ -36,7 +37,7 @@ export function UserDropdown({ user }: { user: User }) {
             <DropdownMenuContent className="max-w-64" align="end">
                 <DropdownMenuLabel className="flex items-start gap-3">
                     <Avatar>
-                        <AvatarImage src={`../storage/${user.avatar}`} alt={user.name} />
+                        <AvatarImage src={getStorageUrl(user.avatar)} alt={user.name} />
                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                             {getInitials(user.name)}
                         </AvatarFallback>

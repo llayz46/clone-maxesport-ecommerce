@@ -17,11 +17,22 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('sku')->unique();
             $table->text('description');
             $table->string('short_description', 255);
+
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
+            $table->decimal('cost_price', 10, 2);
+
             $table->unsignedInteger('stock')->default(0);
+            $table->unsignedInteger('reorder_level')->default(10);
+
+            $table->boolean('status')->default(true);
+
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description', 255)->nullable();
+            $table->string('meta_keywords', 255)->nullable();
 
             $table->foreignIdFor(Brand::class)->constrained()->restrictOnDelete();
             $table->foreignIdFor(ProductGroup::class)->nullable()->constrained()->nullOnDelete();

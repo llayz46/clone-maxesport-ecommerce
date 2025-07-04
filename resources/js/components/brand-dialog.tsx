@@ -25,9 +25,10 @@ interface BrandDialogProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     brand?: Brand | null;
+    inputValue?: string;
 }
 
-export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
+export function BrandDialog({ open, setOpen, brand, inputValue }: BrandDialogProps) {
     const { data, setData, post, processing, errors, reset } = useForm<BrandForm>({
         name: '',
         logo_url: null
@@ -39,13 +40,19 @@ export function BrandDialog({ open, setOpen, brand }: BrandDialogProps) {
                 name: brand.name || '',
                 logo_url: null
             });
+        } else if (inputValue) {
+            setData({
+                name: inputValue,
+                logo_url: null
+            });
         } else {
             reset();
         }
-    }, [brand]);
+    }, [brand, inputValue]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        e.stopPropagation();
 
         if (!brand) {
             post(route('admin.brands.store'), {

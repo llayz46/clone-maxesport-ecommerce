@@ -30,7 +30,7 @@ class BrandController extends Controller
             $brand->update(['logo_url' => $request->file('logo_url')->store('brands', 'public')]);
         }
 
-        return redirect()->route('admin.brands.index');
+        return redirect()->back();
     }
 
     public function update(BrandRequest $request, Brand $brand)

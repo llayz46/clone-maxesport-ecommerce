@@ -11,9 +11,10 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search, Tags } from 'lucide-react';
+import { BookOpen, Folders, LayoutGrid, Menu, Package, Search, Tags } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 const mainNavItems: NavItem[] = [
     {
@@ -24,21 +25,26 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Catégories',
         href: '/admin/categories',
-        icon: Folder,
+        icon: Folders,
     },
     {
         title: 'Marques',
         href: '/admin/brands',
         icon: Tags,
     },
+    {
+        title: 'Produits',
+        href: '/admin/products',
+        icon: Package,
+    },
 ];
 
 const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/react-starter-kit',
+    //     icon: Folder,
+    // },
     {
         title: 'Documentation',
         href: 'https://laravel.com/docs/starter-kits#react',
@@ -119,14 +125,14 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             href={item.href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                page.url === item.href && activeItemStyles,
+                                                (page.url === item.href || (page.url.startsWith(item.href + '/') && item.href !== '/admin')) && activeItemStyles,
                                                 'h-9 cursor-pointer px-3',
                                             )}
                                         >
                                             {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
                                             {item.title}
                                         </Link>
-                                        {page.url === item.href && (
+                                        {(page.url === item.href || (page.url.startsWith(item.href + '/') && item.href !== '/admin')) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>
@@ -167,7 +173,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="size-10 rounded-full p-1">
                                     <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                                        <AvatarImage src={`../storage/${auth.user.avatar}`} alt={auth.user.name} />
+                                        <AvatarImage src={getStorageUrl(auth.user.avatar)} alt={auth.user.name} />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
                                             {getInitials(auth.user.name)}
                                         </AvatarFallback>

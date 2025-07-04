@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGroupController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -15,4 +17,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->only(['index', 'store', 'destroy']);
     Route::post('brands/{brand}', [BrandController::class, 'update'])
         ->name('brands.update');
+
+    Route::resource('products', ProductController::class)
+        ->only(['index', 'show', 'edit', 'destroy'])->scoped([
+            'product' => 'slug',
+        ]);
+    Route::post('products/{product}', [ProductController::class, 'update'])
+        ->name('products.update');
+
+    Route::post('groups', ProductGroupController::class)->name('groups.store');
 });

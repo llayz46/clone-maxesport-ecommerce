@@ -14,12 +14,21 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'sku' => $this->sku,
             'slug' => $this->slug,
             'description' => $this->description,
             'short_description' => $this->short_description,
-            'price' => $this->getPrice,
+
+            'price' => $this->price,
             'discount_price' => $this->discount_price,
             'stock' => $this->stock,
+            'status' => $this->status,
+
+            $this->mergeWhen($request->routeIs('admin.products.edit'), [
+                'cost_price' => $this->cost_price,
+                'reorder_level' => $this->reorder_level,
+            ]),
+
             'isNew' => $this->created_at->diffInDays(now()) <= 7,
             'isWishlisted' => $this->whenLoaded('wishlists', function () {
                 return $this->wishlists->isNotEmpty();
@@ -28,7 +37,9 @@ class ProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'group' => ProductGroupResource::make($this->whenLoaded('group')),
             'featured_image' => ProductImageResource::make($this->whenLoaded('featuredImage')),
-            'images' => ProductImageResource::collection($this->whenLoaded('images'))
+            'images' => ProductImageResource::collection($this->whenLoaded('images')),
+            'updated_at' => $this->updated_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
+            'created_at' => $this->created_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
         ];
     }
 }

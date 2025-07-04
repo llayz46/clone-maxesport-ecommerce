@@ -1,7 +1,7 @@
 import { queryParams, type QueryParams } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CategoryController::__invoke
- * @see app/Http/Controllers/CategoryController.php:14
+ * @see app/Http/Controllers/CategoryController.php:21
  * @route '/categories/{category}'
  */
 const CategoryController = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -19,7 +19,7 @@ CategoryController.definition = {
 
 /**
 * @see \App\Http\Controllers\CategoryController::__invoke
- * @see app/Http/Controllers/CategoryController.php:14
+ * @see app/Http/Controllers/CategoryController.php:21
  * @route '/categories/{category}'
  */
 CategoryController.url = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }) => {
@@ -50,7 +50,7 @@ CategoryController.url = (args: { category: string | { slug: string } } | [categ
 
 /**
 * @see \App\Http\Controllers\CategoryController::__invoke
- * @see app/Http/Controllers/CategoryController.php:14
+ * @see app/Http/Controllers/CategoryController.php:21
  * @route '/categories/{category}'
  */
 CategoryController.get = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {
@@ -62,7 +62,7 @@ CategoryController.get = (args: { category: string | { slug: string } } | [categ
 })
 /**
 * @see \App\Http\Controllers\CategoryController::__invoke
- * @see app/Http/Controllers/CategoryController.php:14
+ * @see app/Http/Controllers/CategoryController.php:21
  * @route '/categories/{category}'
  */
 CategoryController.head = (args: { category: string | { slug: string } } | [category: string | { slug: string } ] | string | { slug: string }, options?: { query?: QueryParams, mergeQuery?: QueryParams }): {

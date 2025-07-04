@@ -181,7 +181,7 @@ export function CategoryDialog({ open, setOpen, category, parentId }: CategoryDi
                                 />
                                 <InputError message={errors.description} />
                             </div>
-                            <CategoryTree setData={setData} initialSelectedItem={String(parentId)} />
+                            <CategoryTree label={{ htmlFor: 'parent', name: 'Catégorie parente' }} field="parent_id" setData={setData} initialSelectedItem={String(parentId)} />
                             <div className="*:not-first:mt-2">
                                 <Label htmlFor="status">Statut</Label>
                                 <Select defaultValue="inactive" value={data.status} onValueChange={(value) => setData('status', value as 'active' | 'inactive')}>

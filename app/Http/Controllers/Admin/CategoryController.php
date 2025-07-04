@@ -17,7 +17,7 @@ class CategoryController extends Controller
     protected HandleCategory $handleCategory;
 
     /**
-     * WishlistController constructor.
+     * Admin\CategoryController constructor.
      *
      * @param HandleCategory $handleCategory
      */

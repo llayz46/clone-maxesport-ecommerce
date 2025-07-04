@@ -374,7 +374,7 @@ export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadc
                 open={!!deleteCategory}
                 onClose={() => setDeleteCategory(null)}
                 itemNameKey="name"
-                deleteRoute={(id) => route('admin.categories.destroy', id)}
+                deleteRoute={(item) => route('admin.categories.destroy', item.id)}
                 itemLabel="catégorie"
                 icon={<Folders className="size-4" />}
                 prefix="La"

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -22,10 +23,31 @@ class Product extends Model
         'short_description',
         'price',
         'discount_price',
+        'cost_price',
         'stock',
+        'reorder_level',
+        'status',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
         'brand',
         'product_group',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            if (!$product->sku) {
+                $product->sku = 'LO-' .
+                    collect(explode(' ', $product->name))
+                        ->filter()
+                        ->map(fn($word) => strtoupper($word[0]))
+                        ->take(6)
+                        ->implode('') .
+                    '-' . strtoupper(Str::random(4));
+            }
+        });
+    }
 
     public function categories(): BelongsToMany
     {

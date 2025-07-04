@@ -17,6 +17,7 @@ import {
 import { BrandDialog } from '@/components/brand-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { breadcrumbs: BreadcrumbItem[], brands: Brand[] }) {
     const [searchTerm, setSearchTerm] = useState("")
@@ -142,7 +143,7 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
                                         <TableRow key={brand.id} className="border-border hover:bg-muted/50">
                                             <TableCell>
                                                 {brand.logo_url ? (
-                                                    <img className="size-8 aspect-square rounded-md object-cover truncate" src={`../storage/${brand.logo_url}`} alt={brand.name} loading="lazy" />
+                                                    <img className="size-8 aspect-square rounded-md object-cover truncate" src={getStorageUrl(brand.logo_url)} alt={brand.name} loading="lazy" />
                                                 ) : (
                                                     <span className="block size-8 rounded-md bg-muted"></span>
                                                 )}
@@ -263,7 +264,7 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
                 open={!!deleteBrand}
                 onClose={() => setDeleteBrand(null)}
                 itemNameKey="name"
-                deleteRoute={(id) => route('admin.brands.destroy', id)}
+                deleteRoute={(item) => route('admin.brands.destroy', item.id)}
                 itemLabel="marque"
                 icon={<Tags className="size-4" />}
                 prefix="La"

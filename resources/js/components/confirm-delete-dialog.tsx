@@ -13,7 +13,7 @@ type ConfirmDeleteDialogProps<T, K extends keyof T> = {
     open: boolean;
     onClose: () => void;
     itemNameKey: K;
-    deleteRoute: (id: number | string) => string;
+    deleteRoute: (item: T) => string;
     successMessage?: string;
     errorMessage?: string;
     icon?: ReactNode;
@@ -51,7 +51,7 @@ export function ConfirmDeleteDialog<T extends { id: number | string } & Record<K
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        destroy(deleteRoute(item.id), {
+        destroy(deleteRoute(item), {
             preserveScroll: true,
             onSuccess: () => {
                 reset('name');
@@ -80,10 +80,10 @@ export function ConfirmDeleteDialog<T extends { id: number | string } & Record<K
                     </div>
                     <DialogHeader>
                         <DialogTitle className="sm:text-center">
-                            Supprimer la {itemLabel} : <span className="text-foreground">{itemName}</span>
+                            Supprimer {prefix.toLowerCase()} {itemLabel} : <span className="text-foreground">{itemName}</span>
                         </DialogTitle>
                         <DialogDescription className="sm:text-center">
-                            Cette action est irréversible. Pour confirmer, veuillez saisir le nom ${prefix === 'La' ? 'de la' : 'du'} {itemLabel} {" "}
+                            Cette action est irréversible. Pour confirmer, veuillez saisir le nom {prefix === 'La' ? 'de la' : 'du'} {itemLabel} {" "}
                             <span className="text-foreground">{itemName}</span>.
                         </DialogDescription>
                     </DialogHeader>

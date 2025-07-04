@@ -23,7 +23,7 @@ const doubleClickExpandFeature: FeatureImplementation = {
     itemInstance: {
         getProps: ({ tree, item, prev }) => ({
             ...prev?.(),
-            onDoubleClick: (e: React.MouseEvent) => {
+            onDoubleClick: () => {
                 item.primaryAction()
 
                 if (!item.isFolder()) {
@@ -51,7 +51,7 @@ const doubleClickExpandFeature: FeatureImplementation = {
     },
 }
 
-export function CategoryTree({ setData, initialSelectedItem }: { setData: (parentId: string, id: string) => void, initialSelectedItem?: string }) {
+export function CategoryTree({ label, setData, field, initialSelectedItem, onlyChildren }: { label: { htmlFor: string, name: string }, field: string, setData: (parentId: string, id: string) => void, initialSelectedItem?: string, onlyChildren?: boolean }) {
     const { categories } = usePage<SharedData>().props;
     const { items, rootItemId } = formatCategoryTree(categories);
 
@@ -74,7 +74,7 @@ export function CategoryTree({ setData, initialSelectedItem }: { setData: (paren
     return (
         <div className="flex h-full flex-col gap-2 *:first:grow">
             <div className="flex items-center justify-between">
-                <Label htmlFor="parent">Catégorie parente</Label>
+                <Label htmlFor={label.htmlFor}>{label.name}</Label>
 
                 <div className="space-x-2">
                     <button type="button" className="text-xs text-muted-foreground" onClick={() => tree.expandAll()}>Développer</button>
@@ -93,7 +93,13 @@ export function CategoryTree({ setData, initialSelectedItem }: { setData: (paren
                                 <TreeItemLabel
                                     className={`relative before:absolute before:inset-x-0 before:-inset-y-0.5 before:-z-10 before:bg-background ${item.isSelected() ? 'font-medium text-primary bg-accent/30 rounded' : ''}`}
                                     onClick={() => {
-                                        setData('parent_id', item.getId());
+                                        if (onlyChildren) {
+                                            if (item.getParent()?.getId() === 'root' && item.getChildren().length > 0) {
+                                                return;
+                                            }
+                                        }
+
+                                        setData(field, item.getId());
                                         item.toggleSelect()
                                     }}
                                 >
