@@ -37,6 +37,7 @@ import { BrandDialog } from '@/components/brand-dialog';
 import { CategoryTree } from '@/components/category-tree';
 import { ProductGroupDialog } from '@/components/product-group-dialog';
 import { calculateMargin, calculateProfit } from '@/utils/product-price-calculating';
+import InputError from '@/components/input-error';
 
 interface ProductType {
     breadcrumbs: BreadcrumbItem[];
@@ -95,7 +96,7 @@ interface FormTabContentProps<T> {
 export default function Edit({ breadcrumbs, product, brands, groups }: ProductType) {
     const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
 
-    const { data, setData, post, errors, processing } = useForm<ProductForm>({
+    const { data, setData, post, errors, processing, reset } = useForm<ProductForm>({
         name: product.name ?? '',
         short_description: product.short_description ?? '',
         description: product.description ?? '',
@@ -147,6 +148,8 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
                     description: allErrors,
                     icon: <Package className="size-4" />,
                 });
+
+                reset()
             },
         })
     };
@@ -330,7 +333,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
     );
 }
 
-function GeneralTabContent({ data, setData, brands, groups, processing }: FormTabContentProps<ProductForm>) {
+function GeneralTabContent({ data, setData, brands, groups, processing, errors }: FormTabContentProps<ProductForm>) {
     const [openBrand, setOpenBrand] = useState<boolean>(false)
     const [openGroups, setOpenGroups] = useState<boolean>(false)
     const [openBrandDialog, setOpenBrandDialog] = useState<boolean>(false);
@@ -355,6 +358,7 @@ function GeneralTabContent({ data, setData, brands, groups, processing }: FormTa
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Nom du produit"
                             />
+                            <InputError message={errors.name || errors.slug} />
                         </div>
                         {data.name && (
                             <div className="mt-auto flex h-9 items-center">
@@ -373,6 +377,7 @@ function GeneralTabContent({ data, setData, brands, groups, processing }: FormTa
                             rows={5}
                             placeholder="Courte description du produit..."
                         />
+                        <InputError message={errors.short_description} />
                     </div>
                     <div className="*:not-first:mt-2">
                         <Label htmlFor="description">Description *</Label>
@@ -385,6 +390,7 @@ function GeneralTabContent({ data, setData, brands, groups, processing }: FormTa
                             rows={5}
                             placeholder="Description détaillée du produit..."
                         />
+                        <InputError message={errors.description} />
                     </div>
                 </CardContent>
             </Card>
@@ -449,6 +455,7 @@ function GeneralTabContent({ data, setData, brands, groups, processing }: FormTa
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
+                                <InputError message={errors.brand_id} />
                             </div>
                             <div className="*:not-first:mt-2">
                                 <Label htmlFor="group">Groupe de produits</Label>
@@ -514,6 +521,7 @@ function GeneralTabContent({ data, setData, brands, groups, processing }: FormTa
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
+                                <InputError message={errors.group_id} />
                             </div>
                         </div>
                         <div className="*:not-first:mt-2">
@@ -733,7 +741,7 @@ function ImagesTabContent({ data, setData, processing }: FormTabContentProps<Pro
     );
 }
 
-function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
+function PricingTabContent({ data, setData, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="pricing" className="space-y-4">
             <Card className="border-border bg-card">
@@ -774,6 +782,7 @@ function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) 
                                 </Group>
                             </div>
                         </NumberField>
+                        <InputError message={errors.price} />
                         <NumberField
                             defaultValue={data.discount_price ?? 0}
                             formatOptions={{
@@ -806,6 +815,7 @@ function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) 
                                 </Group>
                             </div>
                         </NumberField>
+                        <InputError message={errors.discount_price} />
                         <NumberField
                             defaultValue={data.cost_price ?? 0}
                             formatOptions={{
@@ -838,6 +848,7 @@ function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) 
                                 </Group>
                             </div>
                         </NumberField>
+                        <InputError message={errors.cost_price} />
                         <div className="*:not-first:mt-2">
                             <Label>Marge calculée</Label>
                             <div className="p-3 bg-muted rounded-md">
@@ -858,7 +869,7 @@ function PricingTabContent({ data, setData }: FormTabContentProps<ProductForm>) 
     )
 }
 
-function InventoryTabContent({ data, setData }: FormTabContentProps<ProductForm>) {
+function InventoryTabContent({ data, setData, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="inventory" className="space-y-4">
             <Card className="border-border bg-card">
@@ -894,6 +905,7 @@ function InventoryTabContent({ data, setData }: FormTabContentProps<ProductForm>
                                 </Group>
                             </div>
                         </NumberField>
+                        <InputError message={errors.stock} />
                         <NumberField
                             defaultValue={data.reorder_level}
                             onChange={(value) => setData('reorder_level', value)}
@@ -921,6 +933,7 @@ function InventoryTabContent({ data, setData }: FormTabContentProps<ProductForm>
                                 </Group>
                             </div>
                         </NumberField>
+                        <InputError message={errors.reorder_level} />
                     </div>
                 </CardContent>
             </Card>
@@ -928,7 +941,7 @@ function InventoryTabContent({ data, setData }: FormTabContentProps<ProductForm>
     )
 }
 
-function SeoTabContent({ data, setData, processing }: FormTabContentProps<ProductForm>) {
+function SeoTabContent({ data, setData, processing, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="seo" className="space-y-4">
             <Card className="border-border bg-card">
@@ -950,6 +963,7 @@ function SeoTabContent({ data, setData, processing }: FormTabContentProps<Produc
                         <p className="text-xs text-muted-foreground">
                             {data.meta_title ? data.meta_title.length : 0}/60 caractères recommandés
                         </p>
+                        <InputError message={errors.meta_title} />
                     </div>
                     <div className="*:not-first:mt-2">
                         <Label htmlFor="meta_description">Description Meta</Label>
@@ -965,6 +979,7 @@ function SeoTabContent({ data, setData, processing }: FormTabContentProps<Produc
                         <p className="text-xs text-muted-foreground">
                             {data.meta_description ? data.meta_description.length : 0}/160 caractères recommandés
                         </p>
+                        <InputError message={errors.meta_description} />
                     </div>
                     <div className="*:not-first:mt-2">
                         <Label htmlFor="meta_keywords">Mots-clés</Label>
@@ -976,6 +991,7 @@ function SeoTabContent({ data, setData, processing }: FormTabContentProps<Produc
                             onChange={(e) => setData('meta_keywords', e.target.value)}
                             placeholder="mot-clé1, mot-clé2, mot-clé3"
                         />
+                        <InputError message={errors.meta_keywords} />
                     </div>
                 </CardContent>
             </Card>
