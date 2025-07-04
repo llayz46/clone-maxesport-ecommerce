@@ -34,7 +34,11 @@ class ProductController extends Controller
     {
         $search = trim($request->input('search'));
 
-        $query = Product::query()->with('brand');
+        $groupId = $request->input('group_id');
+
+        $query = Product::query()->with('brand', 'group:id');
+
+        if ($groupId) $query->where('product_group_id', $groupId);
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -50,6 +54,7 @@ class ProductController extends Controller
                 ['title' => 'Produits', 'href' => route('admin.products.index')],
             ],
             'search' => fn () => $search,
+            'groupId' => fn () => $groupId,
             'products' => Inertia::defer(fn () => ProductResource::collection($query->paginate(16)->withQueryString())),
         ]);
     }

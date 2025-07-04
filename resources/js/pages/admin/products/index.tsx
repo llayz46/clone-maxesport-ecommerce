@@ -2,7 +2,7 @@ import { Head, router, Deferred, Link } from '@inertiajs/react';
 import type { BreadcrumbItem, PaginatedResponse, Product } from '@/types';
 import AdminLayout from '@/layouts/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Edit, Eye, MoreHorizontal, Package, Search, Trash2 } from 'lucide-react';
+import { Edit, Eye, Loader2, MoreHorizontal, Package, Search, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -16,9 +16,10 @@ interface ProductsType {
     breadcrumbs: BreadcrumbItem[]
     products: PaginatedResponse<Product>;
     search?: string | null;
+    groupId?: number | null;
 }
 
-export default function Index({ breadcrumbs: initialBreadcrumbs, products, search }: ProductsType) {
+export default function Index({ breadcrumbs: initialBreadcrumbs, products, search, groupId }: ProductsType) {
     const [searchTerm, setSearchTerm] = useState<string>(search || '');
     const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
     const isFirstRender = useRef(true)
@@ -56,6 +57,13 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
         return initialBreadcrumbs;
     }, [initialBreadcrumbs, deleteProduct]);
 
+    const handleGroupedProducts = (group_id: number) => {
+        router.get(route('admin.products.index'), { group_id }, {
+            preserveState: true,
+            replace: true,
+        });
+    }
+
     return (
         <AdminLayout breadcrumbs={localBreadcrumbs}>
             <Head title="Gérer les produits" />
@@ -63,8 +71,8 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
             <Card className="mt-4 py-4 border-border bg-card">
                 <CardContent className="px-4">
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="flex-1">
-                            <form className="relative" onSubmit={e => e.preventDefault()}>
+                        <div className="flex-1 flex gap-4">
+                            <form className="relative flex-1" onSubmit={e => e.preventDefault()}>
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                                 <Input
                                     placeholder="Rechercher un produit..."
@@ -73,6 +81,14 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                                     className="pl-10 bg-background border-border text-foreground placeholder:text-muted-foreground"
                                 />
                             </form>
+                            {groupId && (
+                                <Button
+                                    variant="outline"
+                                    onClick={() => router.get(route('admin.products.index'))}
+                                >
+                                    Voir tous les produits
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </CardContent>
@@ -145,6 +161,17 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                                                                         Voir détails
                                                                     </Link>
                                                                 </DropdownMenuItem>
+                                                                {product.group && (
+                                                                    <DropdownMenuItem asChild>
+                                                                        <button
+                                                                            className="cursor-pointer text-foreground hover:bg-muted"
+                                                                            onClick={() => handleGroupedProducts(product.group?.id || 0)}
+                                                                        >
+                                                                            <Eye className="mr-1 size-4" />
+                                                                            Voir groupe
+                                                                        </button>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                                 <DropdownMenuItem asChild>
                                                                     <Link href={edit(product.slug).url} className="cursor-pointer text-foreground hover:bg-muted">
                                                                         <Edit className="mr-1 h-4 w-4" />
@@ -217,7 +244,14 @@ function DeferredFallback() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow></TableRow>
+                        <TableRow className="border-border hover:bg-muted/50">
+                            <TableCell className="font-medium">
+                                <span className="flex items-center gap-2 text-foreground">
+                                    <Loader2 className="animate-spin" size={16} />
+                                    Chargement des données...
+                                </span>
+                            </TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </CardContent>
