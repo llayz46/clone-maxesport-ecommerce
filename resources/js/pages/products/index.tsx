@@ -12,7 +12,7 @@ type SortType = 'news' | 'price_asc' | 'price_desc';
 export default function Index({ data, sort = 'news', search }: IndexProductProps) {
     return (
         <ProductListPage
-            title="se"
+            title={search ? `Résultats de recherche pour "${search}"` : 'Tous les produits'}
             products={data}
             sort={sort}
         />
