@@ -10,11 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    /** @use HasFactory<\Database\Factories\ProductFactory> */
-    use HasFactory;
+    /**
+     * @use HasFactory<\Database\Factories\ProductFactory>
+     * @use Searchable<\App\Models\Product>
+     */
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'name',

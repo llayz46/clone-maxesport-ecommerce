@@ -32,20 +32,29 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $search = trim($request->input('search'));
-
+        $search = $request->input('search');
         $groupId = $request->input('group_id');
 
-        $query = Product::query()->with('brand', 'group:id');
-
-        if ($groupId) $query->where('product_group_id', $groupId);
-
         if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('slug', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
-            });
+            $products = Product::search($search)
+                ->query(function ($query) use ($groupId) {
+                    $query->where('status', true)
+                        ->with('brand', 'group:id');
+
+                    if ($groupId) {
+                        $query->where('product_group_id', $groupId);
+                    }
+                })->paginate(16)->withQueryString();
+        } else {
+            $query = Product::query()
+                ->where('status', true)
+                ->with('brand', 'group:id');
+
+            if ($groupId) {
+                $query->where('product_group_id', $groupId);
+            }
+
+            $products = $query->paginate(16)->withQueryString();
         }
 
         return Inertia::render('admin/products/index', [
@@ -55,7 +64,7 @@ class ProductController extends Controller
             ],
             'search' => fn () => $search,
             'groupId' => fn () => $groupId,
-            'products' => Inertia::defer(fn () => ProductResource::collection($query->paginate(16)->withQueryString())),
+            'products' => Inertia::defer(fn () => ProductResource::collection($products)),
         ]);
     }
 
