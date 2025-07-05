@@ -54,6 +54,7 @@ Route::get('/brands/{brand:slug}', [BrandController::class, 'show'])->name('bran
 Route::get('/promotions', PromotionController::class)->name('promotions');
 Route::get('/news', NewsController::class)->name('news');
 
+Route::get('/products', [ProductController::class, 'index'])->name('product.index');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('product.show');
 
 require __DIR__.'/settings.php';

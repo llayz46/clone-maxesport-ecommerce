@@ -1,39 +1,70 @@
 import { Input } from '@/components/ui/input';
 import { Heart, SearchIcon, User } from 'lucide-react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { buttonVariants } from '@/components/ui/button';
 import Logo from '@/components/logo';
 import type { SharedData } from '@/types';
 import { UserDropdown } from '@/components/user-dropdown';
 import { CartSheet } from '@/components/cart-sheet';
+import { SetStateAction, useMemo, useState } from 'react';
+import debounce from 'lodash.debounce';
 
 export function Header() {
     const { auth } = usePage<SharedData>().props;
 
+    const [search, setSearch] = useState('');
+
+    const debouncedSearch = useMemo(() =>
+        debounce((value) => {
+            router.get(
+                route('product.index'),
+                { search: value },
+                {
+                    preserveState: true,
+                    replace: true,
+                },
+            );
+        }, 300),
+    []);
+
+    const handleChange = (e: { target: { value: SetStateAction<string> } }) => {
+        setSearch(e.target.value);
+        debouncedSearch(e.target.value);
+    };
+
     return (
-        <header className="layout-container py-6 border-b flex items-center justify-between gap-12">
-            <Link prefetch href="/" className="w-full inline-flex items-center gap-8">
-                <Logo />
+        <header className="layout-container flex items-center justify-between gap-12 border-b py-6">
+            <div className="inline-flex w-full items-center gap-8">
+                <Link prefetch href="/">
+                    <Logo />
+                </Link>
 
                 <div className="w-full *:not-first:mt-2">
-                    <div className="w-full relative">
+                    <form className="relative w-full" onSubmit={(e) => e.preventDefault()}>
                         <Input
-                            className="peer ps-9 pe-9 min-w-60"
-                            placeholder="Tapis de souris..."
-                            type="search"
+                            className="peer min-w-60 ps-9 pe-9"
+                            placeholder="Rechercher un produit..."
+                            value={search}
+                            onChange={handleChange}
                         />
-                        <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                             <SearchIcon size={16} />
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </Link>
+            </div>
 
             <div className="inline-flex shrink-0 gap-4">
                 <nav>
-                    <Link href="/promotions" className={buttonVariants({ variant: 'link' })}>Promotions</Link>
-                    <Link href="/news" className={buttonVariants({ variant: 'link' })}>Nouveautés</Link>
-                    <Link href="/brands" className={buttonVariants({ variant: 'link' })}>Marques</Link>
+                    <Link href="/promotions" className={buttonVariants({ variant: 'link' })}>
+                        Promotions
+                    </Link>
+                    <Link href="/news" className={buttonVariants({ variant: 'link' })}>
+                        Nouveautés
+                    </Link>
+                    <Link href="/brands" className={buttonVariants({ variant: 'link' })}>
+                        Marques
+                    </Link>
                 </nav>
 
                 <div className="flex items-center gap-2">
@@ -47,12 +78,11 @@ export function Header() {
 
                     <CartSheet />
 
-
                     <Link href="/wishlist" className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <Heart size={20} />
                     </Link>
                 </div>
             </div>
         </header>
-    )
+    );
 }

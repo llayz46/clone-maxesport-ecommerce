@@ -24,6 +24,7 @@ export function PricingTabContent({ data, setData, errors }: FormTabContentProps
                     <div className="grid md:grid-cols-2 gap-4">
                         <NumberField
                             defaultValue={data.price}
+                            minValue={0}
                             formatOptions={{
                                 style: "currency",
                                 currency: "EUR",
@@ -57,6 +58,7 @@ export function PricingTabContent({ data, setData, errors }: FormTabContentProps
                         <InputError message={errors && errors.price} />
                         <NumberField
                             defaultValue={data.discount_price ?? 0}
+                            minValue={0}
                             formatOptions={{
                                 style: "currency",
                                 currency: "EUR",
@@ -90,6 +92,7 @@ export function PricingTabContent({ data, setData, errors }: FormTabContentProps
                         <InputError message={errors && errors.discount_price} />
                         <NumberField
                             defaultValue={data.cost_price ?? 0}
+                            minValue={0}
                             formatOptions={{
                                 style: "currency",
                                 currency: "EUR",

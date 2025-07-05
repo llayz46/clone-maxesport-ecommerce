@@ -14,25 +14,28 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $search = $request->input('search');
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        if ($search) {
+            $products = Product::search($search)
+                ->query(function ($query) {
+                    $query->where('status', true)
+                        ->with('featuredImage', 'brand');
+                })->paginate(16)->withQueryString();
+        } else {
+            $query = Product::query()
+                ->where('status', true)
+                ->with('featuredImage', 'brand');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+            $products = $query->paginate(16)->withQueryString();
+        }
+
+        return Inertia::render('products/index', [
+            'search' => fn () => $search,
+            'data' => fn () => ProductResource::collection($products)
+        ]);
     }
 
     /**
@@ -72,29 +75,5 @@ class ProductController extends Controller
             'product' => fn () => $productResource,
             'similarProducts' => fn () => $similarProducts[0]->products,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        //
     }
 }

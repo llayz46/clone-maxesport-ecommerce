@@ -12,8 +12,6 @@ interface ProductCreateType {
 }
 
 export default function Create({ breadcrumbs, brands, groups, product, duplicate }: ProductCreateType) {
-    console.log('duplicate', duplicate);
-
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title="Créer un produit" />

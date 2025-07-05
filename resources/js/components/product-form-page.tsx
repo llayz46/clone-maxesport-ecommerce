@@ -104,7 +104,6 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                 },
             })
         } else {
-            console.log('data', data);
             post(route('admin.products.store'), {
                 preserveScroll: true,
                 onSuccess: () => {
@@ -240,7 +239,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                                 <span className="text-muted-foreground">Prix de vente:</span>
                                 <span className="font-semibold text-foreground">€{data.price.toFixed(2)}</span>
                             </div>
-                            {data.discount_price && (
+                            {data.discount_price !== null && data.discount_price !== 0 && (
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Prix promo:</span>
                                     <span className="font-semibold text-green-600 dark:text-green-400">
@@ -254,7 +253,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Marge:</span>
-                                <span className="font-semibold text-green-600 dark:text-green-400">{calculateMargin(data.cost_price, data.discount_price ?? data.price)}%</span>
+                                <span className="font-semibold text-green-600 dark:text-green-400">{calculateMargin(data.cost_price, (data.discount_price !== null && data.discount_price !== 0) ? data.discount_price : data.price)}%</span>
                             </div>
                             <Separator />
                             <div className="space-y-2">
