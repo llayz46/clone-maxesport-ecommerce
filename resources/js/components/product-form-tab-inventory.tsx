@@ -45,9 +45,9 @@ export function InventoryTabContent({ data, setData, errors }: FormTabContentPro
                                         </AriaButton>
                                     </div>
                                 </Group>
+                                <InputError message={errors && errors.stock} />
                             </div>
                         </NumberField>
-                        <InputError message={errors && errors.stock} />
                         <NumberField
                             defaultValue={data.reorder_level}
                             onChange={(value) => setData('reorder_level', value)}
@@ -73,9 +73,9 @@ export function InventoryTabContent({ data, setData, errors }: FormTabContentPro
                                         </AriaButton>
                                     </div>
                                 </Group>
+                                <InputError message={errors && errors.reorder_level} />
                             </div>
                         </NumberField>
-                        <InputError message={errors && errors.reorder_level} />
                     </div>
                 </CardContent>
             </Card>

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class HandleProduct
@@ -43,6 +44,9 @@ class HandleProduct
         if (isset($data['images']) && is_array($data['images'])) {
             $this->handleImages($product, $data['images']);
         }
+
+        Cache::forget("product:{$product->id}:details");
+        Cache::forget("product:{$product->id}:similar");
 
         return $product;
     }

@@ -59,8 +59,10 @@ class ProductController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $product = Product::find($request->input('duplicate'));
+
         return Inertia::render('admin/products/create', [
             'breadcrumbs' => [
                 ['title' => 'Admin', 'href' => route('admin.dashboard')],
@@ -69,6 +71,8 @@ class ProductController extends Controller
             ],
             'brands' => fn () => Brand::select('id', 'name')->orderBy('name')->get(),
             'groups' => fn () => ProductGroup::select('id', 'name')->orderBy('name')->get()->load('products:id,name,product_group_id'),
+            'duplicate' => (bool)$product,
+            'product' => fn () => $product ? ProductResource::make($product->load(['images', 'brand:id,name', 'categories:id,parent_id', 'group:id,name'])) : null
         ]);
     }
 

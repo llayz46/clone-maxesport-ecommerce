@@ -143,7 +143,7 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                                                         <p className="truncate">{product.short_description ?? product.description}</p>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span className="text-foreground">{product.price}</span>
+                                                        <span className="text-foreground">{product.price.toFixed(2)}€</span>
                                                     </TableCell>
                                                     <TableCell>
                                                         <span className={

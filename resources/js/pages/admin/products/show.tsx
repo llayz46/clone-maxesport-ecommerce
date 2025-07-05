@@ -6,7 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminLayout from '@/layouts/admin-layout';
 import type { BreadcrumbItem, Product } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Boxes, Building2, Calendar, Edit, ExternalLink, FolderOpen, Package, Trash2, TrendingUp } from 'lucide-react';
+import {
+    Boxes,
+    Building2,
+    Calendar,
+    Copy,
+    Edit,
+    ExternalLink,
+    FolderOpen,
+    Package,
+    Trash2,
+    TrendingUp
+} from 'lucide-react';
 import { useState } from 'react';
 import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { edit } from "@/actions/App/Http/Controllers/Admin/ProductController";
@@ -34,6 +45,10 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                         <p className="text-muted-foreground">SKU: {product.sku}</p>
                     </div>
                     <div className="flex gap-2">
+                        <Link href={route('admin.products.create')} data={{ duplicate: product.id }} className={buttonVariants({ variant: 'outline' })}>
+                            <Copy className="size-4" />
+                            Dupliquer
+                        </Link>
                         <Link href={edit(product.slug).url} className={buttonVariants({ variant: 'outline' })}>
                             <Edit className="size-4" />
                             Modifier

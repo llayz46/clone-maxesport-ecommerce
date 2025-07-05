@@ -35,7 +35,7 @@ class ProductRequest extends FormRequest
 
             'stock' => ['required', 'integer', 'min:0'],
 
-            'reorder_level' => ['required', 'integer', 'min:0'],
+            'reorder_level' => ['required', 'integer', 'min:5'],
 
             'status' => ['required', 'boolean'],
 
@@ -99,7 +99,7 @@ class ProductRequest extends FormRequest
 
             'reorder_level.required' => "Le niveau de réapprovisionnement est obligatoire.",
             'reorder_level.integer' => "Le niveau de réapprovisionnement doit être un entier.",
-            'reorder_level.min' => "Le niveau de réapprovisionnement ne peut pas être négatif.",
+            'reorder_level.min' => "Le niveau de réapprovisionnement doit être supérieur ou égal à 5.",
 
             'status.required' => "Le statut du produit est obligatoire.",
             'status.boolean' => "Le statut du produit doit être vrai ou faux.",

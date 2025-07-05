@@ -44,26 +44,27 @@ interface ProductFormType {
         }[];
     }[];
     setDeleteProduct?: (product: Product) => void;
+    isDuplicate: boolean;
 }
 
-export function ProductFormPage({ product, brands, groups, setDeleteProduct }: ProductFormType) {
-    const { data, setData, post, errors, processing, reset } = useForm<ProductForm>({
+export function ProductFormPage({ product, brands, groups, setDeleteProduct, isDuplicate = false }: ProductFormType) {
+    const { data, setData, post, errors, processing } = useForm<ProductForm>({
         name: product?.name ?? '',
         short_description: product?.short_description ?? '',
         description: product?.description ?? '',
         price: product?.price ?? 0,
         discount_price: product?.discount_price ?? null,
         cost_price: product?.cost_price ?? 0,
-        stock: product?.stock ?? 0,
-        reorder_level: product?.reorder_level ?? 0,
-        status: Boolean(product?.status),
-        images: product?.images?.map(img => ({
+        stock: !isDuplicate && product?.stock ? product.stock : 0,
+        reorder_level: !isDuplicate && product?.reorder_level ? product.reorder_level : 0,
+        status: !isDuplicate && Boolean(product?.status),
+        images: !isDuplicate && product?.images ? product.images.map(img => ({
             id: img.id ?? null,
             image_url: img.image_url,
             image_file: null,
             alt_text: img.alt_text ?? '',
             is_featured: Boolean(img.is_featured),
-        })) ?? [],
+        })) : [],
         meta_title: product?.meta_title ?? null,
         meta_description: product?.meta_description ?? null,
         meta_keywords: product?.meta_keywords ?? null,
@@ -78,12 +79,12 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
         setInitialData(data);
     }, [product]);
 
-    const isDirty = product ? JSON.stringify(data) !== JSON.stringify(initialData) : false;
+    const isDirty = !isDuplicate && product ? JSON.stringify(data) !== JSON.stringify(initialData) : false;
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        if (product) {
+        if (!isDuplicate && product) {
             post(route('admin.products.update', product.id), {
                 method: 'put',
                 preserveScroll: true,
@@ -100,11 +101,10 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
                         description: allErrors,
                         icon: <Package className="size-4" />,
                     });
-
-                    reset()
                 },
             })
         } else {
+            console.log('data', data);
             post(route('admin.products.store'), {
                 preserveScroll: true,
                 onSuccess: () => {
@@ -120,8 +120,6 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
                         description: allErrors,
                         icon: <Package className="size-4" />,
                     });
-
-                    reset()
                 },
             })
         }
@@ -132,25 +130,25 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
             <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-4">
                     <h1 className="text-3xl font-bold text-foreground">
-                        {product ? (
+                        {!isDuplicate && product ? (
                             `Modifier : ${product.name}`
                         ) : (
                             "Créer un nouveau produit"
                         )}
                     </h1>
                     <p className="text-muted-foreground">
-                        {product ? (
+                        {!isDuplicate && product ? (
                             `SKU: ${product.sku}`
                         ) : (
                             "Créez un nouveau produit pour commencer à le vendre."
                         )}
                     </p>
                 </div>
-                <Button disabled={processing || (product && !isDirty)}>
+                <Button disabled={processing || (!isDuplicate && product && !isDirty)}>
                     {processing && (
                         <Loader2 className="animate-spin" />
                     )}
-                    {product ? 'Enregistrer les modifications' : 'Créer le produit'}
+                    {!isDuplicate && product ? 'Enregistrer les modifications' : 'Créer le produit'}
                 </Button>
             </div>
 
@@ -216,19 +214,19 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
                         <CardContent className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="status">Produit actif</Label>
-                                <Switch id="status" defaultChecked={product && product.status} onCheckedChange={(checked) => setData('status', checked)} />
+                                <Switch id="status" defaultChecked={!isDuplicate && product && product.status} onCheckedChange={(checked) => setData('status', checked)} />
                             </div>
                             <div className="flex items-center justify-between">
                                 <Label>Date du produit</Label>
-                                <Label>{product ? product.created_at : 'N/A'}</Label>
+                                <Label>{!isDuplicate && product ? product.created_at : 'N/A'}</Label>
                             </div>
                             <div className="flex items-center justify-between">
                                 <Label>Dernière modification</Label>
-                                <Label>{product ? product.updated_at : 'N/A'}</Label>
+                                <Label>{!isDuplicate && product ? product.updated_at : 'N/A'}</Label>
                             </div>
                             <div className="flex items-center justify-between">
                                 <Label>Référence produit</Label>
-                                <Label>{product ? product.sku : 'N/A'}</Label>
+                                <Label>{!isDuplicate && product ? product.sku : 'N/A'}</Label>
                             </div>
                         </CardContent>
                     </Card>
@@ -262,13 +260,13 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct }: P
                             <div className="space-y-2">
                                 <div className="flex flex-wrap gap-1">
                                     {data.status ? <Badge className="bg-green-900 text-green-200">Actif</Badge> : <Badge className="bg-red-900 text-red-200">Inactif</Badge>}
-                                    {product && product.isNew && <Badge className="bg-blue-900 text-blue-200">Nouveau</Badge>}
+                                    {!isDuplicate && product && product.isNew && <Badge className="bg-blue-900 text-blue-200">Nouveau</Badge>}
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
 
-                    {product && (
+                    {!isDuplicate && product && (
                         <Card className="border-border bg-card">
                             <CardHeader>
                                 <CardTitle className="text-foreground">Actions</CardTitle>
