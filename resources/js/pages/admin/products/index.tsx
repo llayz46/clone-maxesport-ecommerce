@@ -2,12 +2,12 @@ import { Head, router, Deferred, Link } from '@inertiajs/react';
 import type { BreadcrumbItem, PaginatedResponse, Product } from '@/types';
 import AdminLayout from '@/layouts/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Edit, Eye, Loader2, MoreHorizontal, Package, Search, Trash2 } from 'lucide-react';
+import { Edit, Eye, Loader2, MoreHorizontal, Package, Plus, Search, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { PaginationComponent } from '@/components/pagination-component';
 import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
 import { edit, show } from '@/actions/App/Http/Controllers/Admin/ProductController';
@@ -98,11 +98,18 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                 <>
                     <Card className="border-border bg-card pt-4 pb-0 gap-0">
                         <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
-                            <CardTitle className="text-foreground text-lg">
-                                Liste des produits
-                                ({products && products.meta && (
-                                    products.meta.total
-                                )})
+                            <CardTitle className="w-full flex justify-between items-center">
+                                <div className="text-foreground text-lg">
+                                    Liste des produits
+                                    ({products && products.meta && (
+                                        products.meta.total
+                                    )})
+                                </div>
+
+                                <Link href={route('admin.products.create')} className={buttonVariants({ variant: 'outline' })}>
+                                    <Plus />
+                                    Ajouter un produit
+                                </Link>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -123,16 +130,16 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                                         products.data.map(product => {
                                             return (
                                                 <TableRow key={product.id} className="border-border hover:bg-muted/50">
-                                                    <TableCell className="font-medium">
+                                                    <TableCell className="font-medium max-w-64 truncate">
                                                         <span className="text-foreground">{product.name}</span>
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell className="max-w-64 truncate">
                                                         <code className="rounded bg-muted px-2 py-1 text-xs text-muted-foreground">{product.slug}</code>
                                                     </TableCell>
                                                     <TableCell>
                                                         <code className="text-foreground">{product.brand.name}</code>
                                                     </TableCell>
-                                                    <TableCell className="max-w-md text-muted-foreground">
+                                                    <TableCell className="max-w-sm text-muted-foreground">
                                                         <p className="truncate">{product.short_description ?? product.description}</p>
                                                     </TableCell>
                                                     <TableCell>
@@ -215,7 +222,7 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                 open={!!deleteProduct}
                 onClose={() => setDeleteProduct(null)}
                 itemNameKey="name"
-                deleteRoute={(slug) => route('admin.products.destroy', slug)}
+                deleteRoute={(product) => route('admin.products.destroy', product.slug)}
                 itemLabel="produit"
                 icon={<Package className="size-4" />}
                 prefix="Le"
@@ -228,7 +235,16 @@ function DeferredFallback() {
     return (
         <Card className="border-border bg-card pt-4 pb-0 gap-0">
             <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
-                <CardTitle className="text-foreground text-lg">Liste des produits</CardTitle>
+                <CardTitle className="w-full flex justify-between items-center">
+                    <div className="text-foreground text-lg">
+                        Liste des produits
+                    </div>
+
+                    <Link href={route('admin.products.create')} className={buttonVariants({ variant: 'outline' })}>
+                        <Plus />
+                        Ajouter un produit
+                    </Link>
+                </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
                 <Table>
