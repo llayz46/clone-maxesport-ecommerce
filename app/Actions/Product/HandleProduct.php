@@ -37,11 +37,38 @@ class HandleProduct
         ]);
 
         if (isset($data['category_id'])) {
-            $category = Category::findOrFail($data['category_id']);
+            $this->handleCategories($data['category_id'], $product);
+        }
 
-            if ($category->status !== CategoryStatus::Active) throw new \Exception('La catégorie est inactive.');
+        if (isset($data['images']) && is_array($data['images'])) {
+            $this->handleImages($product, $data['images']);
+        }
 
-            $product->categories()->sync($data['category_id']);
+        return $product;
+    }
+
+    public function create(array $data): Product
+    {
+        $product = Product::create([
+            'name' => $data['name'],
+            'slug' => $data['slug'],
+            'description' => $data['description'] ?? null,
+            'short_description' => $data['short_description'] ?? null,
+            'price' => $data['price'],
+            'discount_price' => $data['discount_price'] ?? null,
+            'cost_price' => $data['cost_price'],
+            'stock' => $data['stock'],
+            'reorder_level' => $data['reorder_level'],
+            'status' => $data['status'],
+            'meta_title' => $data['meta_title'] ?? null,
+            'meta_description' => $data['meta_description'] ?? null,
+            'meta_keywords' => $data['meta_keywords'] ?? null,
+            'brand_id' => $data['brand_id'] ?? null,
+            'product_group_id' => $data['group_id'] ?? null,
+        ]);
+
+        if (isset($data['category_id'])) {
+            $this->handleCategories($data['category_id'], $product);
         }
 
         if (isset($data['images']) && is_array($data['images'])) {
@@ -119,4 +146,12 @@ class HandleProduct
         }
     }
 
+    protected function handleCategories(int $categoryId, Product $product): void
+    {
+        $category = Category::findOrFail($categoryId);
+
+        if ($category->status !== CategoryStatus::Active) throw new \Exception('La catégorie est inactive.');
+
+        $product->categories()->sync($categoryId);
+    }
 }

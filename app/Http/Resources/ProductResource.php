@@ -33,11 +33,17 @@ class ProductResource extends JsonResource
             'isWishlisted' => $this->whenLoaded('wishlists', function () {
                 return $this->wishlists->isNotEmpty();
             }),
+
             'brand' => BrandResource::make($this->whenLoaded('brand')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'group' => ProductGroupResource::make($this->whenLoaded('group')),
             'featured_image' => ProductImageResource::make($this->whenLoaded('featuredImage')),
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
+
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
+
             'updated_at' => $this->updated_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
             'created_at' => $this->created_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
         ];

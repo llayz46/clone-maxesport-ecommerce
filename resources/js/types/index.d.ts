@@ -228,3 +228,40 @@ export interface PaginatedResponse<T> {
     links: PaginatedLinks;
     meta: PaginatedMeta;
 }
+
+interface FormTabContentProps<T> {
+    data: T;
+    setData: {
+        <K extends keyof T>(field: K, value: T[K]): void;
+        (values: T): void;
+    };
+    errors?: Record<string, string>;
+    processing?: boolean;
+    brands?: { id: number; name: string }[];
+    groups?: { id: number; name: string, products: { id: number; name: string }[] }[];
+}
+
+type ProductForm = {
+    name: string;
+    short_description: string;
+    description: string;
+    price: number;
+    discount_price: number | null;
+    cost_price: number;
+    stock: number;
+    reorder_level: number;
+    status: boolean;
+    images: {
+        id: number | null;
+        image_file: File | null;
+        image_url?: string;
+        alt_text: string;
+        is_featured: boolean;
+    }[];
+    meta_title?: string | null;
+    meta_description?: string | null;
+    meta_keywords?: string | null;
+    brand_id: number | null;
+    category_id: string;
+    group_id: string;
+}

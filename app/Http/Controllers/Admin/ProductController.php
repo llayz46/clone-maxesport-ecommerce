@@ -59,6 +59,19 @@ class ProductController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('admin/products/create', [
+            'breadcrumbs' => [
+                ['title' => 'Admin', 'href' => route('admin.dashboard')],
+                ['title' => 'Produits', 'href' => route('admin.products.index')],
+                ['title' => 'Créer un produit', 'href' => route('admin.products.create')],
+            ],
+            'brands' => fn () => Brand::select('id', 'name')->orderBy('name')->get(),
+            'groups' => fn () => ProductGroup::select('id', 'name')->orderBy('name')->get()->load('products:id,name,product_group_id'),
+        ]);
+    }
+
     public function show(Product $product)
     {
         return Inertia::render('admin/products/show', [
@@ -71,8 +84,17 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
+        $data = $request->validated();
+
+        try {
+            $product = $this->handleProduct->create($data);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
+        return redirect()->route('admin.products.show', $product)->with('success', 'Produit créé avec succès.');
     }
 
     public function edit(Product $product)

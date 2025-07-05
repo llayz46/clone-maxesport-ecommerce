@@ -19,7 +19,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         ->name('brands.update');
 
     Route::resource('products', ProductController::class)
-        ->only(['index', 'show', 'edit', 'destroy'])->scoped([
+        ->only(['index', 'show', 'create', 'edit', 'store', 'destroy'])->scoped([
             'product' => 'slug',
         ]);
     Route::post('products/{product}', [ProductController::class, 'update'])
