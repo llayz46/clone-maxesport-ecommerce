@@ -8,6 +8,7 @@ import { Link } from '@inertiajs/react';
 import { Product } from '@/types';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 export function ProductCard({ product, onQuickView }: { product: Product, onQuickView?: () => void }) {
     const [isHovered, setIsHovered] = useState(false)
@@ -23,9 +24,9 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                 onMouseLeave={() => setIsHovered(false)}
             >
                 <img
-                    src="/lgg-saturn-pro-rouge-placeholder.webp"
-                    alt="f"
-                    className="size-full object-cover transition-transform duration-500 group-hover:scale-103"
+                    src={getStorageUrl(product.featured_image?.image_url)}
+                    alt={product.featured_image?.alt_text}
+                    className="size-full object-cover transition-transform duration-500 bg-muted group-hover:scale-103"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
 

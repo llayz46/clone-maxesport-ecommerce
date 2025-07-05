@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
         $sort = $request->query('sort', 'news');
 
-        $query = $category->products()->with(['featuredImage', 'brand']);
+        $query = $category->products()->where('status', true)->with(['featuredImage', 'brand']);
 
         switch ($sort) {
             case 'price_asc':

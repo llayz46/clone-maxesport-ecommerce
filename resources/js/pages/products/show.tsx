@@ -14,6 +14,7 @@ import { ProductCard } from '@/components/product-card';
 import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { ProductBreadcrumb } from '@/components/product-breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 interface ShowProductProps {
     product: Product;
@@ -45,9 +46,9 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                         <div className="space-y-4">
                             <div className="border bg-card rounded-md overflow-hidden relative aspect-square">
                                 <img
-                                    src="/lgg-saturn-pro-rouge-placeholder.webp"
+                                    src={getStorageUrl(imageToShow?.image_url)}
                                     alt={imageToShow?.alt_text || product.name}
-                                    className="object-cover"
+                                    className="object-cover size-full"
                                 />
                                 {product.isNew && (
                                     <Badge className="rounded-sm absolute top-4 left-4 bg-orange-400/90 text-primary-foreground">Nouveau</Badge>
@@ -58,7 +59,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                                 {product.images?.map(image => (
                                     <div key={image.id} className="border bg-card rounded-md overflow-hidden aspect-[16/11] flex items-center justify-center">
                                         <img
-                                            src="/lgg-saturn-pro-rouge-placeholder.webp"
+                                            src={getStorageUrl(image.image_url)}
                                             alt={image.alt_text}
                                             className="object-cover size-full"
                                             onClick={() => setImageToShow(image)}
@@ -179,7 +180,7 @@ function RelatedProduct({ product, current }: { product: Product, current: strin
         <article className={cn("px-4 py-2 border bg-card rounded-md", url !== current ? 'hover:bg-secondary/10 transition-colors' : 'border-ring')}>
             <div className="flex items-center gap-4">
                 <div className="relative w-16 h-16 rounded-sm overflow-hidden">
-                    <img src="/lgg-saturn-pro-rouge-placeholder.webp" alt="SR SQ" className="object-cover" />
+                    <img src={getStorageUrl(product.featured_image?.image_url)} alt={product.featured_image?.alt_text} className="size-full bg-muted object-cover" />
                 </div>
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">

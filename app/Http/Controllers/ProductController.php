@@ -40,13 +40,15 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        if(!$product->status) abort(404);
+
         $cacheKey = "product:{$product->id}:details";
 
         $productResource = Cache::remember($cacheKey, now()->addHour(), function () use ($product) {
             return ProductResource::make(
                 $product->load([
                     'brand',
-                    'group.products',
+                    'group.products.featuredImage',
                     'images',
                     'categories'
                 ])
@@ -59,7 +61,7 @@ class ProductController extends Controller
                     ->load(['products' => function ($query) use ($product) {
                         $query->where('id', '!=', $product->id)
                             ->orderBy('created_at', 'desc')
-                            ->with('brand')
+                            ->with('brand', 'featuredImage')
                             ->take(4);
                     }])
                     ->flatten()
