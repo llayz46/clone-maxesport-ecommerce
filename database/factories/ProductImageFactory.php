@@ -21,7 +21,8 @@ class ProductImageFactory extends Factory
             'product_id' => Product::factory(),
             'image_url' => $this->faker->imageUrl(640, 480, 'technics', true, 'Product Image', true),
             'alt_text' => $this->faker->sentence(),
-            'is_featured' => false
+            'is_featured' => false,
+            'order' => $this->faker->unique()->numberBetween(1, 1000),
         ];
     }
 }

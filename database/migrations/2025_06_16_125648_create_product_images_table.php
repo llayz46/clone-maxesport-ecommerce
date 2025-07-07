@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image_url');
             $table->string('alt_text')->nullable();
             $table->boolean('is_featured')->default(false);
+            $table->unsignedInteger('order');
             $table->timestamps();
         });
     }

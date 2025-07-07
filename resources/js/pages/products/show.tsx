@@ -22,7 +22,7 @@ interface ShowProductProps {
 }
 
 export default function Show({ product, similarProducts }: ShowProductProps) {
-    const featuredImage: ProductImage | undefined = product.images?.find(image => image.is_featured)
+    const featuredImage: ProductImage | undefined = product.images?.find(image => image.is_featured) || product.images?.sort((a, b) => (a.order || 0) - (b.order || 0))[0];
     const [imageToShow, setImageToShow] = useState<ProductImage | undefined>(featuredImage || product.images?.[0]);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
     const { addItem } = useWishlist();
@@ -180,8 +180,7 @@ function RelatedProduct({ product, current }: { product: Product, current: strin
         <article className={cn("px-4 py-2 border bg-card rounded-md", url !== current ? 'hover:bg-secondary/10 transition-colors' : 'border-ring')}>
             <div className="flex items-center gap-4">
                 <div className="relative w-16 h-16 rounded-sm overflow-hidden">
-                    <img src={getStorageUrl(product.featured_image?.image_url)} alt={product.featured_image?.alt_text} className="size-full bg-muted object-cover" />
-                </div>
+                <img src={getStorageUrl(product.featured_image?.image_url)} alt={product.featured_image?.alt_text} className="size-full bg-muted object-cover" />                </div>
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                         {url === current ? (

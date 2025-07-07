@@ -52,7 +52,9 @@ class ProductController extends Controller
                 $product->load([
                     'brand',
                     'group.products.featuredImage',
-                    'images',
+                    'images' => function ($query) {
+                        $query->orderBy('order');
+                    },
                     'categories'
                 ])
             );

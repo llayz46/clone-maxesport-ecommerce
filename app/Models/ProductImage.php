@@ -16,6 +16,7 @@ class ProductImage extends Model
         'image_url',
         'alt_text',
         'is_featured',
+        'order',
     ];
 
     public function product(): belongsTo

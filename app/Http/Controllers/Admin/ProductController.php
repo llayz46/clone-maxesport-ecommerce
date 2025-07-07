@@ -93,7 +93,14 @@ class ProductController extends Controller
                 ['title' => 'Produits', 'href' => route('admin.products.index')],
                 ['title' => $product->name, 'href' => route('admin.products.show', $product)],
             ],
-            'product' => fn () => ProductResource::make($product->load(['images', 'brand', 'categories', 'group'])),
+            'product' => fn () => ProductResource::make($product->load([
+                'images' => function($query) {
+                    $query->orderBy('order');
+                },
+                'brand',
+                'categories',
+                'group'
+            ])),
         ]);
     }
 

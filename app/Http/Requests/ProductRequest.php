@@ -50,6 +50,7 @@ class ProductRequest extends FormRequest
             'images.*.image_file' => ['nullable', 'file', 'image', 'max:2048'],
             'images.*.alt_text' => ['nullable', 'string'],
             'images.*.is_featured' => ['required', 'boolean'],
+            'images.*.order' => ['nullable', 'integer', 'min:1'],
 
             'brand_id' => ['required', 'exists:brands,id'],
 
@@ -122,6 +123,8 @@ class ProductRequest extends FormRequest
             'images.*.alt_text.string' => 'Le texte alternatif de l\'image doit être une chaîne de caractères.',
             'images.*.is_featured.required' => 'L\'indication de l\'image vedette est obligatoire.',
             'images.*.is_featured.boolean' => 'L\'indication de l\'image vedette doit être vrai ou faux.',
+            'images.*.order.integer' => 'L\'ordre de l\'image doit être un entier.',
+            'images.*.order.min' => 'L\'ordre de l\'image doit être supérieur ou égal à 1.',
 
             'brand_id.required' => 'La marque du produit est obligatoire.',
             'brand_id.exists' => 'La marque sélectionnée n\'existe pas.',

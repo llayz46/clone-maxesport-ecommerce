@@ -104,6 +104,7 @@ class HandleProduct
                             'image_url' => $path,
                             'alt_text' => $imgData['alt_text'] ?? '',
                             'is_featured' => $imgData['is_featured'] ?? false,
+                            'order' => $imgData['order'] ?? 1,
                         ]);
 
                         $handledIds[] = $productImage->id;
@@ -115,6 +116,7 @@ class HandleProduct
                     'image_url' => $path,
                     'alt_text' => $imgData['alt_text'] ?? '',
                     'is_featured' => $imgData['is_featured'] ?? false,
+                    'order' => $imgData['order'] ?? 1,
                 ]);
 
                 $handledIds[] = $newImage->id;
@@ -127,6 +129,7 @@ class HandleProduct
                     $productImage->update([
                         'alt_text' => $imgData['alt_text'] ?? '',
                         'is_featured' => $imgData['is_featured'] ?? false,
+                        'order' => $imgData['order'] ?? 1,
                     ]);
 
                     $handledIds[] = $productImage->id;
@@ -146,6 +149,15 @@ class HandleProduct
                 }
 
                 $img->delete();
+            }
+        }
+
+        $hasFeatured = $product->images()->where('is_featured', true)->exists();
+
+        if (!$hasFeatured && $product->images()->count() > 0) {
+            $firstImage = $product->images()->orderBy('order', 'asc')->first();
+            if ($firstImage) {
+                $firstImage->update(['is_featured' => true]);
             }
         }
     }

@@ -64,6 +64,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
             image_file: null,
             alt_text: img.alt_text ?? '',
             is_featured: Boolean(img.is_featured),
+            order: img.order ?? 0,
         })) : [],
         meta_title: product?.meta_title ?? null,
         meta_description: product?.meta_description ?? null,

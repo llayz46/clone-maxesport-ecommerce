@@ -142,6 +142,7 @@ export interface ProductImage {
     image_url: string;
     alt_text: string;
     is_featured: boolean;
+    order: number;
     product_id: number;
     created_at: string;
     updated_at: string;
@@ -257,6 +258,7 @@ type ProductForm = {
         image_url?: string;
         alt_text: string;
         is_featured: boolean;
+        order: number;
     }[];
     meta_title?: string | null;
     meta_description?: string | null;
