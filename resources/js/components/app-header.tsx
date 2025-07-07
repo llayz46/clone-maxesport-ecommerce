@@ -124,14 +124,16 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             href={item.href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                (page.url === item.href || page.url.startsWith(item.href + '/') || page.url.startsWith(item.href + '?')) && item.href !== '/admin' && activeItemStyles,
+                                                ((item.href !== '/admin' && (page.url === item.href || page.url.startsWith(item.href + '/') || page.url.startsWith(item.href + '?'))) ||
+                                                    (item.href === '/admin' && page.url === '/admin')) && activeItemStyles,
                                                 'h-9 cursor-pointer px-3',
                                             )}
                                         >
                                             {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
                                             {item.title}
                                         </Link>
-                                        {(page.url === item.href || page.url.startsWith(item.href + '/') || page.url.startsWith(item.href + '?')) && item.href !== '/admin' && (
+                                        {((item.href !== '/admin' && (page.url === item.href || page.url.startsWith(item.href + '/') || page.url.startsWith(item.href + '?'))) ||
+                                            (item.href === '/admin' && page.url === '/admin')) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>

@@ -14,6 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CartItem } from '@/types';
 import { CartClearConfirmationDialog } from '@/components/cart-clear-confirmation-dialog';
 import { useState } from 'react';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 export function CartSheet() {
     const { handleQuantity, clearCart, optimisticCart, removeItemOfCart, checkout } = useCartContext();
@@ -91,7 +92,7 @@ function CardItem ({ item, removeItemOfCart, handleQuantity }: { item: CartItem,
                 <div className="relative flex items-start gap-4 pr-8">
                     <div className="relative size-18 flex-shrink-0 overflow-hidden rounded-sm bg-muted">
                         {item.product.image && (
-                            <img src={item.product.image.image_url} alt={item.product.image.alt_text} className="object-cover" />
+                            <img src={getStorageUrl(item.product.image.image_url)} alt={item.product.image.alt_text} className="size-full object-cover" />
                         )}
                     </div>
 

@@ -69,7 +69,7 @@ export function useCart({ initialCart }: { initialCart?: Cart | null } = {}) {
                     setOptimisticCart(cart);
 
                     toast.success('Produit ajouté au panier', {
-                        description: product.brand.name + product.name + ' a été ajouté à votre panier.',
+                        description: product.brand.name + ' ' + product.name + ' a été ajouté à votre panier.',
                         icon: <ShoppingCart className="size-4" />,
                     });
                 },
