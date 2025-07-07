@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -69,10 +70,7 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                         <CardTitle className="text-lg font-semibold text-foreground">Commande {order.order_number}</CardTitle>
                                         <p className="text-sm text-muted-foreground mt-1">Passée le {formatDate(order.created_at)}</p>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        {/*{getStatusBadge(order.status)}*/}
-                                        <span className="text-lg font-semibold text-foreground">€{(order.amount_total / 100).toFixed(2)}</span>
-                                    </div>
+                                    <span className="text-lg font-semibold text-foreground">€{(order.amount_total / 100).toFixed(2)}</span>
                                 </div>
                             </CardHeader>
 
@@ -82,9 +80,9 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                         <div key={item.id} className="flex items-center gap-4">
                                             <div className="w-16 h-16 rounded-md overflow-hidden bg-muted flex-shrink-0">
                                                 <img
-                                                    src={item.product?.featured_image?.image_url}
+                                                    src={item.product?.featured_image && getStorageUrl(item.product.featured_image.image_url)}
                                                     alt={item.product?.featured_image?.alt_text}
-                                                    className="w-full h-full object-cover"
+                                                    className="size-full object-cover"
                                                 />
                                             </div>
                                             <div className="flex-1 min-w-0">
@@ -99,35 +97,6 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                 </div>
 
                                 <Separator className="my-4" />
-
-                                {/*<div className="mb-4">*/}
-                                {/*    {order.status === "delivered" && (*/}
-                                {/*        <p className="text-sm text-muted-foreground">*/}
-                                {/*            <CheckCircle className="w-4 h-4 inline mr-1 text-green-600" />*/}
-                                {/*            Livré le {formatDate(order.deliveryDate!)} • Suivi: {order.trackingNumber}*/}
-                                {/*        </p>*/}
-                                {/*    )}*/}
-                                {/*    {order.status === "shipped" && (*/}
-                                {/*        <p className="text-sm text-muted-foreground">*/}
-                                {/*            <Truck className="w-4 h-4 inline mr-1 text-blue-600" />*/}
-                                {/*            Expédié • Livraison estimée: {formatDate(order.estimatedDelivery!)} • Suivi:{" "}*/}
-                                {/*            {order.trackingNumber}*/}
-                                {/*        </p>*/}
-                                {/*    )}*/}
-                                {/*    {order.status === "processing" && (*/}
-                                {/*        <p className="text-sm text-muted-foreground">*/}
-                                {/*            <Clock className="w-4 h-4 inline mr-1 text-yellow-600" />*/}
-                                {/*            En cours de préparation • Expédition estimée: {formatDate(order.estimatedShipping!)}*/}
-                                {/*        </p>*/}
-                                {/*    )}*/}
-                                {/*    {order.status === "cancelled" && (*/}
-                                {/*        <p className="text-sm text-muted-foreground">*/}
-                                {/*            <AlertCircle className="w-4 h-4 inline mr-1 text-red-600" />*/}
-                                {/*            Annulé le {formatDate(order.cancelledDate!)} • Remboursement:{" "}*/}
-                                {/*            {order.refundStatus === "completed" ? "Effectué" : "En cours"}*/}
-                                {/*        </p>*/}
-                                {/*    )}*/}
-                                {/*</div>*/}
 
                                 <div className="flex flex-wrap gap-2">
                                     <Button variant="outline" size="sm">

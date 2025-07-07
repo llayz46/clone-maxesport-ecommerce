@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useCartContext } from '@/contexts/cart-context';
 import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { useWishlistContext } from '@/contexts/wishlist-context';
+import { getStorageUrl } from '@/utils/format-storage-url';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -72,7 +73,7 @@ function WishlistItem({ product, onRemove, onAddToCart }: { product: Product, on
     return (
         <div className="flex items-center gap-4 rounded-md border p-3">
             <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm bg-neutral-700">
-                <img src={product.featured_image?.image_url} alt={product.name} className="size-full object-cover" />
+                <img src={product.featured_image && getStorageUrl(product.featured_image.image_url)} alt={product.featured_image ? product.featured_image.alt_text : product.name} className="size-full object-cover" />
             </div>
 
             <div className="flex-grow">
@@ -83,7 +84,7 @@ function WishlistItem({ product, onRemove, onAddToCart }: { product: Product, on
                         </Link>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{product.short_description}</p>
                     </div>
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col items-end min-w-32">
                         {product.discount_price ? (
                             <div className="flex items-center gap-2 *:text-nowrap">
                                 <span className="text-sm text-gray-400 line-through">{product.price.toFixed(2)} €</span>
