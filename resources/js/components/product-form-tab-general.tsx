@@ -15,6 +15,7 @@ import { BrandDialog } from '@/components/brand-dialog';
 import { ProductGroupDialog } from '@/components/product-group-dialog';
 import { CategoryTree } from '@/components/category-tree';
 import { FormTabContentProps, ProductForm } from '@/types';
+import { useCharacterLimit } from '@/hooks/use-character-limit';
 
 export function GeneralTabContent({ data, setData, brands, groups, processing, errors }: FormTabContentProps<ProductForm>) {
     const [openBrand, setOpenBrand] = useState<boolean>(false)
@@ -22,6 +23,13 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
     const [openBrandDialog, setOpenBrandDialog] = useState<boolean>(false);
     const [openGroupDialog, setOpenGroupDialog] = useState<boolean>(false);
     const [brandInputValue, setBrandInputValue] = useState<string>('')
+
+    const maxLength = 500
+    const {
+        maxLength: limit,
+    } = useCharacterLimit({
+        maxLength
+    })
 
     return (
         <TabsContent value="general" className="space-y-4">
@@ -41,7 +49,7 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="Nom du produit"
                             />
-                            <InputError message={errors.name || errors.slug} />
+                            <InputError message={errors?.name || errors?.slug} />
                         </div>
                         {data.name && (
                             <div className="mt-auto flex h-9 items-center">
@@ -60,7 +68,15 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                             rows={5}
                             placeholder="Courte description du produit..."
                         />
-                        <InputError message={errors.short_description} />
+                        <p
+                            id="description"
+                            className={`text-xs ${data.short_description.length > limit ? 'text-red-400' : 'text-muted-foreground'}`}
+                            role="status"
+                            aria-live="polite"
+                        >
+                            <span className="tabular-nums">{limit - data.short_description.length}</span> caractères restants
+                        </p>
+                        <InputError message={errors?.short_description} />
                     </div>
                     <div className="*:not-first:mt-2">
                         <Label htmlFor="description">Description *</Label>
@@ -73,7 +89,15 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                             rows={5}
                             placeholder="Description détaillée du produit..."
                         />
-                        <InputError message={errors.description} />
+                        <p
+                            id="description"
+                            className={`text-xs ${data.description.length > 1000 ? 'text-red-400' : 'text-muted-foreground'}`}
+                            role="status"
+                            aria-live="polite"
+                        >
+                            <span className="tabular-nums">{1000 - data.description.length}</span> caractères restants
+                        </p>
+                        <InputError message={errors?.description} />
                     </div>
                 </CardContent>
             </Card>
@@ -138,7 +162,7 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
-                                <InputError message={errors.brand_id} />
+                                <InputError message={errors?.brand_id} />
                             </div>
                             <div className="*:not-first:mt-2">
                                 <Label htmlFor="group">Groupe de produits</Label>
@@ -166,17 +190,6 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                                                     <ProductGroupDialog open={openGroupDialog} setOpen={() => { setOpenGroupDialog(!openGroupDialog) }} />
                                                 </CommandEmpty>
                                                 <CommandGroup>
-                                                    <CommandItem
-                                                        value="none"
-                                                        onSelect={() => {
-                                                            setData('group_id', '');
-                                                            setOpenGroups(false);
-                                                        }}
-                                                    >
-                                                        Aucun groupe
-                                                        {!data.group_id && <CheckIcon size={16} className="ml-auto" />}
-                                                    </CommandItem>
-
                                                     {groups?.map(group => (
                                                         <CommandItem
                                                             key={group.id}
@@ -204,7 +217,7 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                                         </Command>
                                     </PopoverContent>
                                 </Popover>
-                                <InputError message={errors.group_id} />
+                                <InputError message={errors?.group_id} />
                             </div>
                         </div>
                         <div className="*:not-first:mt-2">
