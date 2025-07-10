@@ -19,8 +19,6 @@ import {
     TrendingUp
 } from 'lucide-react';
 import { useState } from 'react';
-import { show } from "@/actions/App/Http/Controllers/ProductController";
-import { edit } from "@/actions/App/Http/Controllers/Admin/ProductController";
 import { getStorageUrl } from '@/utils/format-storage-url';
 import { calculateMargin, calculateProfit } from '@/utils/product-price-calculating';
 import { ConfirmDeleteDialog } from '@/components/confirm-delete-dialog';
@@ -49,7 +47,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             <Copy className="size-4" />
                             Dupliquer
                         </Link>
-                        <Link href={edit(product.slug).url} className={buttonVariants({ variant: 'outline' })}>
+                        <Link href={route('admin.products.edit', product.slug)} className={buttonVariants({ variant: 'outline' })}>
                             <Edit className="size-4" />
                             Modifier
                         </Link>
@@ -260,7 +258,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                             <label className="text-sm font-medium text-muted-foreground">URL du produit</label>
                                             <div className="mt-1 flex items-center gap-2">
                                                 <code className="rounded bg-muted px-2 py-1 text-sm text-muted-foreground">/products/{product.slug}</code>
-                                                <Link href={show(product.slug).url} prefetch className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                                                <Link href={route('product.show', product.slug)} prefetch className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                                                     <ExternalLink />
                                                 </Link>
                                             </div>

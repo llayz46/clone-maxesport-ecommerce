@@ -38,6 +38,12 @@ class Product extends Model
         'product_group_id',
     ];
 
+    protected $casts = [
+        'price' => 'float',
+        'discount_price' => 'float',
+        'cost_price' => 'float',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($product) {
