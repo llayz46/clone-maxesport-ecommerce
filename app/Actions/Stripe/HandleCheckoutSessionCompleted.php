@@ -21,6 +21,7 @@ class HandleCheckoutSessionCompleted
             $order = $user->orders()->create([
                 'stripe_checkout_session_id' => $session->id,
                 'amount_discount' => $session->total_details->amount_discount,
+                'amount_subtotal' => $session->amount_subtotal,
                 'amount_total' => $session->amount_total,
                 'billing_address' => [
                     'name' => $session->customer_details?->name,

@@ -1,9 +1,17 @@
 import { WordRotate } from '@/components/ui/word-rotate';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 export function InfoBanner() {
+    const { infoBanner } = usePage<SharedData>().props;
+
     return (
-        <div className="w-full bg-background dark:bg-white">
-            <WordRotate duration={4000} className="font-bold text-center text-white dark:text-black" words={["Expédition le jour même", "Livraison offerte sur +1000 produits", "Découvre nos +4000 avis clients", "100% Gaming & Esport"]} />
+        <div className="w-full bg-white">
+            <WordRotate
+                duration={4000}
+                className="font-bold text-center text-black"
+                words={infoBanner.map(item => item.message)}
+            />
         </div>
     )
 }

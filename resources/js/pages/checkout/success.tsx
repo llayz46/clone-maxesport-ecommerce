@@ -1,7 +1,6 @@
 import { Order } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { CheckCircle, Package, Mail, ArrowRight, Home, Receipt } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -67,7 +66,15 @@ export default function Success({ order }: { order: Order }) {
 
                                 <Separator />
 
-                                <div className="flex justify-between items-center text-lg font-semibold">
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-muted-foreground">Sous-total:</span>
+                                    <span className="text-foreground">€{(order.amount_subtotal / 100).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-muted-foreground">Réductions:</span>
+                                    <span className="text-green-600 dark:text-green-400 font-medium">-€{(order.amount_discount / 100).toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-lg font-bold mt-2">
                                     <span className="text-foreground">Total:</span>
                                     <span className="text-foreground">€{(order.amount_total / 100).toFixed(2)}</span>
                                 </div>

@@ -35,8 +35,8 @@ class ProductFactory extends Factory
             'meta_description' => $this->faker->sentence(),
             'meta_keywords' => $this->faker->words(3, true),
             'brand_id' => Brand::factory(),
-            'product_group_id' => ProductGroup::factory(),
-            'created_at' => now()->subDays(rand(1, 30)),
+            'product_group_id' => null,
+            'created_at' => now()->subDays(rand(1, 123)),
         ];
     }
 }

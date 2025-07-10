@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BannerMessage;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -99,6 +100,21 @@ class DatabaseSeeder extends Seeder
             'slug' => Str::slug($dfs),
             'status' => 'inactive',
         ]);
+
+        $bannerMessages = [
+            'Expédition le jour même',
+            'Livraison offerte sur +1000 produits',
+            'Découvre nos +4000 avis clients',
+            '100% Gaming & Esport'
+        ];
+
+        foreach ($bannerMessages as $index => $message) {
+            BannerMessage::create([
+                'message' => $message,
+                'is_active' => true,
+                'order' => $index + 1,
+            ]);
+        }
 
         $this->call(ProductSeeder::class);
     }

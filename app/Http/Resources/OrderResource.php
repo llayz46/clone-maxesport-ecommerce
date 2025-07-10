@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
             'amount_discount' => $this->amount_discount,
             'items' => $this->whenLoaded('items'),
             'amount_total' => $this->amount_total,
+            'amount_subtotal' => $this->amount_subtotal,
 //            'billing_address' => $this->billing_address,
 //            'shipping_address' => $this->shipping_address,
             'created_at' => $this->created_at->toDateTimeString(),

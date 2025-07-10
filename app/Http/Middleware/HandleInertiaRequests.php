@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Factories\CartFactory;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\CategoryResource;
+use App\Models\BannerMessage;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -55,7 +56,8 @@ class HandleInertiaRequests extends Middleware
             'categories' => fn () => Cache::rememberForever('categories', fn () => CategoryResource::collection(Category::with(['childrenRecursive' => fn($q) => $q->withCount('products')])->withCount('products')->whereNull('parent_id')->get())),
             'cart' => fn () => Cache::remember("cart-" . (auth()->check() ? 'user-' . auth()->id() : 'session-' . session()->getId()), 30, function () {
                 return CartResource::make(CartFactory::make()->load('items.product.images', 'items.product.brand'));
-            })
+            }),
+            'infoBanner' => fn () => Cache::rememberForever('infoBanner', fn () => BannerMessage::where('is_active', true)->orderBy('order')->get())
         ];
     }
 }

@@ -15,6 +15,7 @@ class Order extends Model
         'stripe_checkout_session_id',
         'amount_discount',
         'amount_total',
+        'amount_subtotal',
         'billing_address',
         'shipping_address',
         'user_id',

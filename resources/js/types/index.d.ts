@@ -23,6 +23,15 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export type BannerItem = {
+    id: number;
+    message: string;
+    is_active: boolean;
+    order: number;
+    updated_at: string;
+    created_at: string;
+}
+
 export interface SharedData {
     name: string;
     auth: Auth;
@@ -31,6 +40,7 @@ export interface SharedData {
     [key: string]: unknown;
     categories: Category[];
     cart: Cart;
+    infoBanner: BannerItem[]
 }
 
 export interface User {

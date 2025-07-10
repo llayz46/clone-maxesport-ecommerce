@@ -142,7 +142,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                                 <label className="text-sm font-medium text-muted-foreground">Marque</label>
                                                 <div className="flex items-center gap-2">
                                                     <Building2 className="size-4 text-muted-foreground" />
-                                                    <Link href="addALink" className="text-primary hover:underline">
+                                                    <Link href={route('brand.show', product.brand.slug)} className="text-primary hover:underline">
                                                         {product.brand.name}
                                                     </Link>
                                                 </div>
@@ -151,7 +151,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                                 <label className="text-sm font-medium text-muted-foreground">Catégorie</label>
                                                 <div className="flex items-center gap-2">
                                                     <FolderOpen className="size-4 text-muted-foreground" />
-                                                    <Link href="addALink" className="text-primary hover:underline">
+                                                    <Link href={route('category.show', product.categories?.[0].slug)} className="text-primary hover:underline">
                                                         {product.categories?.[0].name}
                                                     </Link>
                                                 </div>
