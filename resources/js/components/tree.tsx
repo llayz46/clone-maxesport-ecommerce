@@ -7,10 +7,17 @@ import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
-interface TreeContextValue<T = any> {
+// Interface pour représenter la structure de l'arbre
+interface TreeType {
+    getContainerProps?: () => Record<string, unknown>;
+    getDragLineStyle?: () => React.CSSProperties;
+    // Autres méthodes potentielles de l'arbre
+}
+
+interface TreeContextValue<T = unknown> {
   indent: number
   currentItem?: ItemInstance<T>
-  tree?: any
+  tree?: TreeType
 }
 
 const TreeContext = React.createContext<TreeContextValue>({
@@ -19,13 +26,13 @@ const TreeContext = React.createContext<TreeContextValue>({
   tree: undefined,
 })
 
-function useTreeContext<T = any>() {
+function useTreeContext<T = unknown>() {
   return React.useContext(TreeContext) as TreeContextValue<T>
 }
 
 interface TreeProps extends React.HTMLAttributes<HTMLDivElement> {
   indent?: number
-  tree?: any
+  tree?: TreeType
 }
 
 function Tree({ indent = 20, tree, className, ...props }: TreeProps) {
@@ -56,14 +63,14 @@ function Tree({ indent = 20, tree, className, ...props }: TreeProps) {
   )
 }
 
-interface TreeItemProps<T = any>
+interface TreeItemProps<T = unknown>
   extends React.HTMLAttributes<HTMLButtonElement> {
   item: ItemInstance<T>
   indent?: number
   asChild?: boolean
 }
 
-function TreeItem<T = any>({
+function TreeItem<T = unknown>({
   item,
   className,
   asChild,
@@ -87,7 +94,7 @@ function TreeItem<T = any>({
   const Comp = asChild ? Slot.Root : "button"
 
   return (
-      <TreeContext.Provider value={{ indent, currentItem: item }}>
+      <TreeContext.Provider value={{ indent, currentItem: item as ItemInstance<unknown> }}>
           <Comp
               type="button"
               data-slot="tree-item"
@@ -110,12 +117,12 @@ function TreeItem<T = any>({
   );
 }
 
-interface TreeItemLabelProps<T = any>
+interface TreeItemLabelProps<T = unknown>
   extends React.HTMLAttributes<HTMLSpanElement> {
   item?: ItemInstance<T>
 }
 
-function TreeItemLabel<T = any>({
+function TreeItemLabel<T = unknown>({
   item: propItem,
   children,
   className,

@@ -4,7 +4,6 @@ import type { BannerItem, BreadcrumbItem, SharedData } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     AlertCircle,
-    Calendar,
     CheckCircle,
     Edit,
     Eye,
@@ -14,7 +13,6 @@ import {
     Trash2
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { InfoBanner } from '@/components/info-banner';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -26,6 +24,7 @@ import { Transition } from '@headlessui/react';
 import { toast } from 'sonner';
 import { FormEventHandler, useState } from 'react';
 import { BannerDialog } from '@/components/banner-dialog';
+import { WordRotate } from '@/components/ui/word-rotate';
 
 export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[] }) {
     const { infoBanner } = usePage<SharedData>().props;
@@ -118,21 +117,27 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title="Gérer la bannière" />
 
-            <Card className="mt-4 py-4 border-border bg-card">
-                <CardHeader>
-                    <CardTitle className="text-foreground flex items-center gap-2">
-                        <Eye className="size-4" />
-                        Aperçu de la bannière
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="rounded-md overflow-hidden">
-                        <InfoBanner />
-                    </div>
-                </CardContent>
-            </Card>
+                <Card className="mt-4 py-4 border-border bg-card">
+                    <CardHeader>
+                        <CardTitle className="text-foreground flex items-center gap-2">
+                            <Eye className="size-4" />
+                            Aperçu de la bannière
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className={`rounded-md overflow-hidden ${data.infoBanner.length === 0 && 'hidden'}`}>
+                            <div className="w-full bg-white">
+                                <WordRotate
+                                    duration={4000}
+                                    className="font-bold text-center text-black"
+                                    words={data.infoBanner.map(item => item.message)}
+                                />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card className="border-border bg-card">
                     <CardContent className="p-4">
                         <div className="flex items-center justify-between">
@@ -153,20 +158,6 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                                 <p className="text-2xl font-bold text-green-600 dark:text-green-400">{data.infoBanner.filter((b) => b.is_active).length}</p>
                             </div>
                             <CheckCircle className="size-6 text-green-600 dark:text-green-400" />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-border bg-card">
-                    <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-muted-foreground">Programmées</p>
-                                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                                    {/*{banners.filter((b) => b.isScheduled).length}*/}
-                                </p>
-                            </div>
-                            <Calendar className="size-6 text-blue-600 dark:text-blue-400" />
                         </div>
                     </CardContent>
                 </Card>
