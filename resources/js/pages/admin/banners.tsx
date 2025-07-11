@@ -126,10 +126,10 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                     </CardHeader>
                     <CardContent>
                         <div className={`rounded-md overflow-hidden ${data.infoBanner.length === 0 && 'hidden'}`}>
-                            <div className="w-full bg-white">
+                            <div className="w-full bg-black dark:bg-white">
                                 <WordRotate
                                     duration={4000}
-                                    className="font-bold text-center text-black"
+                                    className="font-bold text-center text-white dark:text-black"
                                     words={data.infoBanner.map(item => item.message)}
                                 />
                             </div>
@@ -182,9 +182,9 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                 leave="transition ease-in-out"
                 leaveTo="opacity-0 scale-95"
             >
-                <Alert className="border-orange-800 bg-orange-950">
-                    <AlertCircle className="size-4 dark:text-orange-400" />
-                    <AlertDescription className="text-orange-200">
+                <Alert className="border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950">
+                    <AlertCircle className="size-4 !text-orange-600 !dark:text-orange-400" />
+                    <AlertDescription className="text-orange-800 dark:text-orange-200">
                         Vous avez des modifications non enregistrées. N'oubliez pas de sauvegarder vos changements.
                     </AlertDescription>
                 </Alert>
@@ -331,14 +331,14 @@ function SortableBannerItem({ item, setEditBanner, setOpenBannerDialog, onDelete
 
                         <div className="flex items-center gap-2">
                             {item.is_active ? (
-                                <Badge className="bg-green-900 text-green-200">
+                                <Badge className="bg-green-600 dark:bg-green-900 dark:text-green-200">
                                     <CheckCircle className="size-3 mr-1" />
                                     Actif
                                 </Badge>
                             ) : (
                                 <Badge
                                     variant="secondary"
-                                    className="bg-gray-900 text-gray-200"
+                                    className="dark:bg-gray-900 dark:text-gray-200"
                                 >
                                     <EyeOff className="h-3 w-3 mr-1" />
                                     Inactif
@@ -381,7 +381,7 @@ function SortableBannerItem({ item, setEditBanner, setOpenBannerDialog, onDelete
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         onClick={() => onDelete(item.id)}
-                                        className="text-red-400 dark:hover:bg-red-950 cursor-pointer"
+                                        className="text-red-600 dark:text-red-400 hover:bg-red-500 dark:hover:bg-red-950 cursor-pointer"
                                     >
                                         <Trash2 className="size-4" />
                                         Supprimer

@@ -41,7 +41,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                         className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
                         onClick={() => addItem(product)}
                     >
-                        <Heart className="size-4 text-background" />
+                        <Heart className="size-4 dark:text-background" />
                         <span className="sr-only">Ajouter à la wishlist</span>
                     </Button>
 
@@ -51,7 +51,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                         className="size-10 cursor-pointer bg-white p-0 shadow-md backdrop-blur-sm hover:bg-gray-100"
                         onClick={onQuickView}
                     >
-                        <Eye className="size-4 text-background" />
+                        <Eye className="size-4 dark:text-background" />
                         <span className="sr-only">Voir les détails</span>
                     </Button>
                 </div>
@@ -60,7 +60,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
             <CardContent className="flex flex-1 flex-col p-4">
                 <div className="h-6 mb-1">
                     {product.isNew && (
-                        <Badge variant="secondary" className="flex w-fit items-center gap-1.5 rounded-sm px-1.5 py-0.75 text-[10px] font-semibold text-white">
+                        <Badge variant="secondary" className="flex w-fit items-center gap-1.5 rounded-sm px-1.5 py-0.75 text-[10px] font-semibold dark:text-white">
                             <Star size={16} className="fill-yellow-400 text-yellow-400" />
                             NEW
                         </Badge>

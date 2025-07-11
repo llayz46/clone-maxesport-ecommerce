@@ -4,8 +4,11 @@ import { InfoBanner } from '@/components/info-banner';
 import { NavCategories } from '@/components/nav-categories';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
+import { useAppearance } from '@/hooks/use-appearance';
 
 export default function BaseLayout({ children }: { children: ReactNode }) {
+    const { appearance } = useAppearance();
+
     return (
         <>
             <InfoBanner />
@@ -17,7 +20,7 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
             {children}
 
             <Toaster
-                theme="dark"
+                theme={appearance}
                 toastOptions={{
                     classNames: {
                         toast: '!bg-background !border !border-border !text-sm !font-medium !font-sans',

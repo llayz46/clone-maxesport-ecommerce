@@ -6,10 +6,10 @@ export function InfoBanner() {
     const { infoBanner } = usePage<SharedData>().props;
 
     return (
-        <div className="w-full bg-white">
+        <div className="w-full bg-black dark:bg-white">
             <WordRotate
                 duration={4000}
-                className="font-bold text-center text-black"
+                className="font-bold text-center text-white dark:text-black"
                 words={infoBanner.map(item => item.message)}
             />
         </div>

@@ -1,13 +1,13 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, Order } from '@/types';
-import { Filter, RotateCcw, Search } from 'lucide-react';
+import { RotateCcw, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { getStorageUrl } from '@/utils/format-storage-url';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,6 +17,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Orders({ orders }: { orders: Order[] }) {
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString("fr-FR", {
             year: "numeric",
@@ -24,6 +26,12 @@ export default function Orders({ orders }: { orders: Order[] }) {
             day: "numeric",
         })
     }
+
+    const filteredOrders = orders.filter(order => {
+        if (!searchTerm) return true;
+
+        return order.order_number.toLowerCase().includes(searchTerm.toLowerCase())
+    })
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -37,32 +45,15 @@ export default function Orders({ orders }: { orders: Order[] }) {
 
                 <Card className="border bg-card mb-4 py-4">
                     <CardContent className="px-4">
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <div className="flex-1">
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                                    <Input placeholder="Rechercher par numéro de commande..." className="pl-10 bg-background border" />
-                                </div>
-                            </div>
-                            <Select defaultValue="all">
-                                <SelectTrigger className="w-full sm:w-48 bg-background border">
-                                    <Filter />
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">Tous les statuts</SelectItem>
-                                    <SelectItem value="delivered">Livré</SelectItem>
-                                    <SelectItem value="shipped">Expédié</SelectItem>
-                                    <SelectItem value="processing">En cours</SelectItem>
-                                    <SelectItem value="cancelled">Annulé</SelectItem>
-                                </SelectContent>
-                            </Select>
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                            <Input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Rechercher par numéro de commande..." className="pl-10 bg-background border" />
                         </div>
                     </CardContent>
                 </Card>
 
                 <div className="space-y-4">
-                    {orders.map(order => (
+                    {filteredOrders.map(order => (
                         <Card key={order.id} className="border bg-card">
                             <CardHeader>
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

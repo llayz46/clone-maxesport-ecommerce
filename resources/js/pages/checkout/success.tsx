@@ -31,7 +31,7 @@ export default function Success({ order }: { order: Order }) {
                                 <h2 className="text-xl font-semibold text-foreground">Détails de la commande</h2>
                                 <Badge
                                     variant="secondary"
-                                    className="bg-green-900 text-green-200 rounded-sm"
+                                    className="bg-green-500 text-white dark:bg-green-900 dark:text-green-200 rounded-sm"
                                 >
                                     Confirmée
                                 </Badge>
@@ -70,10 +70,12 @@ export default function Success({ order }: { order: Order }) {
                                     <span className="text-muted-foreground">Sous-total:</span>
                                     <span className="text-foreground">€{(order.amount_subtotal / 100).toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">Réductions:</span>
-                                    <span className="text-green-600 dark:text-green-400 font-medium">-€{(order.amount_discount / 100).toFixed(2)}</span>
-                                </div>
+                                {order.amount_discount > 0 && (
+                                    <div className="flex justify-between items-center text-sm">
+                                        <span className="text-muted-foreground">Réductions:</span>
+                                        <span className="text-green-600 dark:text-green-400 font-medium">-€{(order.amount_discount / 100).toFixed(2)}</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between items-center text-lg font-bold mt-2">
                                     <span className="text-foreground">Total:</span>
                                     <span className="text-foreground">€{(order.amount_total / 100).toFixed(2)}</span>
@@ -127,13 +129,13 @@ export default function Success({ order }: { order: Order }) {
                         <Button asChild size="lg" className="w-full">
                             <Link href="/orders">
                                 Voir mes commandes
-                                <ArrowRight className="w-4 h-4 ml-2" />
+                                <ArrowRight className="w-4 h-4" />
                             </Link>
                         </Button>
 
                         <Button asChild variant="outline" size="lg" className="w-full bg-background text-foreground border">
                             <Link prefetch="mount" href="/">
-                                <Home className="w-4 h-4 mr-2" />
+                                <Home className="w-4 h-4" />
                                 Continuer mes achats
                             </Link>
                         </Button>

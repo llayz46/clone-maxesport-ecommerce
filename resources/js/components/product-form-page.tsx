@@ -259,7 +259,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                             <Separator />
                             <div className="space-y-2">
                                 <div className="flex flex-wrap gap-1">
-                                    {data.status ? <Badge className="bg-green-900 text-green-200">Actif</Badge> : <Badge className="bg-red-900 text-red-200">Inactif</Badge>}
+                                    {data.status ? <Badge className="bg-green-600 dark:bg-green-900 dark:text-green-200">Actif</Badge> : <Badge variant="destructive">Inactif</Badge>}
                                     {!isDuplicate && product && product.isNew && <Badge className="bg-blue-900 text-blue-200">Nouveau</Badge>}
                                 </div>
                             </div>
@@ -290,7 +290,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                                 {product && (
                                     <Button
                                         variant="outline"
-                                        className="w-full justify-start border-border bg-background text-red-400 hover:border-red-900 hover:bg-red-950"
+                                        className="w-full justify-start border-border bg-background text-red-600 hover:text-red-600 dark:text-red-100 hover:border-red-400 dark:hover:border-red-900 hover:bg-red-50 dark:hover:bg-red-950"
                                         type="button"
                                         onClick={() => setDeleteProduct && setDeleteProduct(product)}
                                     >
