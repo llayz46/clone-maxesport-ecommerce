@@ -155,7 +155,7 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                     <div className="my-16 max-w-7xl mx-auto">
                         <h2 className="text-2xl font-bold mb-6">Produits similaires</h2>
 
-                        <div className="grid grid-cols-4 gap-3">
+                        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                             {similarProducts.map(product => (
                                 <ProductCard key={product.id} onQuickView={() => setQuickViewProduct(product)} product={product} />
                             ))}
