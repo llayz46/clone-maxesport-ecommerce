@@ -102,8 +102,8 @@ export function ImagesTabContent({ data, setData, processing }: FormTabContentPr
 
     return (
         <TabsContent value="images" className="space-y-4">
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-foreground">Images du produit</CardTitle>
                         <Button variant="outline" onClick={openFileDialog} type="button" tabIndex={1} disabled={processing}>
@@ -112,7 +112,7 @@ export function ImagesTabContent({ data, setData, processing }: FormTabContentPr
                         </Button>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="flex flex-col gap-2">
                         <div
                             onDragEnter={handleDragEnter}

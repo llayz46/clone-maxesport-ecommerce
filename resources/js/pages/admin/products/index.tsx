@@ -68,8 +68,8 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
         <AdminLayout breadcrumbs={localBreadcrumbs}>
             <Head title="Gérer les produits" />
 
-            <Card className="mt-4 py-4 border-border bg-card">
-                <CardContent className="px-4">
+            <Card className="mt-4 py-3 sm:py-4 border-border bg-card">
+                <CardContent className="px-3 sm:px-4">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div className="flex-1 flex gap-4">
                             <form className="relative flex-1" onSubmit={e => e.preventDefault()}>
@@ -98,7 +98,7 @@ export default function Index({ breadcrumbs: initialBreadcrumbs, products, searc
                 <>
                     <Card className="border-border bg-card pt-4 pb-0 gap-0">
                         <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
-                            <CardTitle className="w-full flex justify-between items-center">
+                            <CardTitle className="w-full flex max-sm:flex-col max-sm:gap-2 justify-between sm:items-center">
                                 <div className="text-foreground text-lg">
                                     Liste des produits
                                     ({products && products.meta && (
@@ -235,7 +235,7 @@ function DeferredFallback() {
     return (
         <Card className="border-border bg-card pt-4 pb-0 gap-0">
             <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
-                <CardTitle className="w-full flex justify-between items-center">
+                <CardTitle className="w-full flex max-sm:flex-col max-sm:gap-2 justify-between sm:items-center">
                     <div className="text-foreground text-lg">
                         Liste des produits
                     </div>

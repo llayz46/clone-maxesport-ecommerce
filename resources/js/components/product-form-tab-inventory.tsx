@@ -14,11 +14,11 @@ import { FormTabContentProps, ProductForm } from '@/types';
 export function InventoryTabContent({ data, setData, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="inventory" className="space-y-4">
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <CardTitle className="text-foreground">Gestion des stocks</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <NumberField
                             defaultValue={data.stock}

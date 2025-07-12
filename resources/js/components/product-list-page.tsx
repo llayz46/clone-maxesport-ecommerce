@@ -61,7 +61,7 @@ export function ProductListPage({ title, products, sort = 'news' }: ProductListP
                 </div>
 
                 <section className="mb-8 space-y-6">
-                    <ul className="mt-4 grid grid-cols-4 gap-4">
+                    <ul className="mt-4 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {products.data.map((product) => (
                             <li key={product.id}>
                                 <ProductCard product={product} onQuickView={() => setQuickViewProduct(product)} />

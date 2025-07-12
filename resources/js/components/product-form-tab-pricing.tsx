@@ -16,11 +16,11 @@ import { FormTabContentProps, ProductForm } from '@/types';
 export function PricingTabContent({ data, setData, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="pricing" className="space-y-4">
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <CardTitle className="text-foreground">Tarification</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <NumberField
                             defaultValue={data.price}

@@ -127,8 +127,8 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
 
     return (
         <form className="space-y-6 py-6" onSubmit={submit}>
-            <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-4">
+            <div className="flex max-sm:flex-col max-sm:gap-4 sm:items-center justify-between">
+                <div className="flex flex-col gap-2 sm:gap-4">
                     <h1 className="text-3xl font-bold text-foreground">
                         {!isDuplicate && product ? (
                             `Modifier : ${product.name}`
@@ -144,7 +144,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                         )}
                     </p>
                 </div>
-                <Button disabled={processing || (!isDuplicate && product && !isDirty)}>
+                <Button disabled={processing || (!isDuplicate && product && !isDirty)} className="w-fit">
                     {processing && (
                         <Loader2 className="animate-spin" />
                     )}
@@ -170,7 +170,7 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
             <div className="grid gap-4 lg:grid-cols-3">
                 <div className="lg:col-span-2">
                     <Tabs defaultValue="general">
-                        <TabsList className="mb-3">
+                        <TabsList className="mb-3 flex-wrap">
                             <TabsTrigger value="general">
                                 <Bolt className="-ms-0.5 me-1.5 opacity-60" size={16} aria-hidden="true" />
                                 Général
@@ -207,11 +207,11 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                 </div>
 
                 <div className="space-y-4 lg:col-span-1">
-                    <Card className="border-border bg-card">
-                        <CardHeader>
+                    <Card className="max-sm:py-4 border-border bg-card">
+                        <CardHeader className="max-sm:px-4">
                             <CardTitle className="text-foreground">Statut du produit</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4">
+                        <CardContent className="space-y-4 max-sm:px-4">
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="status">Produit actif</Label>
                                 <Switch id="status" defaultChecked={!isDuplicate && product && product.status} onCheckedChange={(checked) => setData('status', checked)} />
@@ -231,11 +231,11 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                         </CardContent>
                     </Card>
 
-                    <Card className="border-border bg-card">
-                        <CardHeader>
+                    <Card className="max-sm:py-4 border-border bg-card">
+                        <CardHeader className="max-sm:px-4">
                             <CardTitle className="text-foreground">Aperçu rapide</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-3">
+                        <CardContent className="space-y-3 max-sm:px-4">
                             <div className="flex justify-between">
                                 <span className="text-muted-foreground">Prix de vente:</span>
                                 <span className="font-semibold text-foreground">€{data.price.toFixed(2)}</span>

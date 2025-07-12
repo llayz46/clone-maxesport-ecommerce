@@ -37,14 +37,14 @@ export default function Orders({ orders }: { orders: Order[] }) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Mes commandes" />
 
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-2 sm:gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mb-4">
                     <h1 className="text-2xl font-bold">Mes commandes</h1>
                     <p className="text-muted-foreground">Consultez l'historique de vos commandes et leur statut</p>
                 </div>
 
-                <Card className="border bg-card mb-4 py-4">
-                    <CardContent className="px-4">
+                <Card className="border bg-card mb-2 sm:mb-4 py-3 sm:py-4">
+                    <CardContent className="px-3 sm:px-4">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                             <Input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Rechercher par numéro de commande..." className="pl-10 bg-background border" />
@@ -54,8 +54,8 @@ export default function Orders({ orders }: { orders: Order[] }) {
 
                 <div className="space-y-4">
                     {filteredOrders.map(order => (
-                        <Card key={order.id} className="border bg-card">
-                            <CardHeader>
+                        <Card key={order.id} className="max-sm:py-4 border bg-card">
+                            <CardHeader className="max-sm:px-4">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div>
                                         <CardTitle className="text-lg font-semibold text-foreground">Commande {order.order_number}</CardTitle>
@@ -65,7 +65,7 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                 </div>
                             </CardHeader>
 
-                            <CardContent className="pt-0">
+                            <CardContent className="pt-0 max-sm:px-4">
                                 <div className="space-y-3 mb-4">
                                     {order.items.map(item => (
                                         <div key={item.id} className="flex items-center gap-4">
@@ -79,8 +79,9 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium text-foreground truncate">{item.name}</p>
                                                 <p className="text-sm text-muted-foreground">Quantité: {item.quantity}</p>
+                                                <p className="block sm:hidden font-semibold text-foreground">€{(item.price / 100).toFixed(2)}</p>
                                             </div>
-                                            <div className="text-right">
+                                            <div className="hidden sm:block text-right">
                                                 <p className="font-semibold text-foreground">€{(item.price / 100).toFixed(2)}</p>
                                             </div>
                                         </div>

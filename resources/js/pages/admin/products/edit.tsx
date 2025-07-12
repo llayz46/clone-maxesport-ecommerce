@@ -34,6 +34,7 @@ export default function Edit({ breadcrumbs, product, brands, groups }: ProductTy
                 product={product}
                 brands={brands}
                 groups={groups}
+                isDuplicate={false}
                 setDeleteProduct={setDeleteProduct}
             />
 

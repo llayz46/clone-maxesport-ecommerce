@@ -33,11 +33,11 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
 
     return (
         <TabsContent value="general" className="space-y-4">
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <CardTitle className="text-foreground">Informations de base</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="*:not-first:mt-2">
                             <Label htmlFor="name">Nom du produit *</Label>
@@ -102,11 +102,11 @@ export function GeneralTabContent({ data, setData, brands, groups, processing, e
                 </CardContent>
             </Card>
 
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <CardTitle className="text-foreground">Marques</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="flex flex-col gap-4">
                             <div className="*:not-first:mt-2">

@@ -84,9 +84,9 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
         <AdminLayout breadcrumbs={localBreadcrumbs}>
             <Head title="Gérer les marques" />
 
-            <Card className="mt-4 py-4 border-border bg-card">
-                <CardContent className="px-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
+            <Card className="mt-4 py-3 sm:py-4 border-border bg-card">
+                <CardContent className="px-3 sm:px-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                         <div className="flex-1">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -99,7 +99,7 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
                             </div>
                         </div>
                         <Select value={sortBy} onValueChange={setSortBy}>
-                            <SelectTrigger className="w-40 bg-background border-border text-foreground">
+                            <SelectTrigger className="sm:w-40 bg-background border-border text-foreground">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-popover border-border">
@@ -113,7 +113,7 @@ export default function Brands({ breadcrumbs: initialBreadcrumbs, brands }: { br
             </Card>
 
             <Card className="border-border bg-card pt-4 pb-0 gap-0">
-                <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
+                <CardHeader className="px-4 pb-4 border-b border-border sm:flex-row justify-between">
                     <CardTitle className="text-foreground text-lg">Liste des marques ({countBrandsWithFilter(filteredBrands)})</CardTitle>
 
                     <BrandDialog

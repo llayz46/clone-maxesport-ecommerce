@@ -37,12 +37,12 @@ export default function Show({ breadcrumbs, product }: ProductType) {
             <Head title={`Gérer : ${product.name}`} />
 
             <div className="space-y-6 py-6">
-                <div className="flex items-center justify-between">
+                <div className="flex max-sm:flex-col-reverse sm:items-center justify-between">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-3xl font-bold text-foreground">{product.name}</h1>
                         <p className="text-muted-foreground">SKU: {product.sku}</p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="max-sm:mb-4 flex flex-wrap gap-2">
                         <Link href={route('admin.products.create')} data={{ duplicate: product.id }} className={buttonVariants({ variant: 'outline' })}>
                             <Copy className="size-4" />
                             Dupliquer
@@ -51,7 +51,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             <Edit className="size-4" />
                             Modifier
                         </Link>
-                        <Button variant="outline" className="border-border bg-background text-red-400 hover:border-red-900 hover:bg-red-950" onClick={() => setDeleteProduct(product)}>
+                        <Button variant="outline" className="border-border bg-background text-red-600 hover:border-red-300 hover:bg-red-200 dark:text-red-400 dark:hover:border-red-900 dark:hover:bg-red-950" onClick={() => setDeleteProduct(product)}>
                             <Trash2 className="size-4" />
                             Supprimer
                         </Button>
@@ -106,7 +106,7 @@ export default function Show({ breadcrumbs, product }: ProductType) {
 
                     <div className="lg:col-span-2">
                         <Tabs defaultValue="overview" className="space-y-4">
-                            <TabsList>
+                            <TabsList className="flex flex-wrap">
                                 <TabsTrigger value="overview">
                                     Vue d'ensemble
                                 </TabsTrigger>
@@ -122,11 +122,11 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             </TabsList>
 
                             <TabsContent value="overview" className="space-y-4">
-                                <Card className="border-border bg-card rounded-md">
-                                    <CardHeader>
+                                <Card className="max-sm:py-4 border-border bg-card rounded-md">
+                                    <CardHeader className="max-sm:px-4">
                                         <CardTitle className="text-foreground">Informations générales</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="space-y-4">
+                                    <CardContent className="space-y-4 max-sm:px-4">
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <div>
                                                 <label className="text-sm font-medium text-muted-foreground">Nom du produit</label>
@@ -175,11 +175,11 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                     </CardContent>
                                 </Card>
 
-                                <Card className="border-border bg-card rounded-md">
-                                    <CardHeader>
+                                <Card className="max-sm:py-4 border-border bg-card rounded-md">
+                                    <CardHeader className="max-sm:px-4">
                                         <CardTitle className="text-foreground">Tarification</CardTitle>
                                     </CardHeader>
-                                    <CardContent>
+                                    <CardContent className="max-sm:px-4">
                                         <div className="grid md:grid-cols-4 gap-4">
                                             {product.discount_price ? (
                                                 <div>
@@ -216,11 +216,11 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             </TabsContent>
 
                             <TabsContent value="inventory" className="space-y-4">
-                                <Card className="border-border bg-card rounded-md">
-                                    <CardHeader>
+                                <Card className="max-sm:py-4 border-border bg-card rounded-md">
+                                    <CardHeader className="max-sm:px-4">
                                         <CardTitle className="text-foreground">Gestion des stocks</CardTitle>
                                     </CardHeader>
-                                    <CardContent>
+                                    <CardContent className="max-sm:px-4">
                                         <div className="grid gap-4 md:grid-cols-3">
                                             <div>
                                                 <label className="text-sm font-medium text-muted-foreground">Stock total</label>
@@ -237,11 +237,11 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                             </TabsContent>
 
                             <TabsContent value="seo" className="space-y-4">
-                                <Card className="border-border bg-card">
-                                    <CardHeader>
+                                <Card className="max-sm:py-4 border-border bg-card">
+                                    <CardHeader className="max-sm:px-4">
                                         <CardTitle className="text-foreground">Optimisation SEO</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="space-y-4">
+                                    <CardContent className="space-y-4 max-sm:px-4">
                                         <div>
                                             <label className="text-sm font-medium text-muted-foreground">Titre Meta</label>
                                             <p className="mt-1 text-foreground">{product.meta_title ?? 'Pas de titre meta'}</p>
@@ -269,14 +269,14 @@ export default function Show({ breadcrumbs, product }: ProductType) {
 
                             <TabsContent value="analytics" className="space-y-4">
                                 <div className="grid gap-4 md:grid-cols-2">
-                                    <Card className="border-border bg-card">
-                                        <CardHeader>
+                                    <Card className="max-sm:py-4 border-border bg-card">
+                                        <CardHeader className="max-sm:px-4">
                                             <CardTitle className="flex items-center gap-2 text-foreground">
                                                 <TrendingUp className="h-5 w-5" />
                                                 Performances
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent>
+                                        <CardContent className="max-sm:px-4">
                                             <div className="space-y-4">
                                                 <div className="flex justify-between">
                                                     <span className="text-muted-foreground">Ventes totales:</span>
@@ -296,14 +296,14 @@ export default function Show({ breadcrumbs, product }: ProductType) {
                                         </CardContent>
                                     </Card>
 
-                                    <Card className="border-border bg-card">
-                                        <CardHeader>
+                                    <Card className="max-sm:py-4 border-border bg-card">
+                                        <CardHeader className="max-sm:px-4">
                                             <CardTitle className="flex items-center gap-2 text-foreground">
                                                 <Calendar className="h-5 w-5" />
                                                 Dates importantes
                                             </CardTitle>
                                         </CardHeader>
-                                        <CardContent>
+                                        <CardContent className="max-sm:px-4">
                                             <div className="space-y-4">
                                                 <div>
                                                     <label className="text-sm font-medium text-muted-foreground">Créé le</label>

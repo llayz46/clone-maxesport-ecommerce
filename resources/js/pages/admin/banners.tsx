@@ -118,13 +118,13 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
             <Head title="Gérer la bannière" />
 
                 <Card className="mt-4 py-4 border-border bg-card">
-                    <CardHeader>
+                    <CardHeader className="max-sm:px-4">
                         <CardTitle className="text-foreground flex items-center gap-2">
                             <Eye className="size-4" />
                             Aperçu de la bannière
                         </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="max-sm:px-4">
                         <div className={`rounded-md overflow-hidden ${data.infoBanner.length === 0 && 'hidden'}`}>
                             <div className="w-full bg-black dark:bg-white">
                                 <WordRotate
@@ -190,8 +190,8 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                 </Alert>
             </Transition>
 
-            <Card className="border-border bg-card">
-                <CardHeader className="flex flex-row items-center justify-between">
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4 flex sm:flex-row sm:items-center justify-between">
                     <div className="space-y-2">
                         <CardTitle className="text-foreground">Liste des messages de bannières</CardTitle>
                         <p className="text-sm text-muted-foreground">
@@ -225,7 +225,7 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                         />
                     </div>
                 </CardHeader>
-                <CardContent className="flex flex-col gap-4">
+                <CardContent className="max-sm:px-4 flex flex-col gap-4">
                     <DndContext
                         collisionDetection={closestCenter}
                         modifiers={[restrictToWindowEdges]}
@@ -314,7 +314,7 @@ function SortableBannerItem({ item, setEditBanner, setOpenBannerDialog, onDelete
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
+                            <div className="flex max-sm:flex-col-reverse sm:items-center gap-2 mb-2">
                                 <h3 className="font-semibold text-foreground">{item.message}</h3>
                                 <Badge variant="outline" className="text-xs rounded-full">
                                     Ordre {item.order}
@@ -329,7 +329,7 @@ function SortableBannerItem({ item, setEditBanner, setOpenBannerDialog, onDelete
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex max-sm:flex-col items-end sm:items-center gap-2">
                             {item.is_active ? (
                                 <Badge className="bg-green-600 dark:bg-green-900 dark:text-green-200">
                                     <CheckCircle className="size-3 mr-1" />

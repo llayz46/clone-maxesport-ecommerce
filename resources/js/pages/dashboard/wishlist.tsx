@@ -54,7 +54,7 @@ export default function Wishlist({ items }: { items: Product[] }) {
                     ) : (
                         <div className="relative min-h-[50vh] flex-1 overflow-hidden rounded-xl border md:min-h-min border-sidebar-border">
                             <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-100/20" />
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <div className="px-4 text-center absolute inset-0 flex flex-col items-center justify-center">
                                 <h3 className="mb-2 text-xl font-semibold">Votre liste de souhaits est vide</h3>
                                 <p className="mb-4 text-muted-foreground">Parcourez notre catalogue et ajoutez des produits à votre wishlist</p>
                                 <Link href="/public" className={buttonVariants()}>Découvrir nos produits</Link>

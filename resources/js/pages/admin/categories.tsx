@@ -220,9 +220,9 @@ export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadc
         <AdminLayout breadcrumbs={localBreadcrumbs}>
             <Head title="Gérer les catégories" />
 
-            <Card className="mt-4 py-4 border-border bg-card">
-                <CardContent className="px-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
+            <Card className="mt-4 py-3 sm:py-4 border-border bg-card">
+                <CardContent className="px-3 sm:px-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                         <div className="flex-1">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -234,7 +234,7 @@ export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadc
                                 />
                             </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex max-sm:flex-wrap gap-2">
                             <Button
                                 variant="outline"
                                 onClick={() => setExpandedCategories(new Set(categories.map((c) => c.id)))}
@@ -255,7 +255,7 @@ export default function Categories({ breadcrumbs: initialBreadcrumbs }: { breadc
             </Card>
 
             <Card className="border-border bg-card pt-4 pb-0 gap-0">
-                <CardHeader className="px-4 pb-4 border-b border-border flex-row justify-between">
+                <CardHeader className="px-4 pb-4 border-b border-border sm:flex-row justify-between">
                     <CardTitle className="text-foreground text-lg">Liste des catégories ({countCategoriesWithFilter(filteredCategories)})</CardTitle>
 
                     <CategoryDialog

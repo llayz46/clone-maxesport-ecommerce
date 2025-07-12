@@ -13,11 +13,14 @@ export default function BaseLayout({ children }: { children: ReactNode }) {
         <>
             <InfoBanner />
 
-            <Header />
 
-            <NavCategories />
+            <div className="mx-4">
+                <Header />
 
-            {children}
+                <NavCategories />
+
+                {children}
+            </div>
 
             <Toaster
                 theme={appearance}

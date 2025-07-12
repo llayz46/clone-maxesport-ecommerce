@@ -9,11 +9,11 @@ import { FormTabContentProps, ProductForm } from '@/types';
 export function SeoTabContent({ data, setData, processing, errors }: FormTabContentProps<ProductForm>) {
     return (
         <TabsContent value="seo" className="space-y-4">
-            <Card className="border-border bg-card">
-                <CardHeader>
+            <Card className="max-sm:py-4 border-border bg-card">
+                <CardHeader className="max-sm:px-4">
                     <CardTitle className="text-foreground">Optimisation SEO</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 max-sm:px-4">
                     <div className="*:not-first:mt-2">
                         <Label htmlFor="meta_title">Titre Meta</Label>
                         <Input

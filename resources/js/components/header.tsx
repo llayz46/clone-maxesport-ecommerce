@@ -33,8 +33,8 @@ export function Header() {
     };
 
     return (
-        <header className="layout-container flex items-center justify-between gap-12 border-b py-6">
-            <div className="inline-flex w-full items-center gap-8">
+        <header className="layout-container flex items-center justify-between gap-6 lg:gap-12 border-b py-6">
+            <div className="inline-flex w-full items-center gap-4 lg:gap-8">
                 <Link prefetch href="/">
                     <Logo />
                 </Link>
@@ -42,7 +42,7 @@ export function Header() {
                 <div className="w-full *:not-first:mt-2">
                     <form className="relative w-full" onSubmit={(e) => e.preventDefault()}>
                         <Input
-                            className="peer min-w-60 ps-9 pe-9"
+                            className="peer sm:min-w-60 ps-9 sm:pe-9"
                             placeholder="Rechercher un produit..."
                             value={search}
                             onChange={handleChange}
@@ -55,7 +55,7 @@ export function Header() {
             </div>
 
             <div className="inline-flex shrink-0 gap-4">
-                <nav>
+                <nav className="hidden md:block">
                     <Link href="/promotions" className={buttonVariants({ variant: 'link' })}>
                         Promotions
                     </Link>
