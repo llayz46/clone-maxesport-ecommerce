@@ -139,7 +139,7 @@ function ListItem({ title, children, href, ...props }: ComponentPropsWithoutRef<
     return (
         <li {...props}>
             <NavigationMenuLink asChild>
-                <Link href={href} className="block p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md">
+                <Link href={href} className="block p-2 hover:bg-secondary rounded-md">
                     <div className="text-sm leading-none font-medium">{title}</div>
                     <p className="line-clamp-2 mt-1 text-sm leading-snug text-muted-foreground">{children}</p>
                 </Link>

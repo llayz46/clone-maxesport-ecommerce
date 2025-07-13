@@ -16,8 +16,8 @@ class ProductSeeder extends Seeder
         $categoryTapisDeSouris = Category::where('name', 'Tapis de Souris')->first();
 
         $laOnda = Brand::create([
-            'name' => 'La Onda',
-            'slug' => 'la-onda',
+            'name' => 'LaOnda',
+            'slug' => 'laonda',
         ]);
 
         $lethalGamingGear = Brand::create([
