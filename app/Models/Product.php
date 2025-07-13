@@ -89,6 +89,16 @@ class Product extends Model
         return $this->belongsToMany(Wishlist::class, 'wishlist_items');
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProductComment::class);
+    }
+
+    public function averageRating(): float
+    {
+        return round($this->comments()->avg('rating') ?? 0, 1);
+    }
+
     public function getPrice(): Attribute
     {
         return Attribute::make(

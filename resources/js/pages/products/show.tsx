@@ -1,11 +1,11 @@
-import { Product, ProductImage } from '@/types';
+import type { Product, ProductImage, ProductComment } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Heart, RotateCcw, Shield, ShoppingCart, Star, Truck } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Head, Link, WhenVisible } from '@inertiajs/react';
 import BaseLayout from '@/layouts/base-layout';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { cn } from '@/lib/utils';
@@ -15,13 +15,16 @@ import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { ProductBreadcrumb } from '@/components/product-breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getStorageUrl } from '@/utils/format-storage-url';
+import { ProductCommentSection } from '@/components/product-comment-section';
+import { ProductCommentProvider } from '@/contexts/product-comment-context';
 
 interface ShowProductProps {
     product: Product;
     similarProducts: Product[];
+    comments: ProductComment[];
 }
 
-export default function Show({ product, similarProducts }: ShowProductProps) {
+export default function Show({ product, similarProducts, comments }: ShowProductProps) {
     const featuredImage: ProductImage | undefined = product.images?.find(image => image.is_featured) || product.images?.sort((a, b) => (a.order || 0) - (b.order || 0))[0];
     const [imageToShow, setImageToShow] = useState<ProductImage | undefined>(featuredImage || product.images?.[0]);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -29,6 +32,12 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
     const { addToCart, buyNow } = useCartContext();
 
     const { url: baseUrl } = show(product.slug);
+
+    const averageRating = useMemo(() => {
+        if (comments.length === 0) return 0;
+        const totalRating = comments.reduce((sum, comment) => sum + comment.rating, 0);
+        return totalRating / comments.length;
+    }, [comments]);
 
     return (
         <BaseLayout>
@@ -76,10 +85,15 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                                 <div className="flex items-center gap-2">
                                     <div className="flex items-center">
                                         {[1, 2, 3, 4, 5].map((star) => (
-                                            <Star key={star} className="w-4 h-4 fill-primary text-primary" />
+                                            <Star
+                                                key={star}
+                                                className={`size-4 ${
+                                                    averageRating === 0 ? 'fill-primary text-primary' : averageRating >= star ? 'fill-primary text-primary' : 'text-primary'
+                                                }`}
+                                            />
                                         ))}
                                     </div>
-                                    <span className="text-sm text-muted-foreground">(24 avis)</span>
+                                    <span className="text-sm text-muted-foreground">({comments.length} avis)</span>
                                 </div>
                             </div>
 
@@ -150,6 +164,10 @@ export default function Show({ product, similarProducts }: ShowProductProps) {
                         </div>
                     </div>
                 </WhenVisible>
+
+                <ProductCommentProvider productId={product.id} comments={comments}>
+                    <ProductCommentSection />
+                </ProductCommentProvider>
 
                 <WhenVisible data="similarProducts" fallback={<RelatedProductFallback />}>
                     <div className="my-16 max-w-7xl mx-auto">
@@ -242,13 +260,10 @@ function ProductFallback() {
                 <div className="space-y-2">
                     <Skeleton className="h-3 w-24" />
                     <Skeleton className="h-7 w-52" />
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <Star key={star} className="w-4 h-4 fill-primary text-primary" />
-                            ))}
-                        </div>
-                        <span className="text-sm text-muted-foreground">(24 avis)</span>
+                    <div className="flex items-center">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className="w-4 h-4 fill-primary text-primary" />
+                        ))}
                     </div>
                 </div>
 

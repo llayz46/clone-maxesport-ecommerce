@@ -65,4 +65,9 @@ use Laravel\Cashier\Billable;
     {
         return $this->hasMany(Order::class);
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProductComment::class);
+    }
 }

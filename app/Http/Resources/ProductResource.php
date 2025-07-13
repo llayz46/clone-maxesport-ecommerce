@@ -39,6 +39,7 @@ class ProductResource extends JsonResource
             'group' => ProductGroupResource::make($this->whenLoaded('group')),
             'featured_image' => ProductImageResource::make($this->whenLoaded('featuredImage')),
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
+            'comments' => ProductCommentResource::make($this->whenLoaded('comments')),
 
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,

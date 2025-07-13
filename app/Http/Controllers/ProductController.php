@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCommentResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
@@ -75,6 +76,7 @@ class ProductController extends Controller
 
         return Inertia::render('products/show', [
             'product' => fn () => $productResource,
+            'comments' => fn () => ProductCommentResource::collection($product->comments->load('user')->sortByDesc('created_at')->take(5)),
             'similarProducts' => fn () => $similarProducts[0]->products,
         ]);
     }

@@ -1,4 +1,3 @@
-import { show } from "@/actions/App/Http/Controllers/ProductController";
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Eye, Heart, Star } from 'lucide-react';
@@ -13,8 +12,6 @@ import { getStorageUrl } from '@/utils/format-storage-url';
 export function ProductCard({ product, onQuickView }: { product: Product, onQuickView?: () => void }) {
     const [isHovered, setIsHovered] = useState(false)
     const { addItem } = useWishlist();
-
-    const { url } = show(product.slug);
 
     return (
         <Card className="group gap-0 overflow-hidden h-full rounded-md p-0 transition-all duration-300 hover:shadow-md">
@@ -68,7 +65,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                 </div>
 
                 <div className="mb-2">
-                    <Link href={url} className="mt-3 mb-1 line-clamp-1 text-base leading-tight font-semibold hover:underline">
+                    <Link href={route('product.show', product.slug)} className="mt-3 mb-1 line-clamp-1 text-base leading-tight font-semibold hover:underline">
                         {product.brand.name} {product.name}
                     </Link>
 

@@ -167,6 +167,18 @@ export interface ProductGroup {
     updated_at: string;
 }
 
+export interface ProductComment {
+    id: number;
+    product_id: number;
+    user_id: number;
+    title: string;
+    comment: string;
+    rating: number;
+    created_at: string;
+    updated_at: string;
+    user?: User;
+}
+
 export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>];
 
 export interface Order {

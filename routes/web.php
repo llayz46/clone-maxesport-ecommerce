@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductCommentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\WishlistController;
@@ -34,6 +35,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+    Route::post('/comments', [ProductCommentController::class, 'store'])->name('comments.store');
+    Route::put('/comments/{productComment}', [ProductCommentController::class, 'update'])->name('comments.update');
 });
 
 Route::prefix('categories')->group(function () {
