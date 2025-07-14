@@ -76,7 +76,7 @@ class ProductController extends Controller
 
         return Inertia::render('products/show', [
             'product' => fn () => $productResource,
-            'comments' => fn () => ProductCommentResource::collection($product->comments->load('user')->sortByDesc('created_at')->take(5)),
+            'comments' => fn () => ProductCommentResource::collection($product->comments()->with('user')->latest()->take(5)->get()),
             'similarProducts' => fn () => $similarProducts[0]->products,
         ]);
     }
