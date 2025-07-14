@@ -14,6 +14,12 @@ class ProductCommentController extends Controller
     {
         $data = $request->validated();
 
+        if (!Auth::user()->orders()->whereHas('items', function ($query) use ($data) {
+            $query->where('product_id', $data['product_id']);
+        })->exists()) {
+            return redirect()->back()->withErrors(['Vous devez avoir acheté ce produit pour pouvoir le commenter.']);
+        }
+
         $comment = Auth::user()->comments()->where('product_id', $data['product_id'])->get();
 
         if ($comment->isNotEmpty()) {
