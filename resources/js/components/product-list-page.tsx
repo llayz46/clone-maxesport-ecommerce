@@ -14,9 +14,10 @@ interface ProductListPageProps {
     title: string;
     products: PaginatedResponse<Product>;
     sort: SortType;
+    stock: { in: boolean, out: boolean }
 }
 
-export function ProductListPage({ title, products, sort = 'news' }: ProductListPageProps) {
+export function ProductListPage({ title, products, sort = 'news', stock }: ProductListPageProps) {
     const [selectedSort, setSelectedSort] = useState<SortType>(sort);
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
@@ -46,7 +47,7 @@ export function ProductListPage({ title, products, sort = 'news' }: ProductListP
 
             <main className="layout-container">
                 <div className="flex items-center justify-between">
-                    <FilterSheet />
+                    <FilterSheet current_page={products.meta.current_page} stock={stock} />
 
                     <Select onValueChange={handleSortChange} defaultValue={sort} value={selectedSort}>
                         <SelectTrigger className="w-52">
