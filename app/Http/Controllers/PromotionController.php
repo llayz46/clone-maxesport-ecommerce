@@ -14,6 +14,10 @@ class PromotionController extends Controller
         $query = Product::with(['featuredImage', 'brand'])
             ->whereNotNull('discount_price');
 
+        if ($query->count() === 0) {
+            return redirect()->route('home')->withErrors('Aucune promotion n\'est actuellement disponible.');
+        }
+
         $sort = $request->query('sort', 'news');
 
         switch ($sort) {
