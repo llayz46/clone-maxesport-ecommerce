@@ -39,18 +39,17 @@ class BannerController extends Controller
                 'banner' => $banner->toArray(),
             ],
         ]);
-//        return redirect()->back()->with('success', 'Bannière créée avec succès.');
     }
 
     public function update(Request $request, BannerMessage $bannerMessage)
     {
         $request->validate([
-            'message' => 'required|string|max:255',
-            'is_active' => 'boolean',
-            'order' => 'integer|min:0',
+            'message' => 'sometimes|required|string|max:255',
+            'is_active' => 'sometimes|boolean',
+            'order' => 'sometimes|integer|min:0',
         ]);
 
-        $bannerMessage->update($request->only(['message', 'is_active', 'order']));
+        $bannerMessage->update($request->only('message', 'is_active', 'order'));
 
         Cache::forget('infoBanner');
 

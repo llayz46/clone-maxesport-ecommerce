@@ -224,7 +224,7 @@ php artisan tinker
 
 ```php
 // Créer le rôle admin s'il n'existe pas déjà
-$role = Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
+Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
 
 // Attribuer le rôle admin à un utilisateur existant (par ID)
 $user = App\Models\User::find(1); // Remplacez 1 par l'ID de l'utilisateur souhaité

@@ -28,7 +28,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/banners', [BannerController::class, 'index'])->name('banners.index');
     Route::put('/banners/ordering', [BannerController::class, 'ordering'])->name('banners.ordering');
-    Route::put('/banners/{banner}', [BannerController::class, 'update'])->name('banners.update');
+    Route::put('/banners/{bannerMessage}', [BannerController::class, 'update'])->name('banners.update');
     Route::post('/banners', [BannerController::class, 'store'])->name('banners.store');
     Route::delete('/banners/{banner}', [BannerController::class, 'destroy'])->name('banners.destroy');
 });

@@ -1,4 +1,4 @@
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import type { BannerItem, BreadcrumbItem, SharedData } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,12 +22,16 @@ import { CSS } from '@dnd-kit/utilities';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Transition } from '@headlessui/react';
 import { toast } from 'sonner';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useMemo, useState } from 'react';
 import { BannerDialog } from '@/components/banner-dialog';
 import { WordRotate } from '@/components/ui/word-rotate';
 
 export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[] }) {
     const { infoBanner } = usePage<SharedData>().props;
+
+    const banners = useMemo(() => {
+        return infoBanner.filter(item => item.is_active).sort((a, b) => a.order - b.order);
+    }, [infoBanner]);
 
     const [openBannerDialog, setOpenBannerDialog] = useState<boolean>(false);
     const [editBanner, setEditBanner] = useState<BannerItem | null>(null);
@@ -94,19 +98,22 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
         setData('infoBanner', data.infoBanner.map(b => b.id === id ? updatedBanner : b));
         setDefaults({ infoBanner: data.infoBanner.map(b => b.id === id ? updatedBanner : b) });
 
-        put(route('admin.banners.update', id), {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success(`Bannière ${updatedBanner.is_active ? 'activée' : 'désactivée'} avec succès`, {
-                    description: `La bannière a été ${updatedBanner.is_active ? 'activée' : 'désactivée'}.`,
-                });
-            },
-            onError: () => {
-                toast.error('Erreur lors de la mise à jour de la bannière.', {
-                    description: 'Veuillez vérifier les erreurs et réessayer.',
-                });
+        router.put(route('admin.banners.update', id),
+            updatedBanner,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success(`Bannière ${updatedBanner.is_active ? 'activée' : 'désactivée'} avec succès`, {
+                        description: `La bannière a été ${updatedBanner.is_active ? 'activée' : 'désactivée'}.`,
+                    });
+                },
+                onError: () => {
+                    toast.error('Erreur lors de la mise à jour de la bannière.', {
+                        description: 'Veuillez vérifier les erreurs et réessayer.',
+                    });
+                }
             }
-        });
+        )
     }
 
     return (
@@ -126,7 +133,7 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                                 <WordRotate
                                     duration={4000}
                                     className="font-bold text-center text-white dark:text-black"
-                                    words={data.infoBanner.map(item => item.message)}
+                                    words={banners.map(item => item.message)}
                                 />
                             </div>
                         </div>
