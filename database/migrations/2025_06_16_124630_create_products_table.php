@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('sku')->unique();
             $table->text('description');
-            $table->string('short_description', 255);
+            $table->string('short_description', 500);
 
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();

@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
             'price' => 54.90,
             'discount_price' => null,
             'cost_price' => 32.45,
-            'stock' => 100,
+            'stock' => 0,
             'brand_id' => $laOnda->id,
             'product_group_id' => $moldenEdgeGroup->id,
         ]);

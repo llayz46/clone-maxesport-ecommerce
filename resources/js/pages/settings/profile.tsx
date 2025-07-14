@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import AvatarProfileInput from '@/components/avatar-profile-input';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -39,7 +40,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
         post(route('profile.update'), {
             preserveScroll: true,
-            forceFormData: true
+            forceFormData: true,
+            onError: (errors) => {
+                const allErrors = Object.values(errors).join('\n') || 'Veuillez vérifier les informations saisies.';
+
+                toast.error('Erreur lors de la mise à jour du profil.', {
+                    description: allErrors,
+                });
+            },
         });
     };
 

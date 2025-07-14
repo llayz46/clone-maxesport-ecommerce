@@ -82,10 +82,6 @@ export default function Banners({ breadcrumbs }: { breadcrumbs: BreadcrumbItem[]
                     icon: <Megaphone className="size-4" />,
                 });
             },
-            // onFinish: () => {
-            //     setData('infoBanner', data.infoBanner.filter(banner => banner.id !== id));
-            //     setDefaults({ infoBanner: data.infoBanner.filter(banner => banner.id !== id) });
-            // }
         })
     }
 

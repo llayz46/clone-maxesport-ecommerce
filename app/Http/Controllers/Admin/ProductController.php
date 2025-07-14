@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\Category\HandleCategory;
 use App\Actions\Product\HandleProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
@@ -11,6 +10,7 @@ use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -111,7 +111,8 @@ class ProductController extends Controller
         try {
             $product = $this->handleProduct->create($data);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de la création du produit.']);
         }
 
         return redirect()->route('admin.products.show', $product)->with('success', 'Produit créé avec succès.');
@@ -139,7 +140,8 @@ class ProductController extends Controller
         try {
             $this->handleProduct->update($product, $data);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de la mise à jour du produit.']);
         }
 
         return redirect()->route('admin.products.edit', $product);
@@ -158,6 +160,7 @@ class ProductController extends Controller
         try {
             $product->delete();
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return redirect()->back()->withErrors(['error' => 'Impossible de supprimer le produit.']);
         }
 

@@ -68,16 +68,19 @@ export function UserDropdown({ user }: { user: User }) {
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
                 {isAdmin && (
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem asChild>
-                            <Link href="/admin" className="flex items-center gap-2">
-                                <ShieldCheckIcon size={16} className="opacity-60" aria-hidden="true" />
-                                <span>Admin Dashboard</span>
-                            </Link>
-                        </DropdownMenuItem>
-                    </DropdownMenuGroup>
+                    <>
+                        <DropdownMenuSeparator />
+
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem asChild>
+                                <Link href="/admin" className="flex items-center gap-2">
+                                    <ShieldCheckIcon size={16} className="opacity-60" aria-hidden="true" />
+                                    <span>Admin Dashboard</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
