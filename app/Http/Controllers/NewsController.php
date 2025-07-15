@@ -15,6 +15,14 @@ class NewsController extends Controller
             ->where('created_at', '>=', now()->subDays(7));
 
         $sort = $request->query('sort', 'news');
+        $in = $request->boolean('in');
+        $out = $request->boolean('out');
+
+        if ($in && !$out) {
+            $query->where('stock', '>', 0);
+        } elseif (!$in && $out) {
+            $query->where('stock', '=', 0);
+        }
 
         switch ($sort) {
             case 'price_asc':
@@ -31,6 +39,10 @@ class NewsController extends Controller
 
         return Inertia::render('news/show', [
             'products' => fn() => ProductResource::collection($query->paginate(12)),
+            'stock' => [
+                'in' => $in,
+                'out' => $out,
+            ],
         ]);
     }
 }
