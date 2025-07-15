@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PromotionController extends Controller
 {
+    use StockFilterable;
+
     public function __invoke(Request $request)
     {
         $query = Product::with(['featuredImage', 'brand'])
@@ -20,11 +23,7 @@ class PromotionController extends Controller
             return redirect()->route('home')->withErrors('Aucune promotion n\'est actuellement disponible.');
         }
 
-        if ($in && !$out) {
-            $query->where('stock', '>', 0);
-        } elseif (!$in && $out) {
-            $query->where('stock', '=', 0);
-        }
+        $this->applyStockFilter($query, $in, $out);
 
         $sort = $request->query('sort', 'news');
 

@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NewsController extends Controller
 {
+    use StockFilterable;
+
     public function __invoke(Request $request)
     {
         $query = Product::with(['featuredImage', 'brand'])
@@ -18,11 +21,7 @@ class NewsController extends Controller
         $in = $request->boolean('in');
         $out = $request->boolean('out');
 
-        if ($in && !$out) {
-            $query->where('stock', '>', 0);
-        } elseif (!$in && $out) {
-            $query->where('stock', '=', 0);
-        }
+        $this->applyStockFilter($query, $in, $out);
 
         switch ($sort) {
             case 'price_asc':

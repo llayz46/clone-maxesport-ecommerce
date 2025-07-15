@@ -6,11 +6,14 @@ use App\Enums\CategoryStatus;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+    use StockFilterable;
+
     /**
      * Handle the incoming request.
      *
@@ -28,11 +31,7 @@ class CategoryController extends Controller
 
         $query = $category->products()->where('status', true)->with(['featuredImage', 'brand']);
 
-        if ($in && !$out) {
-            $query->where('stock', '>', 0);
-        } elseif (!$in && $out) {
-            $query->where('stock', '=', 0);
-        }
+        $this->applyStockFilter($query, $in, $out);
 
         switch ($sort) {
             case 'price_asc':
