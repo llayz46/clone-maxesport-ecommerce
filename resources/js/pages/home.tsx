@@ -14,6 +14,7 @@ import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { toast } from 'sonner';
 import { BoxReveal } from '@/components/magicui/box-reveal';
 import { TextAnimate } from '@/components/magicui/text-animate';
+import { motion } from 'motion/react';
 
 const benefits = [
     {
@@ -121,6 +122,20 @@ export default function Home({ products, comments }: { products: Product[], comm
         });
     }, [errors])
 
+    const containerVariants = {
+        animate: {
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.4,
+            },
+        },
+    };
+
+    const itemVariants = {
+        initial: { scale: 0.97 },
+        animate: { scale: [0.97, 1.03, 1], transition: { duration: 0.5 } },
+    };
+
     return (
         <BaseLayout>
             <Head title="Accueil" />
@@ -141,9 +156,14 @@ export default function Home({ products, comments }: { products: Product[], comm
                                 <BoxReveal boxColor="#3b82f6" duration={0.5}>
                                     <span className="text-primary italic">
                                         — gaming{' '}
-                                        <span className="relative">
+                                        <span className="relative pb-2">
                                             de référence
-                                            <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/60" />
+                                            <motion.span
+                                                className="absolute bottom-3 left-0 h-0.5 bg-primary"
+                                                initial={{ width: 0 }}
+                                                animate={{ width: "100%" }}
+                                                transition={{ duration: 0.5, ease: "easeOut", delay: 0.7 }}
+                                            />
                                         </span>
                                         .
                                     </span>
@@ -187,10 +207,17 @@ export default function Home({ products, comments }: { products: Product[], comm
                                     Des avantages qui font la différence.
                                 </TextAnimate>
 
-                                <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4">
+                                <motion.div
+                                    className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4"
+                                    variants={containerVariants}
+                                    initial="initial"
+                                    whileInView="animate"
+                                    viewport={{ once: true, amount: 0.2 }}
+                                >
                                     {benefits.map((benefit, index) => (
-                                        <div
+                                        <motion.div
                                             key={index}
+                                            variants={itemVariants}
                                             className="space-y-2 rounded-md border border-border/40 bg-background/50 p-4 backdrop-blur-sm"
                                         >
                                             <h3 className="mb-2 flex items-center gap-2 text-sm font-medium tracking-tighter">
@@ -198,9 +225,9 @@ export default function Home({ products, comments }: { products: Product[], comm
                                                 {benefit.title}
                                             </h3>
                                             <p className="text-sm tracking-tighter text-foreground/70">{benefit.description}</p>
-                                        </div>
+                                        </motion.div>
                                     ))}
-                                </div>
+                                </motion.div>
                             </div>
                         </div>
                     </div>
