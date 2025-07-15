@@ -57,7 +57,7 @@ export default function Show({ product, similarProducts, comments }: ShowProduct
                                 <img
                                     src={getStorageUrl(imageToShow?.image_url)}
                                     alt={imageToShow?.alt_text || product.name}
-                                    className="object-cover size-full"
+                                    className="object-contain size-full"
                                 />
                                 {product.isNew && (
                                     <Badge className="rounded-sm absolute top-4 left-4 bg-orange-400/90 text-primary-foreground">Nouveau</Badge>
@@ -70,7 +70,7 @@ export default function Show({ product, similarProducts, comments }: ShowProduct
                                         <img
                                             src={getStorageUrl(image.image_url)}
                                             alt={image.alt_text}
-                                            className="object-cover size-full"
+                                            className="object-contain size-full"
                                             onClick={() => setImageToShow(image)}
                                         />
                                     </div>
