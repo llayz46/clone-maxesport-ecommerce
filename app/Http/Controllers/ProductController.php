@@ -6,36 +6,49 @@ use App\Http\Resources\ProductCommentResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    use StockFilterable;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $in = $request->boolean('in');
+        $out = $request->boolean('out');
 
         if ($search) {
             $products = Product::search($search)
-                ->query(function ($query) {
+                ->query(function ($query) use ($in, $out) {
                     $query->where('status', true)
                         ->with('featuredImage', 'brand');
+
+                    $this->applyStockFilter($query, $in, $out);
                 })->paginate(16)->withQueryString();
         } else {
             $query = Product::query()
                 ->where('status', true)
                 ->with('featuredImage', 'brand');
 
+            $this->applyStockFilter($query, $in, $out);
+
             $products = $query->paginate(16)->withQueryString();
         }
 
         return Inertia::render('products/index', [
             'search' => fn () => $search,
-            'data' => fn () => ProductResource::collection($products)
+            'data' => fn () => ProductResource::collection($products),
+            'stock' => [
+                'in' => $in,
+                'out' => $out,
+            ],
         ]);
     }
 
