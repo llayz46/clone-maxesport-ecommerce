@@ -159,9 +159,9 @@ export function ProductFormPage({ product, brands, groups, setDeleteProduct, isD
                 leave="transition ease-in-out"
                 leaveTo="opacity-0 scale-95"
             >
-                <Alert className="border-orange-800 bg-orange-950">
-                    <AlertCircle className="size-4 dark:text-orange-400" />
-                    <AlertDescription className="text-orange-200">
+                <Alert className="border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950">
+                    <AlertCircle className="size-4 !text-orange-600 !dark:text-orange-400" />
+                    <AlertDescription className="text-orange-800 dark:text-orange-200">
                         Vous avez des modifications non enregistrées. N'oubliez pas de sauvegarder vos changements.
                     </AlertDescription>
                 </Alert>
