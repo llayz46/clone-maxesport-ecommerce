@@ -31,6 +31,19 @@ export function ProductCommentForm() {
         rating: comment ? comment.rating : 0,
     })
 
+    if (!auth.user) {
+        return (
+            <Card className="max-sm:py-4">
+                <CardHeader className="max-sm:px-4">
+                    <CardTitle className="text-foreground">Laisser un avis</CardTitle>
+                </CardHeader>
+                <CardContent className="max-sm:px-4">
+                    <p className="text-muted-foreground">Veuillez vous connecter pour laisser un avis.</p>
+                </CardContent>
+            </Card>
+        );
+    }
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 

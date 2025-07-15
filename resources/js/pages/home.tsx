@@ -137,7 +137,6 @@ export default function Home({ products, comments }: { products: Product[], comm
                                         Votre boutique
                                     </span>
                                 </BoxReveal>
-                                <br className="hidden sm:block" />
                                 <BoxReveal boxColor="#3b82f6" duration={0.5}>
                                     <span className="text-primary italic">
                                         — gaming{' '}
@@ -149,18 +148,6 @@ export default function Home({ products, comments }: { products: Product[], comm
                                     </span>
                                 </BoxReveal>
                             </h1>
-                            {/*<h1 className="sm:leading-tighter mb-4 text-4xl leading-tight font-semibold tracking-tight text-black sm:mb-6 sm:text-5xl md:text-7xl dark:text-white">*/}
-                            {/*    Votre boutique*/}
-                            {/*    <br className="hidden sm:block" />—*/}
-                            {/*    <span className="text-primary italic">*/}
-                            {/*        gaming{' '}*/}
-                            {/*        <span className="relative">*/}
-                            {/*            de référence*/}
-                            {/*            <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/60" />*/}
-                            {/*        </span>*/}
-                            {/*        .*/}
-                            {/*    </span>*/}
-                            {/*</h1>*/}
                             <p className="mx-auto mb-6 max-w-3xl px-4 text-base tracking-tight text-black sm:mb-8 sm:px-0 sm:text-lg md:text-xl dark:text-white/80">
                                 Des produits de qualité, sélectionnés pour les joueurs exigeants.
                             </p>
