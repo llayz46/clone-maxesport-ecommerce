@@ -13,6 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { toast } from 'sonner';
 import { BoxReveal } from '@/components/magicui/box-reveal';
+import { TextAnimate } from '@/components/magicui/text-animate';
 
 const benefits = [
     {
@@ -148,9 +149,15 @@ export default function Home({ products, comments }: { products: Product[], comm
                                     </span>
                                 </BoxReveal>
                             </h1>
-                            <p className="mx-auto mb-6 max-w-3xl px-4 text-base tracking-tight text-black sm:mb-8 sm:px-0 sm:text-lg md:text-xl dark:text-white/80">
+                            <TextAnimate
+                                animation="slideUp"
+                                by="word"
+                                className="mx-auto mb-6 max-w-3xl px-4 text-base tracking-tight text-black sm:mb-8 sm:px-0 sm:text-lg md:text-xl dark:text-white"
+                                delay={0.3}
+                                once
+                            >
                                 Des produits de qualité, sélectionnés pour les joueurs exigeants.
-                            </p>
+                            </TextAnimate>
                             <div
                                 className="mt-6 flex flex-col items-center justify-center gap-3 px-4 sm:mt-8 sm:flex-row sm:px-0">
                                 <PrimaryButton href="/products">Découvrir la boutique</PrimaryButton>
@@ -169,9 +176,16 @@ export default function Home({ products, comments }: { products: Product[], comm
                     <div className="w-full py-6 sm:py-12">
                         <div className="container mx-auto sm:px-4">
                             <div className="flex flex-col gap-6 sm:gap-10">
-                                <h2 className="text-left text-xl font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl">
+                                <TextAnimate
+                                    animation="blurInUp"
+                                    by="character"
+                                    className="text-left text-xl font-semibold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl"
+                                    as="h2"
+                                    delay={0.4}
+                                    once
+                                >
                                     Des avantages qui font la différence.
-                                </h2>
+                                </TextAnimate>
 
                                 <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-4">
                                     {benefits.map((benefit, index) => (
