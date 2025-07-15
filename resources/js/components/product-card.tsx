@@ -69,7 +69,7 @@ export function ProductCard({ product, onQuickView }: { product: Product, onQuic
                         {product.brand.name} {product.name}
                     </Link>
 
-                    <span className="text-sm font-bold">{product.price.toFixed(2)} €</span>
+                    <span className="text-sm font-bold">{product.discount_price?.toFixed(2) ?? product.price.toFixed(2)} €</span>
                 </div>
 
                 <div className="mt-auto flex items-center gap-2">

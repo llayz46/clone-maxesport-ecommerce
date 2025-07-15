@@ -177,6 +177,7 @@ export interface ProductComment {
     created_at: string;
     updated_at: string;
     user?: User;
+    product?: Product;
 }
 
 export type WishlistType = [Product[], Dispatch<SetStateAction<Product[]>>];

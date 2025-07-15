@@ -29,10 +29,9 @@ class ProductResource extends JsonResource
                 'reorder_level' => $this->reorder_level,
             ]),
 
-            'isNew' => $this->created_at->diffInDays(now()) <= 7,
-            'isWishlisted' => $this->whenLoaded('wishlists', function () {
-                return $this->wishlists->isNotEmpty();
-            }),
+            'isNew' => $this->whenLoaded('created_at', fn () => $this->created_at->diffInDays(now()) <= 7),
+
+            'isWishlisted' => $this->whenLoaded('wishlists', fn () => $this->wishlists->isNotEmpty()),
 
             'brand' => BrandResource::make($this->whenLoaded('brand')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
@@ -45,8 +44,8 @@ class ProductResource extends JsonResource
             'meta_description' => $this->meta_description,
             'meta_keywords' => $this->meta_keywords,
 
-            'updated_at' => $this->updated_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
-            'created_at' => $this->created_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
+            'updated_at' => $this->whenLoaded('updated_at', fn () => $this->updated_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss')),
+            'created_at' => $this->whenLoaded('created_at', fn () => $this->created_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss')),
         ];
     }
 }
