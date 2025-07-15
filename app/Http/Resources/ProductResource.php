@@ -44,8 +44,8 @@ class ProductResource extends JsonResource
             'meta_description' => $this->meta_description,
             'meta_keywords' => $this->meta_keywords,
 
-            'updated_at' => $this->whenLoaded('updated_at', fn () => $this->updated_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss')),
-            'created_at' => $this->whenLoaded('created_at', fn () => $this->created_at->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss')),
+            'updated_at' => $this->updated_at?->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
+            'created_at' => $this->created_at?->locale('fr')->isoFormat('D MMMM Y à HH:mm:ss'),
         ];
     }
 }

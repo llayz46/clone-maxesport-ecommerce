@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait StockFilterable
@@ -9,12 +10,12 @@ trait StockFilterable
     /**
      * Applique les filtres de stock à la requête
      *
-     * @param Relation $query
+     * @param Builder|Relation $query
      * @param bool $in Produits en stock
      * @param bool $out Produits hors stock
-     * @return Relation
+     * @return Builder|Relation
      */
-    protected function applyStockFilter(Relation $query, bool $in, bool $out): Relation
+    protected function applyStockFilter(Builder|Relation $query, bool $in, bool $out): Builder|Relation
     {
         if ($in && !$out) {
             $query->where('stock', '>', 0);
