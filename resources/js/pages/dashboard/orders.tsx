@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, Order } from '@/types';
 import { RotateCcw, Search } from 'lucide-react';
@@ -83,7 +83,9 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                                 )}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="font-medium text-foreground truncate">{item.name}</p>
+                                                <Link href={route('product.show', item.product?.slug)} className="font-medium text-foreground truncate hover:underline">
+                                                    {item.name}
+                                                </Link>
                                                 <p className="text-sm text-muted-foreground">Quantité: {item.quantity}</p>
                                                 <p className="block sm:hidden font-semibold text-foreground">€{(item.price / 100).toFixed(2)}</p>
                                             </div>

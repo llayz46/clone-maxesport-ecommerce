@@ -224,7 +224,7 @@ export interface OrderItems {
     amount_discount: number;
     amount_total: number;
     quantity: number;
-    product?: Product | null;
+    product?: Product;
     created_at: string;
     updated_at: string;
 }
