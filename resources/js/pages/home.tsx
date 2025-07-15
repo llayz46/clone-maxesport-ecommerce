@@ -153,7 +153,7 @@ export default function Home({ products, comments }: { products: Product[], comm
                             </p>
                             <div
                                 className="mt-6 flex flex-col items-center justify-center gap-3 px-4 sm:mt-8 sm:flex-row sm:px-0">
-                                <PrimaryButton href="/promotions">Découvrir la boutique</PrimaryButton>
+                                <PrimaryButton href="/products">Découvrir la boutique</PrimaryButton>
                                 <Link
                                     href="/news"
                                     className="inline-flex w-full items-center justify-center rounded-md border border-foreground/10 px-5 py-3 text-sm font-medium transition-colors hover:bg-foreground/5 sm:w-auto"
@@ -342,7 +342,7 @@ export default function Home({ products, comments }: { products: Product[], comm
                         </p>
                     </div>
                     <div className="flex justify-center">
-                        <PrimaryButton href="/">Explorer la boutique</PrimaryButton>
+                        <PrimaryButton href="/products">Explorer la boutique</PrimaryButton>
                     </div>
                 </div>
             </section>
