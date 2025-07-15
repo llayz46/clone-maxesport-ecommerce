@@ -12,6 +12,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
 import { toast } from 'sonner';
+import { BoxReveal } from '@/components/magicui/box-reveal';
 
 const benefits = [
     {
@@ -123,8 +124,7 @@ export default function Home({ products, comments }: { products: Product[], comm
         <BaseLayout>
             <Head title="Accueil" />
 
-            <div
-                className="absolute top-30 right-0 left-0 -z-10 h-250 w-full bg-[radial-gradient(#e5e7eb_1px,#ffffff_1px)] dark:bg-[radial-gradient(#262626FF_1px,#0A0A0AFF_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_100%_50%_at_50%_100%,#000_100%,transparent_220%)] after:absolute after:bottom-0 after:h-72 after:w-full after:bg-linear-to-t after:from-background after:to-transparent"></div>
+            <div className="absolute top-30 right-0 left-0 -z-10 h-250 w-full bg-[radial-gradient(#e5e7eb_1px,#ffffff_1px)] dark:bg-[radial-gradient(#262626FF_1px,#0A0A0AFF_1px)] bg-[size:20px_20px] [mask-image:radial-gradient(ellipse_100%_50%_at_50%_100%,#000_100%,transparent_220%)] after:absolute after:bottom-0 after:h-72 after:w-full after:bg-linear-to-t after:from-background after:to-transparent"></div>
 
             {/* Hero Section */}
             <section className="pt-10 sm:pt-20">
@@ -132,17 +132,35 @@ export default function Home({ products, comments }: { products: Product[], comm
                     <div className="container mx-auto pt-8 sm:pt-16">
                         <div className="mx-auto max-w-7xl text-center">
                             <h1 className="sm:leading-tighter mb-4 text-4xl leading-tight font-semibold tracking-tight text-black sm:mb-6 sm:text-5xl md:text-7xl dark:text-white">
-                                Votre boutique
-                                <br className="hidden sm:block" />—
-                                <span className="text-primary italic">
-                                    gaming{' '}
-                                    <span className="relative">
-                                        de référence
-                                        <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/60" />
+                                <BoxReveal boxColor="#3b82f6" duration={0.5}>
+                                    <span className="text-center">
+                                        Votre boutique
                                     </span>
-                                    .
-                                </span>
+                                </BoxReveal>
+                                <br className="hidden sm:block" />
+                                <BoxReveal boxColor="#3b82f6" duration={0.5}>
+                                    <span className="text-primary italic">
+                                        — gaming{' '}
+                                        <span className="relative">
+                                            de référence
+                                            <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/60" />
+                                        </span>
+                                        .
+                                    </span>
+                                </BoxReveal>
                             </h1>
+                            {/*<h1 className="sm:leading-tighter mb-4 text-4xl leading-tight font-semibold tracking-tight text-black sm:mb-6 sm:text-5xl md:text-7xl dark:text-white">*/}
+                            {/*    Votre boutique*/}
+                            {/*    <br className="hidden sm:block" />—*/}
+                            {/*    <span className="text-primary italic">*/}
+                            {/*        gaming{' '}*/}
+                            {/*        <span className="relative">*/}
+                            {/*            de référence*/}
+                            {/*            <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/60" />*/}
+                            {/*        </span>*/}
+                            {/*        .*/}
+                            {/*    </span>*/}
+                            {/*</h1>*/}
                             <p className="mx-auto mb-6 max-w-3xl px-4 text-base tracking-tight text-black sm:mb-8 sm:px-0 sm:text-lg md:text-xl dark:text-white/80">
                                 Des produits de qualité, sélectionnés pour les joueurs exigeants.
                             </p>
