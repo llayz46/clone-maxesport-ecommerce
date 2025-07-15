@@ -8,9 +8,10 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getStorageUrl } from '@/utils/format-storage-url';
 import { useInitials } from '@/hooks/use-initials';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ProductQuickViewDialog } from '@/components/product-quick-view-dialog';
+import { toast } from 'sonner';
 
 const benefits = [
     {
@@ -107,8 +108,16 @@ const faqItems = [
 
 export default function Home({ products, comments }: { products: Product[], comments: ProductComment[] }) {
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-    const { name } = usePage<SharedData>().props;
+    const { name, errors } = usePage<SharedData>().props;
     const getInitials = useInitials();
+
+    useEffect(() => {
+        const errorMessage = Object.values(errors).flat().join(' ');
+
+        if (errorMessage) toast.error('Une erreur est survenue', {
+            description: errorMessage,
+        });
+    }, [errors])
 
     return (
         <BaseLayout>

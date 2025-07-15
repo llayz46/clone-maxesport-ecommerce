@@ -98,7 +98,16 @@ export default function Show({ product, similarProducts, comments }: ShowProduct
                             </div>
 
                             <div className="space-y-2">
-                                <span className="block text-3xl font-bold text-foreground">{product.price.toFixed(2)} €</span>
+                                <div className="flex items-start gap-2">
+                                    {product.discount_price ? (
+                                        <>
+                                            <span className="block text-3xl font-bold text-foreground">{product.discount_price.toFixed(2)} €</span>
+                                            <span className="text-muted-foreground line-through">{product.price.toFixed(2)} €</span>
+                                        </>
+                                    ) : (
+                                        <span className="block text-3xl font-bold text-foreground">{product.price.toFixed(2)} €</span>
+                                    )}
+                                </div>
                                 <p className="text-sm text-muted-foreground">TVA incluse, frais de port calculés à la caisse</p>
                             </div>
 
