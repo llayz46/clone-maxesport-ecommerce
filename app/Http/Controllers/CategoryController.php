@@ -6,13 +6,14 @@ use App\Enums\CategoryStatus;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
+use App\Traits\Sortable;
 use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    use StockFilterable;
+    use StockFilterable, Sortable;
 
     /**
      * Handle the incoming request.
@@ -32,19 +33,7 @@ class CategoryController extends Controller
         $query = $category->products()->where('status', true)->with(['featuredImage', 'brand']);
 
         $this->applyStockFilter($query, $in, $out);
-
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderByRaw('COALESCE(discount_price, price) ASC');
-                break;
-            case 'price_desc':
-                $query->orderByRaw('COALESCE(discount_price, price) DESC');
-                break;
-            case 'news':
-            default:
-                $query->latest();
-                break;
-        }
+        $this->applySort($query, $sort);
 
         return Inertia::render('categories/show', [
             'category' => fn () => CategoryResource::make($category->load('parent')),

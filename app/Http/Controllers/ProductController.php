@@ -6,6 +6,7 @@ use App\Http\Resources\ProductCommentResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use App\Traits\Sortable;
 use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -13,24 +14,26 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    use StockFilterable;
+    use StockFilterable, Sortable;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $sort = $request->query('sort', 'news');
         $search = $request->input('search');
         $in = $request->boolean('in');
         $out = $request->boolean('out');
 
         if ($search) {
             $products = Product::search($search)
-                ->query(function ($query) use ($in, $out) {
+                ->query(function ($query) use ($in, $out, $sort) {
                     $query->where('status', true)
                         ->with('featuredImage', 'brand');
 
                     $this->applyStockFilter($query, $in, $out);
+                    $this->applySort($query, $sort);
                 })->paginate(16)->withQueryString();
         } else {
             $query = Product::query()
@@ -38,6 +41,7 @@ class ProductController extends Controller
                 ->with('featuredImage', 'brand');
 
             $this->applyStockFilter($query, $in, $out);
+            $this->applySort($query, $sort);
 
             $products = $query->paginate(16)->withQueryString();
         }

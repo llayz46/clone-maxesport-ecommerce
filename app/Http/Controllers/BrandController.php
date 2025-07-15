@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Brand;
+use App\Traits\Sortable;
 use App\Traits\StockFilterable;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BrandController extends Controller
 {
-    use StockFilterable;
+    use StockFilterable, Sortable;
 
     /**
      * Display a listing of the resource.
@@ -37,19 +38,7 @@ class BrandController extends Controller
         $query = $brand->products()->with(['featuredImage', 'brand']);
 
         $this->applyStockFilter($query, $in, $out);
-
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderByRaw('COALESCE(discount_price, price) ASC');
-                break;
-            case 'price_desc':
-                $query->orderByRaw('COALESCE(discount_price, price) DESC');
-                break;
-            case 'news':
-            default:
-                $query->latest();
-                break;
-        }
+        $this->applySort($query, $sort);
 
         return Inertia::render('brands/show', [
             'brand' => fn () => BrandResource::make($brand),
