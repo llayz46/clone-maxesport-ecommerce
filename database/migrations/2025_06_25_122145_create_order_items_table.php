@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Product::class);
 
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->unsignedInteger('price');
             $table->unsignedInteger('quantity');
             $table->unsignedInteger('amount_discount');

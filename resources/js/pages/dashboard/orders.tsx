@@ -70,11 +70,17 @@ export default function Orders({ orders }: { orders: Order[] }) {
                                     {order.items.map(item => (
                                         <div key={item.id} className="flex items-center gap-4">
                                             <div className="w-16 h-16 rounded-md overflow-hidden bg-muted flex-shrink-0">
-                                                <img
-                                                    src={item.product?.featured_image && getStorageUrl(item.product.featured_image.image_url)}
-                                                    alt={item.product?.featured_image?.alt_text}
-                                                    className="size-full object-cover"
-                                                />
+                                                {item.product?.featured_image ? (
+                                                    <img
+                                                        src={getStorageUrl(item.product.featured_image.image_url)}
+                                                        alt={item.product.featured_image.alt_text}
+                                                        className="size-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <span className="block size-full bg-muted flex items-center justify-center text-muted-foreground">
+                                                        Image indisponible
+                                                    </span>
+                                                )}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium text-foreground truncate">{item.name}</p>
