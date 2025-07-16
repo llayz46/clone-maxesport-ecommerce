@@ -50,7 +50,7 @@ export function NavCategories() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                        className="p-2 rounded-md hover:bg-accent"
                         aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
                     >
                         {isMobileMenuOpen ? <X /> : <Menu />}
@@ -64,7 +64,7 @@ export function NavCategories() {
                                 <li key={mainCategory.id} className="w-full">
                                     {mainCategory.children && mainCategory.children.length > 0 ? (
                                         <details className="w-full">
-                                            <summary className="cursor-pointer p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 font-medium">
+                                            <summary className="cursor-pointer p-2 rounded-md hover:bg-accent font-medium">
                                                 {mainCategory.name}
                                             </summary>
                                             <ul className="pl-4 mt-1 space-y-1">
@@ -72,7 +72,7 @@ export function NavCategories() {
                                                     <li key={category.id}>
                                                         <Link
                                                             href={`/categories/${category.slug}`}
-                                                            className="block p-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
+                                                            className="block p-2 text-sm hover:bg-accent rounded-md"
                                                         >
                                                             <div className="font-medium">{category.name}</div>
                                                             {category.description && (
