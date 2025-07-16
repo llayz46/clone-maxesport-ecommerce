@@ -9,6 +9,8 @@ Inertia.js).
 - [Technologies utilisées](#technologies-utilisées)
 - [Fonctionnalités](#fonctionnalités)
     - [Catalogue de produits](#catalogue-de-produits)
+    - [Landing Page](#landing-page)
+    - [Mode clair/sombre](#mode-clairsombre)
     - [Gestion des utilisateurs](#gestion-des-utilisateurs)
     - [Panier d'achat](#panier-dachat)
     - [Liste de souhaits](#liste-de-souhaits)
@@ -62,7 +64,20 @@ d'administration puissante pour la gestion des produits, des commandes et du con
 - **Images multiples** : Visualisation détaillée de chaque produit
 - **Informations détaillées** : Description, spécifications, prix, stock
 - **Promotions** : Gestion des réductions et offres spéciales
-- **Système de notation** : Avis et évaluations des clients [en cours]
+- **Système de notation** : Avis et évaluations des clients
+
+### Landing Page
+
+- **Design moderne et attrayant** : Une page d'accueil visuellement captivante qui met en avant les produits phares
+- **Sections catégorisées** : Présentation organisée des différentes catégories de produits gaming
+- **Mise en avant des meilleures ventes** : Section dédiée aux produits les plus populaires
+
+### Mode clair/sombre
+
+- **Thème adaptable** : Basculement fluide entre mode clair et sombre
+- **Préférence système** : Détection automatique des préférences de thème de l'utilisateur
+- **Persistance de choix** : Mémorisation du mode préféré de l'utilisateur
+- **Adaptation complète de l'UI** : Interface entièrement optimisée pour les deux modes
 
 ### Gestion des utilisateurs
 
@@ -89,7 +104,7 @@ d'administration puissante pour la gestion des produits, des commandes et du con
 
 ### Système de commentaires
 
-- **Ajout de commentaires** : Les utilisateurs peuvent laisser des commentaires sur les produits
+- **Ajout de commentaires** : Les utilisateurs peuvent laisser des commentaires sur les produits qu'ils ont achetés
 - **Modification de commentaires** : Possibilité de modifier ses propres commentaires
 
 ### Processus de commande
@@ -114,7 +129,7 @@ d'administration puissante pour la gestion des produits, des commandes et du con
 ### Recherche avancée
 
 - **Recherche par mots-clés** : Recherche textuelle efficace
-- **Filtres multiples** : Affinage des résultats par catégorie, prix, etc. [en cours]
+- **Filtres multiples** : Affinage des résultats par catégorie, prix, stock, etc. [en cours]
 - **Indexation Algolia** : Recherche rapide et pertinente
 
 ## Installation
@@ -192,14 +207,6 @@ composer run dev
 - **Site principal** : http://localhost:8000 
 - **Panneau d'administration** : http://localhost:8000/admin (nécessite un compte avec rôle admin, voir [Gestion des rôles et permissions](#gestion-des-rôles-et-permissions))
 
-## Fonctionnalités administratives
-
-- **Gestion des produits** : Ajouter, modifier, supprimer des produits
-- **Gestion des catégories** : Créer et organiser les catégories de produits
-- **Gestion des bannières** : Configurer les messages promotionnels affichés sur le site
-- **Gestion des marques** : Ajouter et organiser les marques de produits
-- **Gestion des stocks** : Suivre et gérer les niveaux de stock des produits
-
 ## Structure du projet
 
 - **app/** : Code source principal de l'application Laravel
@@ -213,9 +220,13 @@ composer run dev
 
 ## Gestion des rôles et permissions
 
+L'application utilise le package Spatie Laravel Permission pour gérer les rôles et permissions des utilisateurs. Ce système permet d'attribuer différents niveaux d'accès aux fonctionnalités du site.
+
 ### Création manuelle d'un utilisateur administrateur
 
-Si vous avez besoin de créer manuellement un administrateur, vous pouvez utiliser Tinker, l'outil de console interactif de Laravel :
+Voici comment créer un rôle administrateur et l'attribuer à un utilisateur existant :
+
+#### Méthode 1 : Via Tinker
 
 ```bash
 # Lancer Tinker
@@ -230,19 +241,18 @@ Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin']);
 $user = App\Models\User::find(1); // Remplacez 1 par l'ID de l'utilisateur souhaité
 $user->assignRole('admin');
 
-// Vérifier si un utilisateur a le rôle admin
 $user->hasRole('admin'); // renvoie true ou false
 ```
 
+#### Méthode 2 : Via une commande Artisan personnalisée
+
 ### Structure des rôles
 
-L'application utilise le package Spatie Laravel Permission pour gérer les rôles et permissions :
+L'interface d'administration permet aux modérateurs et administrateurs de :
 
 - **admin** : Accès complet au tableau de bord d'administration et à toutes les fonctionnalités
 - **moderator** : Permissions limitées pour modérer les commentaires et gérer certains contenus
 - **user** : Rôle par défaut pour tous les utilisateurs enregistrés
-
-## API
 
 L'application utilise principalement Inertia.js pour la communication entre le backend et le frontend via les routes Laravel.
 
