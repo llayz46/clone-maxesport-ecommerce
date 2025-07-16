@@ -12,7 +12,7 @@ import debounce from 'lodash.debounce';
 export function Header() {
     const { auth } = usePage<SharedData>().props;
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<string>(() => new URLSearchParams(window.location.search).get('search') || '');
 
     const debouncedSearch = useMemo(() =>
         debounce((value) => {
