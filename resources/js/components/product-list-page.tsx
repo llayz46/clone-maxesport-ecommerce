@@ -47,7 +47,7 @@ export function ProductListPage({ title, products, sort = 'news', stock }: Produ
 
             <main className="layout-container">
                 <div className="flex items-center justify-between">
-                    <FilterSheet current_page={products.meta.current_page} stock={stock} />
+                    <FilterSheet stock={stock} />
 
                     <Select onValueChange={handleSortChange} defaultValue={sort} value={selectedSort}>
                         <SelectTrigger className="w-52">

@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CheckedState } from '@radix-ui/react-checkbox';
 
-export function FilterSheet({ current_page, stock }: { current_page: number, stock: { in: boolean, out: boolean }; }) {
+export function FilterSheet({ stock }: { stock: { in: boolean, out: boolean }; }) {
     const [disponibilityFilter, setDisponibilityFilter] = useState<{ in: boolean; out: boolean }>({
         in: stock.in,
         out: stock.out,
