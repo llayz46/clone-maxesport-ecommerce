@@ -38,7 +38,7 @@ function AccordionTrigger({
             {...props}
         >
             {children}
-            <div className="size-7 rounded-full bg-foreground/5 dark:bg-foreground/10 flex items-center justify-center transition-all">
+            <div className="size-7 rounded-full bg-foreground/5 dark:bg-foreground/10 flex shrink-0 items-center justify-center transition-all">
                 <ChevronDownIcon
                     className="text-foreground/50 pointer-events-none size-4 shrink-0 translate-y-0.25 transition-transform duration-200" />
             </div>
