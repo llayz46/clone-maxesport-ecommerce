@@ -20,6 +20,7 @@ export function FilterSheet({ current_page, stock }: { current_page: number, sto
         in: stock.in,
         out: stock.out,
     });
+
     const handleDisponibilityChange = (type: 'in' | 'out', checked: CheckedState) => {
         const updated = {
             ...disponibilityFilter,
@@ -28,14 +29,22 @@ export function FilterSheet({ current_page, stock }: { current_page: number, sto
 
         setDisponibilityFilter(updated);
 
-        const params: Record<string, string | number> = {
-            page: current_page,
-        };
+        const currentParams = new URLSearchParams(window.location.search);
 
-        if (updated.in) params.in = 1;
-        if (updated.out) params.out = 1;
+        if (updated.in) currentParams.set('in', '1');
+        else currentParams.delete('in');
 
-        router.get(window.location.pathname, params, {
+        if (updated.out) currentParams.set('out', '1');
+        else currentParams.delete('out');
+
+        currentParams.set('page', '1');
+
+        const paramsObj: Record<string, string> = {};
+        currentParams.forEach((value, key) => {
+            paramsObj[key] = value;
+        });
+
+        router.get(window.location.pathname, paramsObj, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
